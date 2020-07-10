@@ -7,8 +7,14 @@ let gameStatus = false;
 //#endregion
 
 //#region Board
+let size = Math.min
+(
+	document.documentElement.clientWidth - 70,
+	document.documentElement.clientHeight - 160
+);
+
 let width = 25, height = 25;
-let widthPx = 450, heightPx = 450;
+let widthPx = size, heightPx = size;
 
 let board = [];
 for (let y = 0; y < height; y++)
