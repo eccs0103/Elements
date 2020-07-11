@@ -17,6 +17,11 @@ function draw()
 	{
 		drawElements();
 	}
+
+	if (resultsStatus)
+	{
+		updateResults();
+	}
 }
 //#endregion
 
@@ -199,6 +204,69 @@ function resumeGame(execute)
 	}
 }
 
+function showResults(execute)
+{
+	if(execute)
+	{
+		resultsStatus = true;
+		document.getElementById("results").style.display = "block";
+	}
+	else if(!execute)
+	{
+		resultsStatus = false;
+		document.getElementById("results").style.display = "none";
+	}
+}
+
+function updateResults()
+{
+	let voidCount = 0;
+	let grassCount = 0;
+	let fireCount = 0;
+	let waterCount = 0;
+	let lavaCount = 0;
+	let iceCount = 0;
+
+	for (let y = 0; y < height; y++)
+	{
+		for (let x = 0; x < width; x++)
+		{
+			let element = board[y][x];
+			if (element instanceof Void)
+			{
+				voidCount++;
+			}
+			else if(element instanceof Grass)
+			{
+				grassCount++;
+			}
+			else if(element instanceof Fire)
+			{
+				fireCount++;
+			}
+			else if(element instanceof Water)
+			{
+				waterCount++;
+			}
+			else if(element instanceof Lava)
+			{
+				lavaCount++;
+			}
+			else if(element instanceof Ice)
+			{
+				iceCount++;
+			}
+		}
+	}
+
+	document.getElementById("voidCount").textContent = voidCount;
+	document.getElementById("grassCount").textContent = grassCount;
+	document.getElementById("fireCount").textContent = fireCount;
+	document.getElementById("waterCount").textContent = waterCount;
+	document.getElementById("lavaCount").textContent = lavaCount;
+	document.getElementById("iceCount").textContent = iceCount;
+}
+
 document.getElementById("statusIcon").addEventListener
 ("click", 
 	function()
@@ -213,6 +281,14 @@ document.getElementById("refreshIcon").addEventListener
 	{
 		generateBoard();
 		drawElements();
+	}
+);
+
+document.getElementById("resultsIcon").addEventListener
+("click", 
+	function(event)
+	{
+		showResults(!resultsStatus);
 	}
 );
 //#endregion

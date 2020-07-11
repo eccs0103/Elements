@@ -6,20 +6,21 @@
 	box-sizing: border-box;
 	user-select: none;
 	outline: none;
+	font-family: monospace;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 p
 {
 	color: rgb(150, 150, 150);
-	font-family: monospace;
-	text-decoration: none;
 }
 
 h1, h2, h3, h4, h5, h6
 {
 	color: rgb(50, 50, 50);
-	font-family: monospace;
 	text-decoration: none;
+	font-size: 24px;
 }
 
 a
@@ -68,7 +69,8 @@ content
 	display: none;
 }
 
-td
+
+th, td
 {
 	border: none;
 	padding: 5px;

@@ -28,33 +28,152 @@
 		<content id="home">
 			<div class="window" style="
 				margin: 20px auto;
-				padding: 10px;">
+				padding: 10px;
+				max-width: none;">
 				<div class="game" id="game">
 					
 				</div>
 				<div style="
 					display: flex;
-					justify-content: flex-start;">
+					justify-content: flex-start;
+					margin-top: 5px;">
 					<div class="icon" id="statusIcon">
 						<img src="../Resources/2x/baseline_play_arrow_black_48dp.png" title="Старт" id="statusIconImage">
 					</div>
 					<div class="icon" id="refreshIcon">
 						<img src="../Resources/2x/baseline_refresh_black_48dp.png" title="Заново">
 					</div>
+					<div class="icon" id="resultsIcon">
+						<img src="../resources/2x/baseline_assessment_black_48dp.png" title="Статистика">
+					</div>
 				</div>
+			</div>
+			<div class="window" id="results" style="
+				width: fit-content;
+				height: fit-content;
+				border-top-right-radius: 0px;
+				border-bottom-right-radius: 0px;
+				position: absolute;
+				right: 0px;
+				display: none;">
+				<table style="
+					border-collapse: collapse;
+					border: none;
+					text-align: center;">
+					<tr>
+						<th>Элемент</th>
+						<th>Количество</th>
+					</tr>
+					<tr>
+						<td>
+							<div style="
+								width: 15px;
+								height: 15px;
+								margin: auto;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(225, 225, 225);">
+							</div>
+						</td>
+						<td>
+							<p id="voidCount">
+								0
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="
+								width: 15px;
+								height: 15px;
+								margin: auto;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(0, 128, 0);">
+							</div>
+						</td>
+						<td>
+							<p id="grassCount">
+								0
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="
+								width: 15px;
+								height: 15px;
+								margin: auto;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(255, 150, 0);">
+							</div>
+						</td>
+						<td>
+							<p id="fireCount">
+								0
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="
+								width: 15px;
+								height: 15px;
+								margin: auto;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(0, 50, 255);">
+							</div>
+						</td>
+						<td>
+							<p id="waterCount">
+								0
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="
+								width: 15px;
+								height: 15px;
+								margin: auto;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(255, 0, 0);">
+							</div>
+						</td>
+						<td>
+							<p id="lavaCount">
+								0
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="
+								width: 15px;
+								height: 15px;
+								margin: auto;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(0, 200, 255);">
+							</div>
+						</td>
+						<td>
+							<p id="iceCount">
+								0
+							</p>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</content>
 		<content id="settings">
 			<div class="window">
-				<h2>
+				<h1>
 					Настройки
-				</h2>
+				</h1>
 				<p>
 					Тут пока что ничего нет. Ждите дальнейших обновлений.
 				</p>
-				<!-- <h2>
+				<!-- <h1>
 					Доска
-				</h2>
+				</h1>
 				<p style="
 					color: rgb(150, 150, 150);
 					display: inline-block;">
@@ -72,9 +191,9 @@
 		</content>
 		<content id="information">
 			<div class="window">
-				<h2>
+				<h1>
 					Справка
-				</h2>
+				</h1>
 				<table style="
 					border: none;
 					border-collapse: collapse;">
@@ -242,9 +361,9 @@
 				<br>
 				<hr>
 				<br>
-				<h2>
+				<h1>
 					Разработка
-				</h2>
+				</h1>
 				<p>
 					Создатель: Арман<br>
 					Версия: 0.5.9 beta<br>
@@ -254,9 +373,9 @@
 				<br>
 				<hr>
 				<br>
-				<h2>
+				<h1>
 					Связь
-				</h2>
+				</h1>
 				<p>
 					ВКонтакте: <a href="https://vk.com/eccs0103" target="blank">vk.com/eccs0103</a><br>
 					Stack Overflow: <a href="https://ru.stackoverflow.com/users/324730/%d0%90%d1%80%d0%bc%d0%b0%d0%bd?tab=profile" target="blank">ru.stackoverflow.com/users/324730</a><br>
@@ -266,9 +385,9 @@
 				<br>
 				<hr>
 				<br>
-				<h2>
+				<h1>
 					Материалы
-				</h2>
+				</h1>
 				<p>
 					Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank">Material</a><br>
 					Библиотека рисования: <a href="https://p5js.org/" target="blank">P5</a><br>
