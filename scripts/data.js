@@ -4,7 +4,7 @@ let pageId = -1
 
 //#region Game
 let gameStatus = false;
-let resultsStatus = false;
+let resultsStatus = true;
 //#endregion
 
 //#region Board

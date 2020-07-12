@@ -64,6 +64,44 @@ a
 	margin: auto;
 }
 
+.button
+{
+	width: fit-content;
+	height: fit-content;
+	margin: auto;
+	padding: 5px 10px;
+	background-color: rgb(245, 245, 245);
+	border: 1px solid rgb(200, 200, 200);
+	border-radius: 4px;
+}
+
+.button:hover
+{
+	background-color: rgb(240, 240, 240);
+}
+
+.button > p
+{
+	text-align: center;
+	display: block;
+	color: rgb(50, 50, 50);
+}
+
+.input
+{
+	width: 120px;
+	min-height: 10px;
+	padding: 5px;
+	background-color: rgb(245, 245, 245);
+	border: 1px solid rgb(200, 200, 200);
+	border-radius: 4px;
+}
+
+.input:hover
+{
+	background-color: rgb(240, 240, 240);
+}
+
 content
 {
 	display: none;
@@ -74,16 +112,4 @@ th, td
 {
 	border: none;
 	padding: 5px;
-}
-
-input
-{
-	width: 120px;
-	min-height: 10px;
-	margin: 5px 10px;
-	padding: 5px;
-	background-color: rgb(245, 245, 245);
-	border: 1px solid rgb(200, 200, 200);
-	border-radius: 4px;
-	display: inline-block;
 }

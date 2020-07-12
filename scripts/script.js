@@ -210,11 +210,13 @@ function showResults(execute)
 	{
 		resultsStatus = true;
 		document.getElementById("results").style.display = "block";
+		document.getElementById("resultsIcon").style.backgroundColor = "rgb(225, 225, 225)";
 	}
 	else if(!execute)
 	{
 		resultsStatus = false;
 		document.getElementById("results").style.display = "none";
+		document.getElementById("resultsIcon").style.backgroundColor = "rgb(255, 255, 255)";
 	}
 }
 
@@ -284,6 +286,7 @@ document.getElementById("refreshIcon").addEventListener
 	}
 );
 
+showResults(resultsStatus);
 document.getElementById("resultsIcon").addEventListener
 ("click", 
 	function(event)
@@ -294,31 +297,37 @@ document.getElementById("resultsIcon").addEventListener
 //#endregion
 
 //#region Settings
-// document.getElementById("boardWidthInput").addEventListener
-// ("input", 
-// 	function(event)
-// 	{
-// 		let widthValue = document.getElementById("boardWidthInput").value;
-// 		if(5 <= widthValue && widthValue <= 50)
-// 		{
-// 			width = widthValue;
-// 			resumeGame(false);
-// 			generateBoard();
-// 		}
-// 	}
-// );
+document.getElementById("saveCButton").addEventListener
+("click", 
+	function(event)
+	{
+		let voidCTest = document.getElementById("voidInput").textContent;
+		let grassCTest = document.getElementById("grassInput").textContent;
+		let fireCTest = document.getElementById("fireInput").textContent;
+		let waterCTest = document.getElementById("waterInput").textConten;
+		let lavaCTest = document.getElementById("lavaInput").textContent;
+		let iceCTest = document.getElementById("iceInput").textContent;
 
-// document.getElementById("boardHeightInput").addEventListener
-// ("input", 
-// 	function(event)
-// 	{
-// 		let heightValue = document.getElementById("boardHeightInput").value;
-// 		if(5 <= heightValue && heightValue <= 50)
-// 		{
-// 			height = heightValue;
-// 			resumeGame(false);
-// 			generateBoard();
-// 		}
-// 	}
-// );
+		try
+		{
+			voidC = voidCTest;
+			grassC = grassCTest;
+			fireC = fireCTest;
+			waterC = waterCTest;
+			lavaC = lavaCTest;
+			iceC = iceCTest;
+			fullC = voidCTest + grassCTest + fireCTest + waterCTest + lavaCTest + iceCTest;
+
+			generateBoard();
+			drawElements();
+			// resumeGame(false);
+
+			alert("Настройки сохранены.")
+		}
+		catch(excepton)
+		{
+			alert("Настройки не сохранены. Случилась ошибка при сохранении - " + excepton);
+		}
+	}
+)
 //#endregion

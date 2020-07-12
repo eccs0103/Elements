@@ -30,7 +30,9 @@
 				margin: 20px auto;
 				padding: 10px;
 				max-width: none;">
-				<div class="game" id="game">
+				<div class="game" id="game" style="
+					width: fit-content;
+					height: fit-content;">
 					
 				</div>
 				<div style="
@@ -58,21 +60,24 @@
 				display: none;">
 				<table style="
 					border-collapse: collapse;
-					border: none;
-					text-align: center;">
+					border: none;">
 					<tr>
 						<th>Элемент</th>
 						<th>Количество</th>
 					</tr>
 					<tr>
-						<td>
+						<td style="
+							display: flex;">
 							<div style="
 								width: 15px;
 								height: 15px;
-								margin: auto;
 								border: 1px solid rgb(150, 150, 150);
 								background-color: rgb(225, 225, 225);">
 							</div>
+							<p style="
+								margin-left: 10px;">
+								Пустота
+							</p>
 						</td>
 						<td>
 							<p id="voidCount">
@@ -81,14 +86,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td style="
+							display: flex;">
 							<div style="
 								width: 15px;
 								height: 15px;
-								margin: auto;
 								border: 1px solid rgb(150, 150, 150);
 								background-color: rgb(0, 128, 0);">
 							</div>
+							<p style="
+								margin-left: 10px;">
+								Трава
+							</p>
 						</td>
 						<td>
 							<p id="grassCount">
@@ -97,14 +106,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td style="
+							display: flex;">
 							<div style="
 								width: 15px;
 								height: 15px;
-								margin: auto;
 								border: 1px solid rgb(150, 150, 150);
 								background-color: rgb(255, 150, 0);">
 							</div>
+							<p style="
+								margin-left: 10px;">
+								Огонь
+							</p>
 						</td>
 						<td>
 							<p id="fireCount">
@@ -113,14 +126,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td style="
+							display: flex;">
 							<div style="
 								width: 15px;
 								height: 15px;
-								margin: auto;
 								border: 1px solid rgb(150, 150, 150);
 								background-color: rgb(0, 50, 255);">
 							</div>
+							<p style="
+								margin-left: 10px;">
+								Вода
+							</p>
 						</td>
 						<td>
 							<p id="waterCount">
@@ -129,14 +146,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td style="
+							display: flex;">
 							<div style="
 								width: 15px;
 								height: 15px;
-								margin: auto;
 								border: 1px solid rgb(150, 150, 150);
 								background-color: rgb(255, 0, 0);">
 							</div>
+							<p style="
+								margin-left: 10px;">
+								Лава
+							</p>
 						</td>
 						<td>
 							<p id="lavaCount">
@@ -145,14 +166,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td style="
+							display: flex;">
 							<div style="
 								width: 15px;
 								height: 15px;
-								margin: auto;
 								border: 1px solid rgb(150, 150, 150);
 								background-color: rgb(0, 200, 255);">
 							</div>
+							<p style="
+								margin-left: 10px;">
+								Лёд
+							</p>
 						</td>
 						<td>
 							<p id="iceCount">
@@ -166,27 +191,85 @@
 		<content id="settings">
 			<div class="window">
 				<h1>
-					Настройки
-				</h1>
-				<p>
-					Тут пока что ничего нет. Ждите дальнейших обновлений.
-				</p>
-				<!-- <h1>
 					Доска
 				</h1>
-				<p style="
-					color: rgb(150, 150, 150);
-					display: inline-block;">
-					Ширина
-				</p>
-				<input type="number" min="5" max="50" placeholder="5 - 50" id="boardWidthInput">
-				<br>
-				<p style="
-					color: rgb(150, 150, 150);
-					display: inline-block;">
-					Высота
-				</p>
-				<input type="number" min="5" max="50" placeholder="5 - 50" id="boardHeightInput"> -->
+				<table style="
+					border-collapse: collapse;
+					border: none;">
+					<tr>
+						<td>
+							<p style="
+								color: rgb(150, 150, 150);">
+								Процент пустоты
+							</p>
+						</td>
+						<td>
+							<input type="number" min="0" max="100" placeholder="0 - 100" value="90" class="input" id="voidInput">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style="
+								color: rgb(150, 150, 150);">
+								Процент травы
+							</p>
+						</td>
+						<td>
+							<input type="number" min="0" max="100" placeholder="0 - 100" value="4" class="input" id="grassInput">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style="
+								color: rgb(150, 150, 150);">
+								Процент огня
+							</p>
+						</td>
+						<td>
+							<input type="number" min="0" max="100" placeholder="0 - 100" value="2" class="input" id="fireInput">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style="
+								color: rgb(150, 150, 150);">
+								Процент воды
+							</p>
+						</td>
+						<td>
+							<input type="number" min="0" max="100" placeholder="0 - 100" value="2" class="input" id="waterInput">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style="
+								color: rgb(150, 150, 150);">
+								Процент лавы
+							</p>
+						</td>
+						<td>
+							<input type="number" min="0" max="100" placeholder="0 - 100" value="1" class="input" id="lavaInput">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style="
+								color: rgb(150, 150, 150);">
+								Процент льда
+							</p>
+						</td>
+						<td>
+							<input type="number" min="0" max="100" placeholder="0 - 100" value="1" class="input" id="iceInput">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="button" id="saveCButton">
+								<p>Сохранить</p>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</content>
 		<content id="information">
