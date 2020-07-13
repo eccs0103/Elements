@@ -2,59 +2,38 @@
 function setup() 
 {
 	frameRate(60);
-	let canvas = createCanvas(widthPx, heightPx);
+	let canvas = createCanvas(Board.widthPixels, Board.heightPixels);
 	canvas.parent("game");
 	background(255, 255, 255);
 	stroke(150, 150, 150);
 
-	generateBoard();
-	drawElements();
+	Board.createMatrix();
+	Board.generateBoard();
+	Board.drawElements();
 }
 
 function draw() 
 {
-	if(gameStatus)
+	if(Game.play)
 	{
-		drawElements();
+		Board.drawElements();
 	}
 
-	if (resultsStatus)
+	if (Game.showResults)
 	{
-		updateResults();
+		Board.updateResults();
 	}
 }
 //#endregion
 
 //#region Navigation
-pages = 
-[
-	[document.getElementById("home"), document.getElementById("homeIcon")],
-	[document.getElementById("settings"), document.getElementById("settingsIcon")],
-	[document.getElementById("information"), document.getElementById("informationIcon")],
-];
-
-function openPage(id)
-{
-	if(id != pageId)
-	{
-		for (let index = 0; index < pages.length; index++) 
-		{
-			pages[index][0].style.display = "none";
-			pages[index][1].style.backgroundColor = "rgb(255, 255, 255)";
-		}
-		pages[id][0].style.display = "flex";
-		pages[id][1].style.backgroundColor = "rgb(225, 225, 225)";
-		pageId = id;
-	}
-}
-
-openPage(0);
+Pages.id = 0;
 
 document.getElementById("homeIcon").addEventListener
 ("click", 
 	function(event)
 	{
-		openPage(0);
+		Pages.id = 0;
 	}
 );
 
@@ -62,7 +41,7 @@ document.getElementById("settingsIcon").addEventListener
 ("click", 
 	function(event)
 	{
-		openPage(1);
+		Pages.id = 1;
 	}
 );
 
@@ -70,210 +49,18 @@ document.getElementById("informationIcon").addEventListener
 ("click", 
 	function(event)
 	{
-		openPage(2);
+		Pages.id = 2;
 	}
 );
 //#endregion
 
 //#region Game
-function generateBoard()
-{
-	for (let y = 0; y < height; y++) 
-	{
-		for (let x = 0; x < width; x++) 
-		{
-			let randomElement = randomNumber(0, fullC)
-			if (randomElement >= 0 && randomElement < voidC)
-			{
-				board[y][x] = new Void(x, y);
-			}
-			else if (randomElement >= voidC && randomElement < voidC + grassC) 
-			{
-				board[y][x] = new Grass(x, y);
-			}
-			else if (randomElement >= voidC + grassC && randomElement < voidC + grassC+ fireC) 
-			{
-				board[y][x] = new Fire(x, y);
-			}
-			else if (randomElement >= voidC + grassC+ fireC && randomElement < voidC + grassC+ fireC + waterC) 
-			{
-				board[y][x] = new Water(x, y);
-			}
-			else if (randomElement >= voidC + grassC+ fireC + waterC && randomElement < voidC + grassC+ fireC + waterC + lavaC) 
-			{
-				board[y][x] = new Lava(x, y, 3);
-			}
-			else if (randomElement >= voidC + grassC+ fireC + waterC + lavaC && randomElement < fullC) 
-			{
-				board[y][x] = new Ice(x, y, 3);
-			}
-		}
-	}
-}
-
-function drawElements()
-{
-	let cellWidth = widthPx / width;
-	let cellHeight = heightPx / height;
-
-	for (let y = 0; y < height; y++) 
-	{
-		for (let x = 0; x < width; x++) 
-		{
-			let element = board[y][x];
-			if (element instanceof Void)
-			{
-				fill(225, 225, 225);
-				rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-			}
-			else if (element instanceof Grass)
-			{
-				fill(0, 128, 0);
-				rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-				element.grow();
-			}
-			else if (element instanceof Fire)
-			{
-				fill(255, 150, 0);
-				rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-				element.burn();
-				element.fade();
-			}
-			else if (element instanceof Water)
-			{
-				fill(0, 50, 255);
-				rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-				element.flow();
-				element.evaporate();
-			}
-			else if (element instanceof Lava)
-			{
-				if(element.density == 3)
-				{
-					fill(255, 0, 0);
-				}
-				else if(element.density == 2)
-				{
-					fill(255, 50, 0);
-				}
-				else if(element.density == 1)
-				{
-					fill(255, 100, 0);
-				}
-				rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-				element.flow();
-				element.burn();
-				element.fade();
-			}
-			else if (element instanceof Ice)
-			{
-				if(element.density == 3)
-				{
-					fill(0, 200, 255);
-				}
-				else if(element.density == 2)
-				{
-					fill(0, 150, 255);
-				}
-				else if(element.density == 1)
-				{
-					fill(0, 100, 255);
-				}
-				rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-				element.flow();
-				element.melt();
-				element.evaporate();
-			}
-		}
-	}
-}
-
-function resumeGame(execute)
-{
-	if(execute)
-	{
-		document.getElementById("statusIconImage").src = "../Resources/2x/baseline_pause_black_48dp.png";
-		document.getElementById("statusIconImage").alt = "Пауза";
-		gameStatus = true;
-	}
-	else if(!execute)
-	{
-		document.getElementById("statusIconImage").src = "../Resources/2x/baseline_play_arrow_black_48dp.png";
-		document.getElementById("statusIconImage").alt = "Старт";
-		gameStatus = false;
-	}
-}
-
-function showResults(execute)
-{
-	if(execute)
-	{
-		resultsStatus = true;
-		document.getElementById("results").style.display = "block";
-		document.getElementById("resultsIcon").style.backgroundColor = "rgb(225, 225, 225)";
-	}
-	else if(!execute)
-	{
-		resultsStatus = false;
-		document.getElementById("results").style.display = "none";
-		document.getElementById("resultsIcon").style.backgroundColor = "rgb(255, 255, 255)";
-	}
-}
-
-function updateResults()
-{
-	let voidCount = 0;
-	let grassCount = 0;
-	let fireCount = 0;
-	let waterCount = 0;
-	let lavaCount = 0;
-	let iceCount = 0;
-
-	for (let y = 0; y < height; y++)
-	{
-		for (let x = 0; x < width; x++)
-		{
-			let element = board[y][x];
-			if (element instanceof Void)
-			{
-				voidCount++;
-			}
-			else if(element instanceof Grass)
-			{
-				grassCount++;
-			}
-			else if(element instanceof Fire)
-			{
-				fireCount++;
-			}
-			else if(element instanceof Water)
-			{
-				waterCount++;
-			}
-			else if(element instanceof Lava)
-			{
-				lavaCount++;
-			}
-			else if(element instanceof Ice)
-			{
-				iceCount++;
-			}
-		}
-	}
-
-	document.getElementById("voidCount").textContent = voidCount;
-	document.getElementById("grassCount").textContent = grassCount;
-	document.getElementById("fireCount").textContent = fireCount;
-	document.getElementById("waterCount").textContent = waterCount;
-	document.getElementById("lavaCount").textContent = lavaCount;
-	document.getElementById("iceCount").textContent = iceCount;
-}
-
+Game.play = false;
 document.getElementById("statusIcon").addEventListener
 ("click", 
 	function()
 	{
-		resumeGame(!gameStatus);
+		Game.play = !Game.play;
 	}
 );
 
@@ -281,17 +68,18 @@ document.getElementById("refreshIcon").addEventListener
 ("click", 
 	function(event)
 	{
-		generateBoard();
-		drawElements();
+		Board.createMatrix();
+		Board.generateBoard();
+		Board.drawElements();
 	}
 );
 
-showResults(resultsStatus);
+Game.showResults = true;
 document.getElementById("resultsIcon").addEventListener
 ("click", 
 	function(event)
 	{
-		showResults(!resultsStatus);
+		Game.showResults = !Game.showResults;
 	}
 );
 //#endregion
@@ -301,32 +89,53 @@ document.getElementById("saveCButton").addEventListener
 ("click", 
 	function(event)
 	{
-		let voidCTest = document.getElementById("voidInput").textContent;
-		let grassCTest = document.getElementById("grassInput").textContent;
-		let fireCTest = document.getElementById("fireInput").textContent;
-		let waterCTest = document.getElementById("waterInput").textConten;
-		let lavaCTest = document.getElementById("lavaInput").textContent;
-		let iceCTest = document.getElementById("iceInput").textContent;
+		let voidCTest = parseInt(document.getElementById("voidInput").value), 
+			grassCTest = parseInt(document.getElementById("grassInput").value),
+			fireCTest = parseInt(document.getElementById("fireInput").value),
+			waterCTest = parseInt(document.getElementById("waterInput").value),
+			lavaCTest = parseInt(document.getElementById("lavaInput").value),
+			iceCTest = parseInt(document.getElementById("iceInput").value);
 
-		try
+		if
+		(
+			voidCTest == "NaN" ||
+			grassCTest == "NaN" ||
+			fireCTest == "NaN" ||
+			waterCTest == "NaN" ||
+			lavaCTest == "NaN" ||
+			iceCTest == "NaN"
+		)
 		{
-			voidC = voidCTest;
-			grassC = grassCTest;
-			fireC = fireCTest;
-			waterC = waterCTest;
-			lavaC = lavaCTest;
-			iceC = iceCTest;
-			fullC = voidCTest + grassCTest + fireCTest + waterCTest + lavaCTest + iceCTest;
-
-			generateBoard();
-			drawElements();
-			// resumeGame(false);
-
-			alert("Настройки сохранены.")
+			window.alert("Введены неверные данные. Настройки не сохранены.");
 		}
-		catch(excepton)
+		else if
+		(
+			voidCTest < 0 || voidCTest > 100 ||
+			grassCTest < 0 || grassCTest > 100 ||
+			fireCTest < 0 || fireCTest > 100 ||
+			waterCTest < 0 || waterCTest > 100 ||
+			lavaCTest < 0 || lavaCTest > 100 ||
+			iceCTest < 0 || iceCTest > 100
+		)
 		{
-			alert("Настройки не сохранены. Случилась ошибка при сохранении - " + excepton);
+			window.alert("Данные должны быть от 0 до 100. Настройки не сохранены.");
+		}
+		else
+		{
+			Board.voidC = voidCTest;
+			Board.grassC = grassCTest;
+			Board.fireC = fireCTest;
+			Board.waterC = waterCTest;
+			Board.lavaC = lavaCTest;
+			Board.iceC = iceCTest;
+			Board.fullC = voidCTest + grassCTest + fireCTest + waterCTest + lavaCTest + iceCTest;
+
+			Board.createMatrix();
+			Board.generateBoard();
+			Board.drawElements();
+			Game.play = false;
+
+			alert("Настройки сохранены.");
 		}
 	}
 )

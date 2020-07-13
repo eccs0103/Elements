@@ -6,9 +6,10 @@
 	box-sizing: border-box;
 	user-select: none;
 	outline: none;
+
+	color: rgb(50, 50, 50);
 	font-family: monospace;
 	font-size: 14px;
-	font-weight: 500;
 }
 
 p
@@ -16,17 +17,15 @@ p
 	color: rgb(150, 150, 150);
 }
 
-h1, h2, h3, h4, h5, h6
+h
 {
-	color: rgb(50, 50, 50);
-	text-decoration: none;
-	font-size: 24px;
+	font-size: 18px;
+	font-weight: bolder;
 }
 
 a
 {
 	color: rgb(0, 128, 255);
-	font-family: monospace;
 	text-decoration: none;
 }
 
