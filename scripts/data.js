@@ -1,18 +1,51 @@
+//#region Interface
+class Interface
+{
+	//#region Theme
+	static #darkTheme = false;
+	static get darkTheme()
+	{
+		return this.#darkTheme;
+	}
+	static set darkTheme(value)
+	{
+		if(typeof(value) == "boolean")
+		{
+			if(value)
+			{
+				document.documentElement.classList.replace("light", "dark");
+				document.getElementById("p_theme").textContent = "Выключить";
+			}
+			else if(!value)
+			{
+				document.documentElement.classList.replace("dark", "light");
+				document.getElementById("p_theme").textContent = "Включить";
+			}
+			this.#darkTheme = value;
+		}
+		else
+		{
+			throw new TypeError();
+		}
+	}
+	//#endregion
+}
+//#endregion
+
 //#region Pages
 class Pages
 {
 	//#region List
 	static #list = 
 	[
-		[document.getElementById("home"), document.getElementById("homeIcon")],
-		[document.getElementById("settings"), document.getElementById("settingsIcon")],
-		[document.getElementById("information"), document.getElementById("informationIcon")],
+		[document.getElementById("page_home"), document.getElementById("div_home")],
+		[document.getElementById("page_settings"), document.getElementById("div_settings")],
+		[document.getElementById("page_information"), document.getElementById("div_information")],
 	];
 	//#endregion
 
 	//#region Navigation
 	static #activePageId = 0;
-
 	static get id()
 	{
 		return this.#activePageId;
@@ -24,10 +57,18 @@ class Pages
 			for (let index = 0; index < this.#list.length; index++) 
 			{
 				this.#list[index][0].style.display = "none";
-				this.#list[index][1].style.backgroundColor = "rgb(255, 255, 255)";
+				if(this.#list[index][1].classList.contains("selected"))
+				{
+					this.#list[index][1].classList.replace("selected", "block");
+				}
+				if(this.#list[index][1].classList.contains("bordered"))
+				{
+					this.#list[index][1].classList.replace("bordered", "unbordered");
+				}
 			}
 			this.#list[value][0].style.display = "flex";
-			this.#list[value][1].style.backgroundColor = "rgb(225, 225, 225)";
+			this.#list[value][1].classList.replace("block", "selected");
+			this.#list[value][1].classList.replace("unbordered", "bordered");
 			this.#activePageId = value;
 		}
 		else
@@ -54,13 +95,13 @@ class Game
 		{
 			if(value)
 			{
-				document.getElementById("statusIconImage").src = "../Resources/2x/baseline_pause_black_48dp.png";
-				document.getElementById("statusIconImage").alt = "Пауза";
+				document.getElementById("img_play").src = "../resources/pause.png";
+				document.getElementById("img_play").alt = "Пауза";
 			}
 			else if(!value)
 			{
-				document.getElementById("statusIconImage").src = "../Resources/2x/baseline_play_arrow_black_48dp.png";
-				document.getElementById("statusIconImage").alt = "Старт";
+				document.getElementById("img_play").src = "../resources/play.png";
+				document.getElementById("img_play").alt = "Старт";
 			}
 			this.#playingStatus = value;
 		}
@@ -71,27 +112,29 @@ class Game
 	}
 	//#endregion
 
-	//#region Results
-	static #resultsStatus = true;
-	static get showResults()
+	//#region Statistics
+	static #showStatistics = true;
+	static get showStatistics()
 	{
-		return this.#resultsStatus;
+		return this.#showStatistics;
 	}	
-	static set showResults(value)
+	static set showStatistics(value)
 	{
 		if(typeof(value) == "boolean")
 		{
 			if(value)
 			{
-				document.getElementById("results").style.display = "block";
-				document.getElementById("resultsIcon").style.backgroundColor = "rgb(225, 225, 225)";
+				document.getElementById("div_statistics_table").style.display = "block";
+				document.getElementById("div_statistics").classList.replace("block", "selected");
+				document.getElementById("div_statistics").classList.replace("unbordered", "bordered");
 			}
 			else if(!value)
 			{
-				document.getElementById("results").style.display = "none";
-				document.getElementById("resultsIcon").style.backgroundColor = "rgb(255, 255, 255)";
+				document.getElementById("div_statistics_table").style.display = "none";
+				document.getElementById("div_statistics").classList.replace("selected", "block");
+				document.getElementById("div_statistics").classList.replace("bordered", "unbordered");
 			}
-			this.#resultsStatus = value;
+			this.#showStatistics = value;
 		}
 		else
 		{
@@ -253,7 +296,7 @@ class Board
 		}
 	}
 
-	static updateResults()
+	static updateStatistics()
 	{
 		let voidCount = 0;
 		let grassCount = 0;
@@ -294,12 +337,12 @@ class Board
 			}
 		}
 
-		document.getElementById("voidCount").textContent = voidCount;
-		document.getElementById("grassCount").textContent = grassCount;
-		document.getElementById("fireCount").textContent = fireCount;
-		document.getElementById("waterCount").textContent = waterCount;
-		document.getElementById("lavaCount").textContent = lavaCount;
-		document.getElementById("iceCount").textContent = iceCount;
+		document.getElementById("div_void_count").textContent = voidCount;
+		document.getElementById("div_grass_count").textContent = grassCount;
+		document.getElementById("div_fire_count").textContent = fireCount;
+		document.getElementById("div_water_count").textContent = waterCount;
+		document.getElementById("div_lava_count").textContent = lavaCount;
+		document.getElementById("div_ice_count").textContent = iceCount;
 	}
 	//#endregion
 }

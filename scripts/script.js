@@ -3,7 +3,7 @@ function setup()
 {
 	frameRate(60);
 	let canvas = createCanvas(Board.widthPixels, Board.heightPixels);
-	canvas.parent("game");
+	canvas.parent("div_game");
 	background(255, 255, 255);
 	stroke(150, 150, 150);
 
@@ -19,9 +19,9 @@ function draw()
 		Board.drawElements();
 	}
 
-	if (Game.showResults)
+	if (Game.showStatistics)
 	{
-		Board.updateResults();
+		Board.updateStatistics();
 	}
 }
 //#endregion
@@ -29,7 +29,7 @@ function draw()
 //#region Navigation
 Pages.id = 0;
 
-document.getElementById("homeIcon").addEventListener
+document.getElementById("div_home").addEventListener
 ("click", 
 	function(event)
 	{
@@ -37,7 +37,7 @@ document.getElementById("homeIcon").addEventListener
 	}
 );
 
-document.getElementById("settingsIcon").addEventListener
+document.getElementById("div_settings").addEventListener
 ("click", 
 	function(event)
 	{
@@ -45,7 +45,7 @@ document.getElementById("settingsIcon").addEventListener
 	}
 );
 
-document.getElementById("informationIcon").addEventListener
+document.getElementById("div_information").addEventListener
 ("click", 
 	function(event)
 	{
@@ -56,7 +56,7 @@ document.getElementById("informationIcon").addEventListener
 
 //#region Game
 Game.play = false;
-document.getElementById("statusIcon").addEventListener
+document.getElementById("div_play").addEventListener
 ("click", 
 	function()
 	{
@@ -64,7 +64,7 @@ document.getElementById("statusIcon").addEventListener
 	}
 );
 
-document.getElementById("refreshIcon").addEventListener
+document.getElementById("div_reset").addEventListener
 ("click", 
 	function(event)
 	{
@@ -75,68 +75,39 @@ document.getElementById("refreshIcon").addEventListener
 );
 
 Game.showResults = true;
-document.getElementById("resultsIcon").addEventListener
+document.getElementById("div_statistics").addEventListener
 ("click", 
 	function(event)
 	{
-		Game.showResults = !Game.showResults;
+		Game.showStatistics = !Game.showStatistics;
 	}
 );
 //#endregion
 
 //#region Settings
-document.getElementById("saveCButton").addEventListener
-("click", 
+Interface.darkTheme = false;
+
+document.getElementById("div_theme").addEventListener
+("click",
 	function(event)
 	{
-		let voidCTest = parseInt(document.getElementById("voidInput").value), 
-			grassCTest = parseInt(document.getElementById("grassInput").value),
-			fireCTest = parseInt(document.getElementById("fireInput").value),
-			waterCTest = parseInt(document.getElementById("waterInput").value),
-			lavaCTest = parseInt(document.getElementById("lavaInput").value),
-			iceCTest = parseInt(document.getElementById("iceInput").value);
-
-		if
-		(
-			voidCTest == "NaN" ||
-			grassCTest == "NaN" ||
-			fireCTest == "NaN" ||
-			waterCTest == "NaN" ||
-			lavaCTest == "NaN" ||
-			iceCTest == "NaN"
-		)
-		{
-			window.alert("Введены неверные данные. Настройки не сохранены.");
-		}
-		else if
-		(
-			voidCTest < 0 || voidCTest > 100 ||
-			grassCTest < 0 || grassCTest > 100 ||
-			fireCTest < 0 || fireCTest > 100 ||
-			waterCTest < 0 || waterCTest > 100 ||
-			lavaCTest < 0 || lavaCTest > 100 ||
-			iceCTest < 0 || iceCTest > 100
-		)
-		{
-			window.alert("Данные должны быть от 0 до 100. Настройки не сохранены.");
-		}
-		else
-		{
-			Board.voidC = voidCTest;
-			Board.grassC = grassCTest;
-			Board.fireC = fireCTest;
-			Board.waterC = waterCTest;
-			Board.lavaC = lavaCTest;
-			Board.iceC = iceCTest;
-			Board.fullC = voidCTest + grassCTest + fireCTest + waterCTest + lavaCTest + iceCTest;
-
-			Board.createMatrix();
-			Board.generateBoard();
-			Board.drawElements();
-			Game.play = false;
-
-			alert("Настройки сохранены.");
-		}
+		Interface.darkTheme = !Interface.darkTheme;
 	}
-)
+);
+
+// document.getElementById("input_number_widthCells").addEventListener
+// ("input",
+// 	function(event)
+// 	{
+		
+// 	}
+// );
+
+// document.getElementById("input_number_heightCells").addEventListener
+// ("input",
+// 	function(event)
+// 	{
+		
+// 	}
+// );
 //#endregion
