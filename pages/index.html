@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html class="light" style="
+width: 100%;
+height: 100%;">
+	<!-------------------- Head --------------------->
+	<head>
+		<title>Five Elements</title>
+		<meta charset="utf8">
+		<link rel="stylesheet" href="../styles/global.css">
+		<link rel="stylesheet" href="../styles/default.css">
+		<link rel="stylesheet" href="../styles/light.css">
+		<link rel="stylesheet" href="../styles/dark.css">
+	</head>
+	<!-------------------- Body --------------------->
+	<body class="background" style="
+	width: 100%;
+	height: 100%;">
+		<!-------------------- Header --------------------->
+		<header class="bordered block" style="
+		width: 100%;
+		border-radius: 0px;
+		border-left-color: rgba(0, 0, 0, 0);
+		border-top-color: rgba(0, 0, 0, 0);
+		border-right-color: rgba(0, 0, 0, 0);">
+			<div class="block unbordered interactive" id="div_home" style="
+			margin: 0px 2.5px;">
+				<img src="../resources/home.png" title="Главная" class="resource" style="
+				width: 30px;
+				height: 30px;
+				color: red;">
+			</div>
+			<div class="block unbordered interactive" id="div_settings" style="
+			margin: 0px 2.5px;">
+				<img src="../resources/settings.png" title="Настройки" class="resource" style="
+				width: 30px;
+				height: 30px;">
+			</div>
+			<div class="block unbordered interactive" id="div_information" style="
+			margin: 0px 2.5px;">
+				<img src="../resources/info.png" title="Информация" class="resource" style="
+				width: 30px;
+				height: 30px;">
+			</div>
+		</header>
+		<!-------------------- Container --------------------->
+		<container>
+			<!-------------------- Home --------------------->
+			<page id="page_home" style="
+			display: flexbox;">
+				<!-------------------- Canvas --------------------->
+				<div class="bordered block center" style="
+				display: block;">
+					<!-------------------- Game --------------------->
+					<div class="block" id="div_game">
+						
+					</div>
+					<!-------------------- Menu --------------------->
+					<div class="block">
+						<div class="block unbordered interactive" id="div_play">
+							<img src="../resources/play.png" title="Старт" class="resource" id="img_play" style="
+							width: 30px;
+							height: 30px;">
+						</div>
+						<div class="block unbordered interactive" id="div_reset">
+							<img src="../resources/refresh.png" title="Заново" class="resource" style="
+							width: 30px;
+							height: 30px;">
+						</div>
+						<div class="selected bordered interactive" id="div_statistics">
+							<img src="../resources/assessment.png" title="Статистика" class="resource" style="
+							width: 30px;
+							height: 30px;">
+						</div>
+					</div>
+				</div>
+				<!-------------------- Results --------------------->
+				<div class="bordered block" id="div_statistics_table" style="
+				border-top-right-radius: 0px;
+				border-bottom-right-radius: 0px;
+				position: absolute;
+				top: 70px;
+				right: 0px;;">
+					<table style="
+					padding: 5px;">
+						<tr>
+							<td>
+
+							</td>
+							<td>
+								<h2 class="title">Элемент</h2>
+							</td>
+							<td>
+								<h2 class="title">Количество</h2>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+								width: 15px;
+								height: 15px;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(225, 225, 225);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Пустота
+								</p>
+							</td>
+							<td>
+								<p class="text" id="div_void_count">
+									0
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+								width: 15px;
+								height: 15px;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(0, 128, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Трава
+								</p>
+							</td>
+							<td>
+								<p class="text" id="div_grass_count">
+									0
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+								width: 15px;
+								height: 15px;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(255, 150, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Огонь
+								</p>
+							</td>
+							<td>
+								<p class="text" id="div_fire_count">
+									0
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+								width: 15px;
+								height: 15px;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(0, 50, 255);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Вода
+								</p>
+							</td>
+							<td>
+								<p class="text" id="div_water_count">
+									0
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+								width: 15px;
+								height: 15px;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(255, 0, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лава
+								</p>
+							</td>
+							<td>
+								<p class="text" id="div_lava_count">
+									0
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+								width: 15px;
+								height: 15px;
+								border: 1px solid rgb(150, 150, 150);
+								background-color: rgb(0, 200, 255);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лёд
+								</p>
+							</td>
+							<td>
+								<p class="text" id="div_ice_count">
+									0
+								</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</page>
+			<!-------------------- Settings --------------------->
+			<page id="page_settings" style="
+			display: none;">
+				<div class="bordered block center">
+					<table>
+						<!-------------------- Interface --------------------->
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Интерфейс
+								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Тёмная тема
+								</p>
+							</td>
+							<td>
+								<div class="bordered block interactive background" id="div_theme">
+									<p class="text" id="p_theme">Включить</p>
+								</div>
+							</td>
+						</tr>
+						<!-- <tr>
+							<td colspan="2">
+								<h2 class="title">
+									Доска
+								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Ширина доски
+								</p>
+							</td>
+							<td>
+								<input type="number" min="5" max="50" class="bordered block interactive background input" id="input_number_widthCells" style="
+								width: 100px;">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Высота доски
+								</p>
+							</td>
+							<td>
+								<input type="number" min="5" max="50" class="bordered block interactive background input" id="input_number_heightCells" style="
+								width: 100px;">
+							</td>
+						</tr> -->
+					</table>
+				</div>
+			</page>
+			<!-------------------- information --------------------->
+			<page id="page_information" style="
+			display: none;">
+				<div class="bordered block center" style="
+				max-width: 600px;">
+					<table>
+						<!-------------------- Reference --------------------->
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Справка
+								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(225, 225, 225);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Пустота.<br>
+									Нет особых функций. 
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(0, 128, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Трава.<br>
+									Растёт по пустоте в рандомном направлении.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(255, 150, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Огонь.<br>
+									Сжигает ближайшую траву. Не находив траву поблизости некоторое время, угасает.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(0, 50, 255);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Вода.<br>
+									Течёт в рандомном направлении по пустоте. При контакте с огнём тушит огонь, а сама испаряется.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(255, 0, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лава с высокой плотностью.<br>
+									Течёт в рандомном направлении по пустоте, но кажый следующий блок имеет более низкую плотность. Сжигает траву поблизости. При контакте с водой теряет плотнось, а вода испаряется.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(255, 50, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лава с средней плотностью.<br>
+									Течёт в рандомном направлении по пустоте, но кажый следующий блок имеет более низкую плотность. Сжигает траву поблизости. При контакте с водой теряет плотнось, а вода испаряется.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(255, 100, 0);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лава с низкой плотностью.<br>
+									Не может распространяться дальше. Сжигает траву поблизости. При контакте с водой испаряются, как вода, так и лава.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(0, 200, 255);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лёд с высокой плотностью.<br>
+									Замораживает пустоту, но кажый следующий блок имеет более низкую плотность. При контакте с огнём тушит огонь и теряет плотность. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(0, 150, 255);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лёд с средней плотностью.<br>
+									Замораживает пустоту, но кажый следующий блок имеет более низкую плотность. При контакте с огнём тушит огонь и теряет плотность. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									background-color: rgb(0, 100, 255);">
+								</div>
+							</td>
+							<td>
+								<p class="text">
+									Лёд с низкой плотностью.<br>
+									Не может замораживать дальше. При контакте с огнём тушит огонь и превращается в воду. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
+								</p>
+							</td>
+						</tr>
+						<!-------------------- Line --------------------->
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<!-------------------- Development --------------------->
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Разработка <br>
+								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p class="text">
+									Создатель: Арман <br>
+									Версия: 0.9.7 <br>
+									Дата создания: 06.07.2020 <br>
+									Дата последнего обновления: 17.07.2020 <br>
+								</p>
+							</td>
+						</tr>
+						<!-------------------- Line --------------------->
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<!-------------------- Contact --------------------->
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Связь
+								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p class="text">
+									ВКонтакте: <a href="https://vk.com/eccs0103" target="blank" class="hyperlink hyperlink_light">vk.com/eccs0103</a><br>
+									Stack Overflow: <a href="https://ru.stackoverflow.com/users/324730/%d0%90%d1%80%d0%bc%d0%b0%d0%bd?tab=profile" target="blank" class="hyperlink hyperlink_light">ru.stackoverflow.com/users/324730</a><br>
+									GitHub: <a href="https://github.com/Eccs0103" target="blank" class="hyperlink hyperlink_light">github.com/Eccs0103</a><br>
+									Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="hyperlink hyperlink_light">ec.cs.0103@gmail.com</a><br>
+								</p>
+							</td>
+						</tr>
+						<!-------------------- Line --------------------->
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<!-------------------- Resources --------------------->
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Ресурсы
+								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p class="text">
+									Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank" class="hyperlink hyperlink_light">Material</a><br>
+									Библиотека рисования: <a href="https://p5js.org/" target="blank" class="hyperlink hyperlink_light">P5</a><br>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</page>
+		</container>
+	</body>
+	<!-------------------- Scripts --------------------->
+	<div style="
+	display: none;">
+		<script type="text/javascript" src="../scripts/p5.js"></script>
+		<script type="text/javascript" src="../scripts/functions.js"></script>
+		<script type="text/javascript" src="../scripts/class.js"></script>
+		<script type="text/javascript" src="../scripts/data.js"></script>
+		<script type="text/javascript" src="../scripts/script.js"></script>
+	</div>
+</html>
+<!--------------------  --------------------->
