@@ -1,5 +1,11 @@
 .title
 {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.subtitle
+{
 	font-size: 18px;
 	font-weight: bolder;
 }
