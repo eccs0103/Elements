@@ -15,18 +15,34 @@
 	font-size: 14px;
 }
 
-.bordered, .unbordered
-{
-	border: 1px solid;
-	border-radius: 5px;
-}
-
 .block, .selected
 {
 	width: fit-content;
 	height: fit-content;
 	padding: 5px;
 	display: flex;
+}
+
+/* .toggle
+{
+	border-radius: 50vh !important;
+	position: relative;
+}
+
+.knob
+{
+	width: 100% !important;
+	height: 100% !important;
+	border-radius: 50% !important;
+	position: absolute;
+	left: calc(0px - 50%);
+	top: 50%
+} */
+
+.bordered, .unbordered
+{
+	border: 1px solid;
+	border-radius: 5px;
 }
 
 .center
@@ -36,8 +52,9 @@
 
 .interactive
 {
-	margin: 0px 2.5px;
+	margin: auto 2.5px;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 table

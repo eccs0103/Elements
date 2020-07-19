@@ -10,11 +10,33 @@ height: 100%;">
 		<link rel="stylesheet" href="../styles/default.css">
 		<link rel="stylesheet" href="../styles/light.css">
 		<link rel="stylesheet" href="../styles/dark.css">
+		<link rel="stylesheet" href="../styles/demo.css">
 	</head>
 	<!-------------------- Body --------------------->
 	<body class="background" style="
 	width: 100%;
 	height: 100%;">
+		<!-------------------- Loading --------------------->
+		<loading class="block" id="loading_block" style="
+		width: 100%;
+		height: 100%;
+		display: flex;
+		position: absolute;
+		z-index: 1;">
+			<div style="
+			margin: auto;
+			display: flexbox;">
+				<img src="../resources/wap.png" title="Лого"  style="
+				width: 300px;
+				height: 300px;
+				margin: auto;">
+				<h2 style="
+				margin: 30px auto 0px auto;
+				text-align: center;">
+					Загрузка
+				</h2>
+			</div>
+		</loading>
 		<!-------------------- Header --------------------->
 		<header class="bordered block" style="
 		width: 100%;
@@ -236,7 +258,7 @@ height: 100%;">
 								</p>
 							</td>
 							<td>
-								<div class="bordered block interactive background" id="div_theme">
+								<div class="unbordered block interactive" id="div_theme">
 									<p class="text" id="p_theme">Включить</p>
 								</div>
 							</td>
@@ -244,29 +266,25 @@ height: 100%;">
 						<!-- <tr>
 							<td colspan="2">
 								<h2 class="title">
-									Доска
+									Заголовок
 								</h2>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<p class="text">
-									Ширина доски
+									Текст
 								</p>
 							</td>
 							<td>
-								<input type="number" min="5" max="50" class="bordered block interactive background input" id="input_number_widthCells" style="
-								width: 100px;">
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<p class="text">
-									Высота доски
-								</p>
-							</td>
-							<td>
-								<input type="number" min="5" max="50" class="bordered block interactive background input" id="input_number_heightCells" style="
+								<div class="bordered container interactive background toggle" style="
+								width: 30px;
+								height: 15px;">
+									<div class="bordered block knob" style="
+									width: 22.5px;
+									height: 22.5px;"></div>
+								</div>
+								<input type="number" min="5" max="50" class="bordered block interactive background input" id="test" style="
 								width: 100px;">
 							</td>
 						</tr> -->
@@ -488,10 +506,10 @@ height: 100%;">
 						<tr>
 							<td colspan="2">
 								<p class="text">
-									ВКонтакте: <a href="https://vk.com/eccs0103" target="blank" class="hyperlink hyperlink_light">vk.com/eccs0103</a><br>
-									Stack Overflow: <a href="https://ru.stackoverflow.com/users/324730/%d0%90%d1%80%d0%bc%d0%b0%d0%bd?tab=profile" target="blank" class="hyperlink hyperlink_light">ru.stackoverflow.com/users/324730</a><br>
-									GitHub: <a href="https://github.com/Eccs0103" target="blank" class="hyperlink hyperlink_light">github.com/Eccs0103</a><br>
-									Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="hyperlink hyperlink_light">ec.cs.0103@gmail.com</a><br>
+									ВКонтакте: <a href="https://vk.com/eccs0103" target="blank" class="hyperlink">vk.com/eccs0103</a><br>
+									Stack Overflow: <a href="https://ru.stackoverflow.com/users/324730/%d0%90%d1%80%d0%bc%d0%b0%d0%bd?tab=profile" target="blank" class="hyperlink">ru.stackoverflow.com/users/324730</a><br>
+									GitHub: <a href="https://github.com/Eccs0103" target="blank" class="hyperlink">github.com/Eccs0103</a><br>
+									Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="hyperlink">ec.cs.0103@gmail.com</a><br>
 								</p>
 							</td>
 						</tr>
@@ -512,8 +530,8 @@ height: 100%;">
 						<tr>
 							<td colspan="2">
 								<p class="text">
-									Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank" class="hyperlink hyperlink_light">Material</a><br>
-									Библиотека рисования: <a href="https://p5js.org/" target="blank" class="hyperlink hyperlink_light">P5</a><br>
+									Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank" class="hyperlink ">Material</a><br>
+									Библиотека рисования: <a href="https://p5js.org/" target="blank" class="hyperlink ">P5</a><br>
 								</p>
 							</td>
 						</tr>
@@ -527,9 +545,10 @@ height: 100%;">
 	display: none;">
 		<script type="text/javascript" src="../scripts/p5.js"></script>
 		<script type="text/javascript" src="../scripts/functions.js"></script>
-		<script type="text/javascript" src="../scripts/class.js"></script>
+		<script type="text/javascript" src="../scripts/classes.js"></script>
 		<script type="text/javascript" src="../scripts/data.js"></script>
-		<script type="text/javascript" src="../scripts/script.js"></script>
+		<script type="text/javascript" src="../scripts/initialize.js"></script>
+		<script type="text/javascript" src="../scripts/events.js"></script>
 	</div>
 </html>
 <!--------------------  --------------------->

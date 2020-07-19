@@ -40,7 +40,7 @@
 
 .dark .resource
 {
-	filter: brightness(1);
+	filter: invert(0);
 }
 
 .dark .interactive .text
@@ -50,7 +50,7 @@
 
 .dark .interactive:hover
 {
-	filter: brightness(1.25)
+	filter: invert(0.1);
 }
 
 .dark .input

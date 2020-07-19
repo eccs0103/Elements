@@ -1,6 +1,14 @@
 //#region Interface
 class Interface
 {
+	//#region Loading
+	static #loadingTime = 0.5;
+	static get loadingTime()
+	{
+		return this.#loadingTime;
+	} 
+	//#endregion
+
 	//#region Theme
 	static #darkTheme = false;
 	static get darkTheme()
@@ -14,11 +22,15 @@ class Interface
 			if(value)
 			{
 				document.documentElement.classList.replace("light", "dark");
+				document.getElementById("div_theme").classList.replace("block", "selected");
+				document.getElementById("div_theme").classList.replace("unbordered", "bordered");
 				document.getElementById("p_theme").textContent = "Выключить";
 			}
 			else if(!value)
 			{
 				document.documentElement.classList.replace("dark", "light");
+				document.getElementById("div_theme").classList.replace("selected", "block");
+				document.getElementById("div_theme").classList.replace("bordered", "unbordered");
 				document.getElementById("p_theme").textContent = "Включить";
 			}
 			this.#darkTheme = value;

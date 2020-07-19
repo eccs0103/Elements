@@ -40,7 +40,7 @@
 
 .light .resource
 {
-	filter: brightness(0);
+	filter: invert(1);
 }
 
 .light .interactive .text
@@ -50,7 +50,7 @@
 
 .light .interactive:hover
 {
-	filter: brightness(0.9);
+	filter: invert(0.1);
 }
 
 .light .input
