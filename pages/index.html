@@ -10,12 +10,12 @@ height: 100%;">
 		<link rel="stylesheet" href="../styles/default.css">
 		<link rel="stylesheet" href="../styles/light.css">
 		<link rel="stylesheet" href="../styles/dark.css">
-		<link rel="stylesheet" href="../styles/demo.css">
 	</head>
 	<!-------------------- Body --------------------->
 	<body class="background" style="
 	width: 100%;
-	height: 100%;">
+	height: 100%;
+	overflow: hidden;">
 		<!-------------------- Loading --------------------->
 		<loading class="block" id="loading_block" style="
 		width: 100%;
@@ -70,15 +70,14 @@ height: 100%;">
 			<page id="page_home" style="
 			display: flexbox;">
 				<!-------------------- Canvas --------------------->
-				<div class="bordered block center" style="
-				display: block;">
-					<!-------------------- Game --------------------->
+				<div class="bordered block" style="
+				display: block;
+				margin: 10px auto;">
 					<div class="block" id="div_game">
 						
 					</div>
-					<!-------------------- Menu --------------------->
 					<div class="block">
-						<div class="block unbordered interactive" id="div_play">
+						<div class="block unbordered interactive" id="div_execute">
 							<img src="../resources/play.png" title="Старт" class="resource" id="img_play" style="
 							width: 30px;
 							height: 30px;">
@@ -88,7 +87,7 @@ height: 100%;">
 							width: 30px;
 							height: 30px;">
 						</div>
-						<div class="selected bordered interactive" id="div_statistics">
+						<div class="selected bordered interactive" id="div_stats">
 							<img src="../resources/assessment.png" title="Статистика" class="resource" style="
 							width: 30px;
 							height: 30px;">
@@ -96,11 +95,11 @@ height: 100%;">
 					</div>
 				</div>
 				<!-------------------- Results --------------------->
-				<div class="bordered block" id="div_statistics_table" style="
+				<div class="bordered block" id="div_stats_table" style="
 				border-top-right-radius: 0px;
 				border-bottom-right-radius: 0px;
 				position: absolute;
-				top: 70px;
+				margin-top: 10px;
 				right: 0px;;">
 					<table style="
 					padding: 5px;">
@@ -241,7 +240,8 @@ height: 100%;">
 			<!-------------------- Settings --------------------->
 			<page id="page_settings" style="
 			display: none;">
-				<div class="bordered block center">
+				<div class="bordered block" style="
+				margin: 10px auto;">
 					<table>
 						<!-------------------- Interface --------------------->
 						<tr>
@@ -263,31 +263,36 @@ height: 100%;">
 								</div>
 							</td>
 						</tr>
-						<!-- <tr>
+						<tr>
+							<td>
+								<p class="text">
+									Границы пикселей
+								</p>
+							</td>
+							<td>
+								<div class="bordered selected interactive" id="div_borders">
+									<p class="text" id="p_borders">Выключить</p>
+								</div>
+							</td>
+						</tr>
+						<!-------------------- Game --------------------->
+						<tr>
 							<td colspan="2">
 								<h2 class="subtitle">
-									Заголовок
+									Игра
 								</h2>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<p class="text">
-									Текст
+									Ширина и высота
 								</p>
 							</td>
 							<td>
-								<div class="bordered container interactive background toggle" style="
-								width: 30px;
-								height: 15px;">
-									<div class="bordered block knob" style="
-									width: 22.5px;
-									height: 22.5px;"></div>
-								</div>
-								<input type="number" min="5" max="50" class="bordered block interactive background input" id="test" style="
-								width: 100px;">
+								<input type="number" class="bordered block background interactive input" id="input_size">
 							</td>
-						</tr> -->
+						</tr>
 					</table>
 				</div>
 			</page>
@@ -295,7 +300,8 @@ height: 100%;">
 			<page id="page_information" style="
 			display: none;">
 				<div class="bordered block center" style="
-				max-width: 600px;">
+				max-width: 600px;
+				margin: 10px auto;">
 					<table>
 						<!-------------------- Reference --------------------->
 						<tr>
@@ -471,30 +477,6 @@ height: 100%;">
 								<hr>
 							</td>
 						</tr>
-						<!-------------------- Development --------------------->
-						<tr>
-							<td colspan="2">
-								<h2 class="subtitle">
-									Разработка <br>
-								</h2>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<p class="text">
-									Создатель: Арман <br>
-									Версия: 0.9.7 <br>
-									Дата создания: 06.07.2020 <br>
-									Дата последнего обновления: 17.07.2020 <br>
-								</p>
-							</td>
-						</tr>
-						<!-------------------- Line --------------------->
-						<tr>
-							<td colspan="2">
-								<hr>
-							</td>
-						</tr>
 						<!-------------------- Contact --------------------->
 						<tr>
 							<td colspan="2">
@@ -506,8 +488,6 @@ height: 100%;">
 						<tr>
 							<td colspan="2">
 								<p class="text">
-									ВКонтакте: <a href="https://vk.com/eccs0103" target="blank" class="hyperlink">vk.com/eccs0103</a><br>
-									Stack Overflow: <a href="https://ru.stackoverflow.com/users/324730/%d0%90%d1%80%d0%bc%d0%b0%d0%bd?tab=profile" target="blank" class="hyperlink">ru.stackoverflow.com/users/324730</a><br>
 									GitHub: <a href="https://github.com/Eccs0103" target="blank" class="hyperlink">github.com/Eccs0103</a><br>
 									Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="hyperlink">ec.cs.0103@gmail.com</a><br>
 								</p>

@@ -1,22 +1,43 @@
+// document.addEventListener
+// ("DOMContentLoaded", 
+// 	function(event)
+// 	{
+		
+// 	}
+// );
+
 //#region Loading
 setTimeout
 (
 	function()
 	{
 		document.getElementById("loading_block").style.display = "none";
+		window.scrollTo(0, 0);
+		document.body.style.overflow = "auto";
 	}, 
 	Interface.loadingTime * 1000
 );
+//#endregion
+
+//#region Navigation
+Pages.id = Files.load("Pages.id", 0);
 //#endregion
 
 //#region P5
 function setup() 
 {
 	frameRate(60);
-	let canvas = createCanvas(Board.widthPixels, Board.heightPixels);
+	let canvas = createCanvas(Board.sizePixels, Board.sizePixels);
 	canvas.parent("div_game");
 	background(255, 255, 255);
-	stroke(150, 150, 150);
+	if(Interface.borders)
+	{
+		stroke(150, 150, 150);
+	}
+	else
+	{
+		noStroke();
+	}
 
 	Board.createMatrix();
 	Board.generateBoard();
@@ -25,27 +46,29 @@ function setup()
 
 function draw() 
 {
-	if(Game.play)
+	if(Game.execute)
 	{
 		Board.drawElements();
 	}
 
-	if (Game.showStatistics)
+	if (Game.stats)
 	{
 		Board.updateStatistics();
 	}
 }
 //#endregion
 
-//#region Navigation
-Pages.id = 0;
-//#endregion
-
 //#region Game
 Game.play = false;
-Game.showResults = true;
+Game.stats = Files.load("Game.stats", true);
 //#endregion
 
 //#region Settings
-Interface.darkTheme = false;
+Interface.darkTheme = Files.load("Interface.darkTheme", false);
+//Interface.borders = Files.load("Interface.borders", true);
+
+let boardSize = Files.load("Board.size", 25);
+Board.widthCells = boardSize;
+Board.heightCells = boardSize;
+document.getElementById("input_size").value = boardSize;
 //#endregion

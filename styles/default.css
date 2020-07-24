@@ -1,3 +1,4 @@
+/*------------------------- Texts -------------------------*/
 .title
 {
 	font-size: 30px;
@@ -21,7 +22,8 @@
 	font-size: 14px;
 }
 
-.block, .selected
+/*------------------------- Blocks -------------------------*/
+.block, .selected, .denied
 {
 	width: fit-content;
 	height: fit-content;
@@ -29,46 +31,16 @@
 	display: flex;
 }
 
-/* .toggle
-{
-	border-radius: 50vh !important;
-	position: relative;
-}
-
-.knob
-{
-	width: 100% !important;
-	height: 100% !important;
-	border-radius: 50% !important;
-	position: absolute;
-	left: calc(0px - 50%);
-	top: 50%
-} */
-
 .bordered, .unbordered
 {
 	border: 1px solid;
 	border-radius: 5px;
 }
 
-.center
-{
-	margin: 10px auto;
-}
-
+/*------------------------- Interaction -------------------------*/
 .interactive
 {
 	margin: auto 2.5px;
 	font-weight: bold;
 	cursor: pointer;
-}
-
-table
-{
-	border: none;
-}
-
-table td
-{
-	padding: 3px;
 }

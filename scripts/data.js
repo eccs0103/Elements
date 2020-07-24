@@ -37,7 +37,41 @@ class Interface
 		}
 		else
 		{
-			throw new TypeError();
+			throw new TypeError(typeof(value));
+		}
+	}
+	//#endregion
+
+	//#region Borders
+	static #borders = true;
+	static get borders()
+	{
+		return this.#borders;
+	}
+	static set borders(value)
+	{
+		if(typeof(value) == "boolean")
+		{
+			if(value)
+			{
+				stroke(150, 150, 150);
+				document.getElementById("div_borders").classList.replace("block", "selected");
+				document.getElementById("div_borders").classList.replace("unbordered", "bordered");
+				document.getElementById("p_borders").textContent = "Выключить";
+			}
+			else if(!value)
+			{
+				noStroke();
+				document.getElementById("div_borders").classList.replace("selected", "block");
+				document.getElementById("div_borders").classList.replace("bordered", "unbordered");
+				document.getElementById("p_borders").textContent = "Включить";
+			}
+			Board.drawElements();
+			this.#borders = value;
+		}
+		else
+		{
+			throw new TypeError(typeof(value));
 		}
 	}
 	//#endregion
@@ -85,7 +119,7 @@ class Pages
 		}
 		else
 		{
-			throw new RangeError();
+			throw new RangeError(value);
 		}
 	}
 	//#endregion
@@ -96,12 +130,12 @@ class Pages
 class Game
 {
 	//#region  Play
-	static #playingStatus = false;
-	static get play()
+	static #execute = false;
+	static get execute()
 	{
-		return this.#playingStatus;
+		return this.#execute;
 	}
-	static set play(value)
+	static set execute(value)
 	{
 		if(typeof(value) == "boolean")
 		{
@@ -115,42 +149,42 @@ class Game
 				document.getElementById("img_play").src = "../resources/play.png";
 				document.getElementById("img_play").alt = "Старт";
 			}
-			this.#playingStatus = value;
+			this.#execute = value;
 		}
 		else
 		{
-			throw new TypeError();
+			throw new TypeError(typeof(value));
 		}
 	}
 	//#endregion
 
-	//#region Statistics
-	static #showStatistics = true;
-	static get showStatistics()
+	//#region Stats
+	static #stats = true;
+	static get stats()
 	{
-		return this.#showStatistics;
+		return this.#stats;
 	}	
-	static set showStatistics(value)
+	static set stats(value)
 	{
 		if(typeof(value) == "boolean")
 		{
 			if(value)
 			{
-				document.getElementById("div_statistics_table").style.display = "block";
-				document.getElementById("div_statistics").classList.replace("block", "selected");
-				document.getElementById("div_statistics").classList.replace("unbordered", "bordered");
+				document.getElementById("div_stats_table").style.display = "block";
+				document.getElementById("div_stats").classList.replace("block", "selected");
+				document.getElementById("div_stats").classList.replace("unbordered", "bordered");
 			}
 			else if(!value)
 			{
-				document.getElementById("div_statistics_table").style.display = "none";
-				document.getElementById("div_statistics").classList.replace("selected", "block");
-				document.getElementById("div_statistics").classList.replace("bordered", "unbordered");
+				document.getElementById("div_stats_table").style.display = "none";
+				document.getElementById("div_stats").classList.replace("selected", "block");
+				document.getElementById("div_stats").classList.replace("bordered", "unbordered");
 			}
-			this.#showStatistics = value;
+			this.#stats = value;
 		}
 		else
 		{
-			throw new TypeError();
+			throw new TypeError(typeof(value));
 		}
 	}
 	//#endregion
@@ -161,18 +195,64 @@ class Game
 class Board
 {
 	//#region Size
-	static widthCells = 25;
-	static heightCells = 25;
+	static #minWidthCells = 10;
+	static #maxWidthCells = 50;
+	static #widthCells = 25;
+	static get widthCells()
+	{
+		return this.#widthCells;
+	}
+	static set widthCells(value)
+	{
+		if(typeof(value) == "number")
+		{
+			if(value < this.#minWidthCells)
+			{
+				value = this.#minWidthCells;
+			}
+			else if(value > this.#maxWidthCells)
+			{
+				value = this.#maxWidthCells;
+			}
+			this.#widthCells = value;
+		}
+		else
+		{
+			throw new TypeError(typeof(value));
+		}
+	}
 
-	static widthPixels = Math.min
+	static #minHeightCells = 10;
+	static #maxHeightCells = 50;
+	static #heightCells = 25;
+	static get heightCells()
+	{
+		return this.#heightCells;
+	}
+	static set heightCells(value)
+	{
+		if(typeof(value) == "number")
+		{
+			if(value < this.#minHeightCells)
+			{
+				value = this.#minHeightCells;
+			}
+			else if(value > this.#maxHeightCells)
+			{
+				value = this.#maxHeightCells;
+			}
+			this.#heightCells = value;
+		}
+		else
+		{
+			throw new TypeError(typeof(value));
+		}
+	}
+
+	static sizePixels = Math.min
 	(
 		document.documentElement.clientWidth - 70,
-		document.documentElement.clientHeight - 165
-	); ;
-	static heightPixels = Math.min
-	(
-		document.documentElement.clientWidth - 70,
-		document.documentElement.clientHeight - 165
+		document.documentElement.clientHeight - 150
 	);
 	//#endregion
 
@@ -202,7 +282,7 @@ class Board
 		{
 			for (let x = 0; x < this.widthCells; x++) 
 			{
-				let randomElement = randomNumber(0, this.fullC)
+				let randomElement = Random.number(0, this.fullC)
 				if (randomElement >= 0 && randomElement < this.voidC)
 				{
 					this.matrix[y][x] = new Void(x, y);
@@ -233,8 +313,8 @@ class Board
 
 	static drawElements()
 	{
-		let cellWidth = Board.widthPixels / Board.widthCells;
-		let cellHeight = Board.heightPixels / Board.heightCells;
+		let cellWidth = Board.sizePixels / Board.widthCells;
+		let cellHeight = Board.sizePixels / Board.heightCells;
 
 		for (let y = 0; y < Board.heightCells; y++) 
 		{

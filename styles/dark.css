@@ -1,3 +1,4 @@
+/*------------------------- Texts -------------------------*/
 .dark .subtitle, .dark .title
 {
 	color: rgb(200, 200, 200);
@@ -13,6 +14,7 @@
 	color: rgb(0, 128, 255);
 }
 
+/*------------------------- Blocks -------------------------*/
 .dark .bordered
 {
 	border-color: rgb(100, 100, 100);
@@ -20,7 +22,7 @@
 
 .dark .unbordered
 {
-	border-color: rgb(100, 100, 100, 0);
+	border-color: transparent;
 }
 
 .dark .block
@@ -28,21 +30,28 @@
 	background-color: rgb(25, 25, 25);
 }
 
-.dark .selected
-{
-	background-color: rgb(50, 50, 50);
-}
-
 .dark .background
 {
 	background-color: rgb(50, 50, 50);
 }
 
+.dark .selected
+{
+	background-color: rgb(50, 50, 50);
+}
+
+.dark .denied
+{
+	background-color: rgb(255, 100, 100);
+	border-color: rgb(255, 200, 200);
+}
+/*------------------------- Resources -------------------------*/
 .dark .resource
 {
 	filter: invert(0);
 }
 
+/*------------------------- Interaction -------------------------*/
 .dark .interactive .text
 {
 	color: rgb(200, 200, 200);

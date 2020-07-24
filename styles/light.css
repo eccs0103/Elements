@@ -1,3 +1,4 @@
+/*------------------------- Texts -------------------------*/
 .light .subtitle, .light .title
 {
 	color: rgb(50, 50, 50);
@@ -13,6 +14,7 @@
 	color: rgb(0, 128, 255);
 }
 
+/*------------------------- Blocks -------------------------*/
 .light .bordered
 {
 	border-color: rgb(200, 200, 200);
@@ -20,7 +22,7 @@
 
 .light .unbordered
 {
-	border-color: rgba(200, 200, 200, 0);
+	border-color: transparent;
 }
 
 .light .block
@@ -28,21 +30,29 @@
 	background-color: rgb(255, 255, 255);
 }
 
-.light .selected
-{
-	background-color: rgb(225, 225, 225);
-}
-
 .light .background
 {
 	background-color: rgb(225, 225, 225);
 }
 
+.light .selected
+{
+	background-color: rgb(225, 225, 225);
+}
+
+.light .denied
+{
+	background-color: rgb(255, 200, 200);
+	border-color: rgb(255, 100, 100);
+}
+
+/*------------------------- Resources -------------------------*/
 .light .resource
 {
 	filter: invert(1);
 }
 
+/*------------------------- Interaction -------------------------*/
 .light .interactive .text
 {
 	color: rgb(50, 50, 50);
@@ -56,5 +66,4 @@
 .light .input
 {
 	caret-color: rgb(50, 50, 50);
-	color: rgb(50, 50, 50);
 }
