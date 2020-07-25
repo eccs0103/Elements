@@ -80,23 +80,31 @@ document.getElementById("input_size").addEventListener
 	function(event)
 	{
 		event.target.value = event.target.value.replace(/[^0-9]/g, "");
-		Board.widthCells = parseInt(event.target.value);
-		Board.heightCells = parseInt(event.target.value);
-		if(Board.widthCells !== parseInt(event.target.value))
-		{
-			event.target.classList.replace("block", "denied");
-		}
-		else
+
+		if
+		(
+			event.target.value >= Board.minSizeCells && 
+			event.target.value <= Board.maxSizeCells
+		)
 		{
 			if(event.target.classList.contains("denied"))
 			{
 				event.target.classList.replace("denied", "block");
 			}
+			Board.sizeCells = event.target.value;
+			Files.save("Board.size", event.target.value);
+
+			Game.execute = false;
 			Board.createMatrix();
 			Board.generateBoard();
 			Board.drawElements();
-			Game.execute = false;
-			Files.save("Board.size", Board.widthCells);
+		}
+		else
+		{
+			if(event.target.classList.contains("block"))
+			{
+				event.target.classList.replace("block", "denied");
+			}
 		}
 	}
 );

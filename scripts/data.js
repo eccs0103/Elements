@@ -195,57 +195,38 @@ class Game
 class Board
 {
 	//#region Size
-	static #minWidthCells = 10;
-	static #maxWidthCells = 50;
 	static #widthCells = 25;
 	static get widthCells()
 	{
 		return this.#widthCells;
 	}
-	static set widthCells(value)
-	{
-		if(typeof(value) == "number")
-		{
-			if(value < this.#minWidthCells)
-			{
-				value = this.#minWidthCells;
-			}
-			else if(value > this.#maxWidthCells)
-			{
-				value = this.#maxWidthCells;
-			}
-			this.#widthCells = value;
-		}
-		else
-		{
-			throw new TypeError(typeof(value));
-		}
-	}
 
-	static #minHeightCells = 10;
-	static #maxHeightCells = 50;
 	static #heightCells = 25;
 	static get heightCells()
 	{
 		return this.#heightCells;
 	}
-	static set heightCells(value)
+
+	static minSizeCells = 10;
+	static maxSizeCells = 50;
+	static set sizeCells(value)
 	{
-		if(typeof(value) == "number")
+		let number = parseInt(value);
+		if(typeof(number) == "number")
 		{
-			if(value < this.#minHeightCells)
+			if(this.minSizeCells <= number && number <= this.maxSizeCells)
 			{
-				value = this.#minHeightCells;
+				this.#widthCells = number;
+				this.#heightCells = number;
 			}
-			else if(value > this.#maxHeightCells)
+			else
 			{
-				value = this.#maxHeightCells;
+				throw new RangeError(number);
 			}
-			this.#heightCells = value;
 		}
 		else
 		{
-			throw new TypeError(typeof(value));
+			throw new TypeError(number);
 		}
 	}
 

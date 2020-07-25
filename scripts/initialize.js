@@ -1,21 +1,21 @@
-// document.addEventListener
-// ("DOMContentLoaded", 
-// 	function(event)
-// 	{
-		
-// 	}
-// );
-
 //#region Loading
-setTimeout
-(
-	function()
+document.addEventListener
+("DOMContentLoaded", 
+	function(event)
 	{
-		document.getElementById("loading_block").style.display = "none";
-		window.scrollTo(0, 0);
-		document.body.style.overflow = "auto";
-	}, 
-	Interface.loadingTime * 1000
+		setTimeout
+		(
+			function()
+			{
+				document.getElementById("loading_block").style.visibility = "hidden";
+				document.getElementById("loading_block").style.transform = "translateY(-100%)";
+				document.getElementById("loading_block").style.transition = "visibility 0s " + Interface.loadingTime + "s, transform " + Interface.loadingTime + "s";
+				document.body.style.overflow = "auto";
+				
+			}, 
+			Interface.loadingTime * 1000
+		);
+	}
 );
 //#endregion
 
@@ -61,6 +61,13 @@ function draw()
 //#region Game
 Game.play = false;
 Game.stats = Files.load("Game.stats", true);
+
+Board.voidC = 90;
+Board.grassC = 4;
+Board.fireC = 2;
+Board.waterC = 2;
+Board.lavaC = 1;
+Board.iceC = 1;
 //#endregion
 
 //#region Settings
@@ -68,7 +75,6 @@ Interface.darkTheme = Files.load("Interface.darkTheme", false);
 //Interface.borders = Files.load("Interface.borders", true);
 
 let boardSize = Files.load("Board.size", 25);
-Board.widthCells = boardSize;
-Board.heightCells = boardSize;
+Board.sizeCells = boardSize;
 document.getElementById("input_size").value = boardSize;
 //#endregion
