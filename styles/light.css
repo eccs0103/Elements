@@ -66,4 +66,10 @@
 .light .input
 {
 	caret-color: rgb(50, 50, 50);
+	color: rgb(50, 50, 50);
+}
+
+.light body
+{
+	scrollbar-color: light;
 }

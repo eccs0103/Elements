@@ -3,8 +3,8 @@ document.getElementById("div_home").addEventListener
 ("click", 
 	function(event)
 	{
-		Pages.id = 0;
-		Files.save("Pages.id", Pages.id);
+		Navigate.id = 0;
+		Files.save("Navigate.id", Navigate.id);
 	}
 );
 
@@ -12,8 +12,8 @@ document.getElementById("div_settings").addEventListener
 ("click", 
 	function(event)
 	{
-		Pages.id = 1;
-		Files.save("Pages.id", Pages.id);
+		Navigate.id = 1;
+		Files.save("Navigate.id", Navigate.id);
 	}
 );
 
@@ -21,18 +21,18 @@ document.getElementById("div_information").addEventListener
 ("click", 
 	function(event)
 	{
-		Pages.id = 2;
-		Files.save("Pages.id", Pages.id);
+		Navigate.id = 2;
+		Files.save("Navigate.id", Navigate.id);
 	}
 );
 //#endregion
 
-//#region Game
+//#region Program
 document.getElementById("div_execute").addEventListener
 ("click", 
 	function()
 	{
-		Game.execute = !Game.execute;
+		Program.execute = !Program.execute;
 	}
 );
 
@@ -40,9 +40,9 @@ document.getElementById("div_reset").addEventListener
 ("click", 
 	function(event)
 	{
-		Board.createMatrix();
-		Board.generateBoard();
-		Board.drawElements();
+		Program.createMatrix();
+		Program.generateBoard();
+		Program.drawElements();
 	}
 );
 
@@ -50,8 +50,8 @@ document.getElementById("div_stats").addEventListener
 ("click", 
 	function(event)
 	{
-		Game.stats = !Game.stats;
-		Files.save("Game.stats", Game.stats);
+		Program.stats = !Program.stats;
+		Files.save("Program.stats", Program.stats);
 	}
 );
 //#endregion
@@ -66,15 +66,6 @@ document.getElementById("div_theme").addEventListener
 	}
 );
 
-document.getElementById("div_borders").addEventListener
-("click",
-	function(event)
-	{
-		Interface.borders = !Interface.borders;
-		//Files.save("Interface.borders", Interface.borders);
-	}
-);
-
 document.getElementById("input_size").addEventListener
 ("input",
 	function(event)
@@ -83,21 +74,197 @@ document.getElementById("input_size").addEventListener
 
 		if
 		(
-			event.target.value >= Board.minSizeCells && 
-			event.target.value <= Board.maxSizeCells
+			event.target.value >= Program.minSizeCells && 
+			event.target.value <= Program.maxSizeCells
 		)
 		{
 			if(event.target.classList.contains("denied"))
 			{
 				event.target.classList.replace("denied", "block");
 			}
-			Board.sizeCells = event.target.value;
-			Files.save("Board.size", event.target.value);
+			Program.sizeCells = event.target.value;
+			Files.save("Program.size", event.target.value);
 
-			Game.execute = false;
-			Board.createMatrix();
-			Board.generateBoard();
-			Board.drawElements();
+			Program.execute = false;
+			Program.createMatrix();
+			Program.generateBoard();
+			Program.drawElements();
+		}
+		else
+		{
+			if(event.target.classList.contains("block"))
+			{
+				event.target.classList.replace("block", "denied");
+			}
+		}
+	}
+);
+
+document.getElementById("input_grassC").addEventListener
+("input",
+	function(event)
+	{
+		event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		let number = parseInt(event.target.value);
+
+		if
+		(
+			number >= 0 && 
+			number + Program.fireC + Program.waterC + Program.lavaC + Program.iceC <= Program.fullC
+		)
+		{
+			if(event.target.classList.contains("denied"))
+			{
+				event.target.classList.replace("denied", "block");
+			}
+			Program.grassC = number;
+			Files.save("Program.grassC", number);
+			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
+			Files.save("Program.voidC", Program.voidC);
+
+			Program.execute = false;
+			Program.generateBoard();
+			Program.drawElements();
+		}
+		else
+		{
+			if(event.target.classList.contains("block"))
+			{
+				event.target.classList.replace("block", "denied");
+			}
+		}
+	}
+);
+document.getElementById("input_fireC").addEventListener
+("input",
+	function(event)
+	{
+		event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		let number = parseInt(event.target.value);
+
+		if
+		(
+			number >= 0 && 
+			number + Program.grassC + Program.waterC + Program.lavaC + Program.iceC <= Program.fullC
+		)
+		{
+			if(event.target.classList.contains("denied"))
+			{
+				event.target.classList.replace("denied", "block");
+			}
+			Program.fireC = number;
+			Files.save("Program.fireC", number);
+			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
+			Files.save("Program.voidC", Program.voidC);
+
+			Program.execute = false;
+			Program.generateBoard();
+			Program.drawElements();
+		}
+		else
+		{
+			if(event.target.classList.contains("block"))
+			{
+				event.target.classList.replace("block", "denied");
+			}
+		}
+	}
+);
+document.getElementById("input_waterC").addEventListener
+("input",
+	function(event)
+	{
+		event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		let number = parseInt(event.target.value);
+
+		if
+		(
+			number >= 0 && 
+			number + Program.grassC + Program.fireC + Program.lavaC + Program.iceC <= Program.fullC
+		)
+		{
+			if(event.target.classList.contains("denied"))
+			{
+				event.target.classList.replace("denied", "block");
+			}
+			Program.waterC = number;
+			Files.save("Program.waterC", number);
+			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
+			Files.save("Program.voidC", Program.voidC);
+
+			Program.execute = false;
+			Program.generateBoard();
+			Program.drawElements();
+		}
+		else
+		{
+			if(event.target.classList.contains("block"))
+			{
+				event.target.classList.replace("block", "denied");
+			}
+		}
+	}
+);
+document.getElementById("input_lavaC").addEventListener
+("input",
+	function(event)
+	{
+		event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		let number = parseInt(event.target.value);
+
+		if
+		(
+			number >= 0 && 
+			number + Program.grassC + Program.fireC + Program.waterC + Program.iceC <= Program.fullC
+		)
+		{
+			if(event.target.classList.contains("denied"))
+			{
+				event.target.classList.replace("denied", "block");
+			}
+			Program.lavaC = number;
+			Files.save("Program.lavaC", number);
+			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
+			Files.save("Program.voidC", Program.voidC);
+
+			Program.execute = false;
+			Program.generateBoard();
+			Program.drawElements();
+		}
+		else
+		{
+			if(event.target.classList.contains("block"))
+			{
+				event.target.classList.replace("block", "denied");
+			}
+		}
+	}
+);
+document.getElementById("input_iceC").addEventListener
+("input",
+	function(event)
+	{
+		event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		let number = parseInt(event.target.value);
+
+		if
+		(
+			number >= 0 && 
+			number + Program.grassC + Program.fireC + Program.waterC + Program.lavaC <= Program.fullC
+		)
+		{
+			if(event.target.classList.contains("denied"))
+			{
+				event.target.classList.replace("denied", "block");
+			}
+			Program.iceC = number;
+			Files.save("Program.iceC", number);
+			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
+			Files.save("Program.voidC", Program.voidC);
+
+			Program.execute = false;
+			Program.generateBoard();
+			Program.drawElements();
 		}
 		else
 		{

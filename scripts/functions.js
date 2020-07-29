@@ -16,7 +16,6 @@ class Files
 	{
 		localStorage.setItem(this.#path + key, value);
 	}
-
 	static load(key, value)
 	{
 		if(localStorage.getItem(this.#path + key) === null)

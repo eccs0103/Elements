@@ -1,8 +1,8 @@
-//#region Loading
 document.addEventListener
 ("DOMContentLoaded", 
 	function(event)
 	{
+		//#region Loading
 		setTimeout
 		(
 			function()
@@ -15,66 +15,59 @@ document.addEventListener
 			}, 
 			Interface.loadingTime * 1000
 		);
+		//#endregion
+
+		//#region Navigation
+		Navigate.id = Files.load("Navigate.id", 0);
+		//#endregion
+
+		//#region Program
+		Program.play = false;
+		Program.stats = Files.load("Program.stats", true);
+		Program.grassC = Files.load("Program.grassC", 4);
+		Program.fireC = Files.load("Program.fireC", 2);
+		Program.waterC = Files.load("Program.waterC", 2);
+		Program.lavaC = Files.load("Program.lavaC", 1);
+		Program.iceC = Files.load("Program.iceC", 1);
+		//#endregion
+
+		//#region Settings
+		Interface.darkTheme = Files.load("Interface.darkTheme", false);
+		Program.sizeCells = Files.load("Program.size", 25);
+		document.getElementById("input_size").value = Files.load("Program.size", 25);
+		document.getElementById("input_grassC").value = Files.load("Program.grassC", 4);
+		document.getElementById("input_fireC").value = Files.load("Program.fireC", 2);
+		document.getElementById("input_waterC").value = Files.load("Program.waterC", 2);
+		document.getElementById("input_lavaC").value = Files.load("Program.lavaC", 1);
+		document.getElementById("input_iceC").value = Files.load("Program.iceC", 1);
+		//#endregion
 	}
 );
-//#endregion
-
-//#region Navigation
-Pages.id = Files.load("Pages.id", 0);
-//#endregion
 
 //#region P5
 function setup() 
 {
 	frameRate(60);
-	let canvas = createCanvas(Board.sizePixels, Board.sizePixels);
-	canvas.parent("div_game");
+	let canvas = createCanvas(Program.sizePixels, Program.sizePixels);
+	canvas.parent("div_program");
 	background(255, 255, 255);
-	if(Interface.borders)
-	{
-		stroke(150, 150, 150);
-	}
-	else
-	{
-		noStroke();
-	}
+	stroke(150, 150, 150);
 
-	Board.createMatrix();
-	Board.generateBoard();
-	Board.drawElements();
+	Program.createMatrix();
+	Program.generateBoard();
+	Program.drawElements();
 }
 
 function draw() 
 {
-	if(Game.execute)
+	if(Program.execute)
 	{
-		Board.drawElements();
+		Program.drawElements();
 	}
 
-	if (Game.stats)
+	if (Program.stats)
 	{
-		Board.updateStatistics();
+		Program.updateStatistics();
 	}
 }
-//#endregion
-
-//#region Game
-Game.play = false;
-Game.stats = Files.load("Game.stats", true);
-
-Board.voidC = 90;
-Board.grassC = 4;
-Board.fireC = 2;
-Board.waterC = 2;
-Board.lavaC = 1;
-Board.iceC = 1;
-//#endregion
-
-//#region Settings
-Interface.darkTheme = Files.load("Interface.darkTheme", false);
-//Interface.borders = Files.load("Interface.borders", true);
-
-let boardSize = Files.load("Board.size", 25);
-Board.sizeCells = boardSize;
-document.getElementById("input_size").value = boardSize;
 //#endregion

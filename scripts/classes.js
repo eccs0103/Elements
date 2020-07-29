@@ -59,9 +59,9 @@ class Grass extends Element
 				let cell = this.directions[index];
 				let x = cell[0];
 				let y = cell[1];
-				if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+				if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 				{
-					if(Board.matrix[y][x] instanceof Void)
+					if(Program.matrix[y][x] instanceof Void)
 					{
 						moves.push(cell);
 					}
@@ -72,7 +72,7 @@ class Grass extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Grass(x, y);
+				Program.matrix[y][x] = new Grass(x, y);
 				this.growCountdown = this.growCountdownMax;
 			}
 		}
@@ -115,9 +115,9 @@ class Fire extends Element
 				let cell = this.directions[index];
 				let x = cell[0];
 				let y = cell[1];
-				if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+				if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 				{
-					if(Board.matrix[y][x] instanceof Grass)
+					if(Program.matrix[y][x] instanceof Grass)
 					{
 						moves.push(cell);
 					}
@@ -128,7 +128,7 @@ class Fire extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Fire(x, y);
+				Program.matrix[y][x] = new Fire(x, y);
 				this.lifespan = this.lifespanMax;
 			}
 			this.burnCountdown = this.burnCountdownMax;
@@ -145,7 +145,7 @@ class Fire extends Element
 		}
 		else
 		{
-			Board.matrix[this.y][this.x] = new Void(this.x, this.y);
+			Program.matrix[this.y][this.x] = new Void(this.x, this.y);
 		}
 	}
 	//#endregion Fade
@@ -190,9 +190,9 @@ class Water extends Element
 				let cell = this.directions[index];
 				let x = cell[0];
 				let y = cell[1];
-				if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+				if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 				{
-					if(Board.matrix[y][x] instanceof Void)
+					if(Program.matrix[y][x] instanceof Void)
 					{
 						moves.push(cell);
 					}
@@ -203,7 +203,7 @@ class Water extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Water(x, y);
+				Program.matrix[y][x] = new Water(x, y);
 			}
 			this.flowCountdown = this.flowCountdownMax;
 		}
@@ -219,9 +219,9 @@ class Water extends Element
 			let cell = this.directions[index];
 			let x = cell[0];
 			let y = cell[1];
-			if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+			if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 			{
-				if(Board.matrix[y][x] instanceof Fire)
+				if(Program.matrix[y][x] instanceof Fire)
 				{
 					moves.push(cell);
 				}
@@ -238,8 +238,8 @@ class Water extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Void(x, y);
-				Board.matrix[this.y][this.x] = new Void(this.x, this.y);
+				Program.matrix[y][x] = new Void(x, y);
+				Program.matrix[this.y][this.x] = new Void(this.x, this.y);
 			}
 		}
 	}
@@ -284,9 +284,9 @@ class Lava extends Element
 				let cell = this.directions[index];
 				let x = cell[0];
 				let y = cell[1];
-				if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+				if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 				{
-					if(Board.matrix[y][x] instanceof Void)
+					if(Program.matrix[y][x] instanceof Void)
 					{
 						moves.push(cell);
 					}
@@ -297,7 +297,7 @@ class Lava extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Lava(x, y, this.density - 1);
+				Program.matrix[y][x] = new Lava(x, y, this.density - 1);
 			}
 			this.flowCountdown = this.flowCountdownMax;
 		}
@@ -319,9 +319,9 @@ class Lava extends Element
 				let cell = this.directions[index];
 				let x = cell[0];
 				let y = cell[1];
-				if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+				if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 				{
-					if(Board.matrix[y][x] instanceof Grass)
+					if(Program.matrix[y][x] instanceof Grass)
 					{
 						moves.push(cell);
 					}
@@ -332,7 +332,7 @@ class Lava extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Fire(x, y);
+				Program.matrix[y][x] = new Fire(x, y);
 			}
 			this.burnCountdown = this.burnCountdownMax;
 		}
@@ -348,9 +348,9 @@ class Lava extends Element
 			let cell = this.directions[index];
 			let x = cell[0];
 			let y = cell[1];
-			if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+			if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 			{
-				if(Board.matrix[y][x] instanceof Water)
+				if(Program.matrix[y][x] instanceof Water)
 				{
 					moves.push(cell);
 				}
@@ -367,11 +367,11 @@ class Lava extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Void(x, y);
+				Program.matrix[y][x] = new Void(x, y);
 				this.density--;
 				if(this.density <= 0)
 				{
-					Board.matrix[this.y][this.x] = new Void(this.x, this.y);
+					Program.matrix[this.y][this.x] = new Void(this.x, this.y);
 				}
 			}
 		}
@@ -417,9 +417,9 @@ class Ice extends Element
 				let cell = this.directions[index];
 				let x = cell[0];
 				let y = cell[1];
-				if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+				if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 				{
-					if(Board.matrix[y][x] instanceof Void)
+					if(Program.matrix[y][x] instanceof Void)
 					{
 						moves.push(cell);
 					}
@@ -430,7 +430,7 @@ class Ice extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				Board.matrix[y][x] = new Ice(x, y, this.density - 1);
+				Program.matrix[y][x] = new Ice(x, y, this.density - 1);
 			}
 			this.flowCountdown = this.flowCountdownMax;
 		}
@@ -446,9 +446,9 @@ class Ice extends Element
 			let cell = this.directions[index];
 			let x = cell[0];
 			let y = cell[1];
-			if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+			if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 			{
-				if(Board.matrix[y][x] instanceof Fire)
+				if(Program.matrix[y][x] instanceof Fire)
 				{
 					moves.push(cell);
 				}
@@ -465,11 +465,11 @@ class Ice extends Element
 			}
 			else
 			{
-				Board.matrix[y][x] = new Void(x, y);
+				Program.matrix[y][x] = new Void(x, y);
 				this.density--;
 				if(this.density <= 0)
 				{
-					Board.matrix[this.y][this.x] = new Water(this.x, this.y);
+					Program.matrix[this.y][this.x] = new Water(this.x, this.y);
 				}
 			}
 		}
@@ -485,9 +485,9 @@ class Ice extends Element
 			let cell = this.directions[index];
 			let x = cell[0];
 			let y = cell[1];
-			if( 0 <= y && y < Board.heightCells && 0 <= x && x < Board.widthCells)
+			if( 0 <= y && y < Program.heightCells && 0 <= x && x < Program.widthCells)
 			{
-				if(Board.matrix[y][x] instanceof Lava)
+				if(Program.matrix[y][x] instanceof Lava)
 				{
 					moves.push(cell);
 				}
@@ -504,16 +504,16 @@ class Ice extends Element
 				let move = random(moves);
 				let x = move[0];
 				let y = move[1];
-				let loss = Math.min(Board.matrix[y][x].density, this.density);
-				Board.matrix[y][x].density -= loss;
+				let loss = Math.min(Program.matrix[y][x].density, this.density);
+				Program.matrix[y][x].density -= loss;
 				this.density -= loss;
-				if(Board.matrix[y][x].density <= 0)
+				if(Program.matrix[y][x].density <= 0)
 				{
-					Board.matrix[y][x] = new Void(x, y);
+					Program.matrix[y][x] = new Void(x, y);
 				}
 				if(this.density <= 0)
 				{
-					Board.matrix[this.y][this.x] = new Water(this.x, this.y);
+					Program.matrix[this.y][this.x] = new Water(this.x, this.y);
 				}
 			}
 		}

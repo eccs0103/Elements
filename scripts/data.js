@@ -41,45 +41,11 @@ class Interface
 		}
 	}
 	//#endregion
-
-	//#region Borders
-	static #borders = true;
-	static get borders()
-	{
-		return this.#borders;
-	}
-	static set borders(value)
-	{
-		if(typeof(value) == "boolean")
-		{
-			if(value)
-			{
-				stroke(150, 150, 150);
-				document.getElementById("div_borders").classList.replace("block", "selected");
-				document.getElementById("div_borders").classList.replace("unbordered", "bordered");
-				document.getElementById("p_borders").textContent = "Выключить";
-			}
-			else if(!value)
-			{
-				noStroke();
-				document.getElementById("div_borders").classList.replace("selected", "block");
-				document.getElementById("div_borders").classList.replace("bordered", "unbordered");
-				document.getElementById("p_borders").textContent = "Включить";
-			}
-			Board.drawElements();
-			this.#borders = value;
-		}
-		else
-		{
-			throw new TypeError(typeof(value));
-		}
-	}
-	//#endregion
 }
 //#endregion
 
-//#region Pages
-class Pages
+//#region Navigate
+class Navigate
 {
 	//#region List
 	static #list = 
@@ -90,13 +56,13 @@ class Pages
 	];
 	//#endregion
 
-	//#region Navigation
+	//#region Id
 	static #activePageId = 0;
 	static get id()
 	{
 		return this.#activePageId;
 	}
-	static set id(value)
+	static set id (value)
 	{
 		if(0 <= value && value < this.#list.length)
 		{
@@ -126,10 +92,10 @@ class Pages
 };
 //#endregion
 
-//#region Game
-class Game
+//#region Program
+class Program
 {
-	//#region  Play
+	//#region Execute
 	static #execute = false;
 	static get execute()
 	{
@@ -188,12 +154,7 @@ class Game
 		}
 	}
 	//#endregion
-};
-//#endregion
 
-//#region Board
-class Board
-{
 	//#region Size
 	static #widthCells = 25;
 	static get widthCells()
@@ -249,13 +210,13 @@ class Board
 	//#endregion
 
 	//#region Elements
-	static voidC = 90;
+	static fullC = 100;
 	static grassC = 4;
 	static fireC = 2;
 	static waterC = 2;
 	static lavaC = 1;
 	static iceC = 1;
-	static fullC = this.voidC + this.grassC + this.fireC + this.waterC + this.lavaC + this.iceC;
+	static voidC = this.fullC - this.grassC - this.fireC - this.waterC - this.lavaC - this.iceC;
 
 	static generateBoard()
 	{
@@ -294,14 +255,14 @@ class Board
 
 	static drawElements()
 	{
-		let cellWidth = Board.sizePixels / Board.widthCells;
-		let cellHeight = Board.sizePixels / Board.heightCells;
+		let cellWidth = Program.sizePixels / Program.widthCells;
+		let cellHeight = Program.sizePixels / Program.heightCells;
 
-		for (let y = 0; y < Board.heightCells; y++) 
+		for (let y = 0; y < Program.heightCells; y++) 
 		{
-			for (let x = 0; x < Board.widthCells; x++) 
+			for (let x = 0; x < Program.widthCells; x++) 
 			{
-				let element = Board.matrix[y][x];
+				let element = Program.matrix[y][x];
 				if (element instanceof Void)
 				{
 					fill(225, 225, 225);

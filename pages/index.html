@@ -75,7 +75,7 @@ height: 100%;">
 				<div class="bordered block" style="
 				display: block;
 				margin: 10px auto;">
-					<div class="block" id="div_game">
+					<div class="block" id="div_program">
 						
 					</div>
 					<div class="block">
@@ -266,16 +266,34 @@ height: 100%;">
 								</div>
 							</td>
 						</tr>
+						<!-------------------- Line --------------------->
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<!-------------------- Board --------------------->
+						<tr>
+							<td colspan="2">
+								<h2 class="subtitle">
+									Доска
+								</h2>
+							</td>
+						</tr>
 						<tr>
 							<td>
 								<p class="text">
-									Границы пикселей
+									Ширина и высота
 								</p>
 							</td>
 							<td>
-								<div class="bordered selected interactive" id="div_borders">
-									<p class="text" id="p_borders">Выключить</p>
-								</div>
+								<input type="text" class="bordered block background interactive input" id="input_size">
+							</td>
+						</tr>
+						<!-------------------- Line --------------------->
+						<tr>
+							<td colspan="2">
+								<hr>
 							</td>
 						</tr>
 						<!-------------------- Game --------------------->
@@ -289,11 +307,51 @@ height: 100%;">
 						<tr>
 							<td>
 								<p class="text">
-									Ширина и высота
+									Процент травы
 								</p>
 							</td>
 							<td>
-								<input type="text" class="bordered block background interactive input" id="input_size">
+								<input type="text" class="bordered block background interactive input" id="input_grassC">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Процент огня
+								</p>
+							</td>
+							<td>
+								<input type="text" class="bordered block background interactive input" id="input_fireC">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Процент воды
+								</p>
+							</td>
+							<td>
+								<input type="text" class="bordered block background interactive input" id="input_waterC">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Процент лавы
+								</p>
+							</td>
+							<td>
+								<input type="text" class="bordered block background interactive input" id="input_lavaC">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Процент льда
+								</p>
+							</td>
+							<td>
+								<input type="text" class="bordered block background interactive input" id="input_iceC">
 							</td>
 						</tr>
 					</table>
