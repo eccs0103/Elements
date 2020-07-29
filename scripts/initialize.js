@@ -3,6 +3,8 @@ document.addEventListener
 	function(event)
 	{
 		//#region Loading
+		Interface.darkTheme = Files.load("Interface.darkTheme", false);
+
 		setTimeout
 		(
 			function()
@@ -22,52 +24,99 @@ document.addEventListener
 		//#endregion
 
 		//#region Program
+		Program.canvas.width = Program.sizePixels;
+		Program.canvas.height = Program.sizePixels;
+
+		Program.sizeCells = Files.load("Program.size", 25);
 		Program.play = false;
 		Program.stats = Files.load("Program.stats", true);
+
+		Program.voidC = Files.load("Program.voidC", 90);
 		Program.grassC = Files.load("Program.grassC", 4);
 		Program.fireC = Files.load("Program.fireC", 2);
 		Program.waterC = Files.load("Program.waterC", 2);
 		Program.lavaC = Files.load("Program.lavaC", 1);
 		Program.iceC = Files.load("Program.iceC", 1);
+
+		Program.generateBoard();
+		Program.drawElements();
+
+		setInterval
+		(
+			function()
+			{ 
+				//#region Execute
+				if(Program.execute)
+				{
+					Program.drawElements();
+					Program.executeFrame();
+				}
+				//#endregion
+		
+				//#region Stats
+				if (Program.stats)
+				{
+					let voidCount = 0;
+					let grassCount = 0;
+					let fireCount = 0;
+					let waterCount = 0;
+					let lavaCount = 0;
+					let iceCount = 0;
+
+					for (let y = 0; y < Program.heightCells; y++)
+					{
+						for (let x = 0; x < Program.widthCells; x++)
+						{
+							let element = Program.matrix[y][x];
+							if (element instanceof Void)
+							{
+								voidCount++;
+							}
+							else if(element instanceof Grass)
+							{
+								grassCount++;
+							}
+							else if(element instanceof Fire)
+							{
+								fireCount++;
+							}
+							else if(element instanceof Water)
+							{
+								waterCount++;
+							}
+							else if(element instanceof Lava)
+							{
+								lavaCount++;
+							}
+							else if(element instanceof Ice)
+							{
+								iceCount++;
+							}
+						}
+					}
+
+					document.getElementById("div_void_count").textContent = voidCount;
+					document.getElementById("div_grass_count").textContent = grassCount;
+					document.getElementById("div_fire_count").textContent = fireCount;
+					document.getElementById("div_water_count").textContent = waterCount;
+					document.getElementById("div_lava_count").textContent = lavaCount;
+					document.getElementById("div_ice_count").textContent = iceCount;
+				}
+				//#endregion
+			}, 
+			1000 / Program.framesCount
+		);
 		//#endregion
 
 		//#region Settings
-		Interface.darkTheme = Files.load("Interface.darkTheme", false);
-		Program.sizeCells = Files.load("Program.size", 25);
-		document.getElementById("input_size").value = Files.load("Program.size", 25);
-		document.getElementById("input_grassC").value = Files.load("Program.grassC", 4);
-		document.getElementById("input_fireC").value = Files.load("Program.fireC", 2);
-		document.getElementById("input_waterC").value = Files.load("Program.waterC", 2);
-		document.getElementById("input_lavaC").value = Files.load("Program.lavaC", 1);
-		document.getElementById("input_iceC").value = Files.load("Program.iceC", 1);
+		document.getElementById("input_size").value = Program.widthCells;
+
+		document.getElementById("input_voidC").value = Program.voidC;
+		document.getElementById("input_grassC").value = Program.grassC;
+		document.getElementById("input_fireC").value = Program.fireC;
+		document.getElementById("input_waterC").value = Program.waterC;
+		document.getElementById("input_lavaC").value = Program.lavaC;
+		document.getElementById("input_iceC").value = Program.iceC;
 		//#endregion
 	}
 );
-
-//#region P5
-function setup() 
-{
-	frameRate(60);
-	let canvas = createCanvas(Program.sizePixels, Program.sizePixels);
-	canvas.parent("div_program");
-	background(255, 255, 255);
-	stroke(150, 150, 150);
-
-	Program.createMatrix();
-	Program.generateBoard();
-	Program.drawElements();
-}
-
-function draw() 
-{
-	if(Program.execute)
-	{
-		Program.drawElements();
-	}
-
-	if (Program.stats)
-	{
-		Program.updateStatistics();
-	}
-}
-//#endregion

@@ -4,7 +4,7 @@
 	color: rgb(200, 200, 200);
 }
 
-.dark .text
+.dark .text, .dark .subtext
 {
 	color: rgb(150, 150, 150);
 }
@@ -63,13 +63,13 @@
 	filter: invert(0.1);
 }
 
+.dark .unavailable
+{
+	filter: contrast(0.5);
+}
+
 .dark .input
 {
 	caret-color: rgb(200, 200, 200);
 	color: rgb(200, 200, 200);
 }
-
-/* ::-webkit-scrollbar-button
-{
-	background-color: rgb(50, 50, 50);
-} */

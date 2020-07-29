@@ -5,6 +5,11 @@ class Random
 	{
 		return parseInt((Math.random() * (max - min) + min));
 	}
+
+	static arrayElement(array)
+	{
+		return array[Random.number(0, array.length)];
+	}
 }
 //#endregion
 

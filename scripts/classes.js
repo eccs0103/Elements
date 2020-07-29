@@ -69,7 +69,7 @@ class Grass extends Element
 			}
 			if(moves.length > 0)
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Grass(x, y);
@@ -125,7 +125,7 @@ class Fire extends Element
 			}
 			if(moves.length > 0)
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Fire(x, y);
@@ -200,7 +200,7 @@ class Water extends Element
 			}
 			if(moves.length > 0)
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Water(x, y);
@@ -235,7 +235,7 @@ class Water extends Element
 			}
 			else
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Void(x, y);
@@ -294,7 +294,7 @@ class Lava extends Element
 			}
 			if(moves.length > 0 && this.density > 1)
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Lava(x, y, this.density - 1);
@@ -329,7 +329,7 @@ class Lava extends Element
 			}
 			if(moves.length > 0)
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Fire(x, y);
@@ -364,7 +364,7 @@ class Lava extends Element
 			}
 			else
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Void(x, y);
@@ -427,7 +427,7 @@ class Ice extends Element
 			}
 			if(moves.length > 0 && this.density > 1)
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				Program.matrix[y][x] = new Ice(x, y, this.density - 1);
@@ -456,7 +456,7 @@ class Ice extends Element
 		}
 		if(moves.length > 0)
 		{
-			let move = random(moves);
+			let move = Random.arrayElement(moves);
 			let x = move[0];
 			let y = move[1];
 			if(this.meltCountdown > 0)
@@ -501,7 +501,7 @@ class Ice extends Element
 			}
 			else
 			{
-				let move = random(moves);
+				let move = Random.arrayElement(moves);
 				let x = move[0];
 				let y = move[1];
 				let loss = Math.min(Program.matrix[y][x].density, this.density);

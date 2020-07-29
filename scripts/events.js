@@ -40,7 +40,6 @@ document.getElementById("div_reset").addEventListener
 ("click", 
 	function(event)
 	{
-		Program.createMatrix();
 		Program.generateBoard();
 		Program.drawElements();
 	}
@@ -86,7 +85,6 @@ document.getElementById("input_size").addEventListener
 			Files.save("Program.size", event.target.value);
 
 			Program.execute = false;
-			Program.createMatrix();
 			Program.generateBoard();
 			Program.drawElements();
 		}
@@ -121,6 +119,7 @@ document.getElementById("input_grassC").addEventListener
 			Files.save("Program.grassC", number);
 			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
 			Files.save("Program.voidC", Program.voidC);
+			document.getElementById("input_voidC").value = Program.voidC;
 
 			Program.execute = false;
 			Program.generateBoard();
@@ -156,6 +155,7 @@ document.getElementById("input_fireC").addEventListener
 			Files.save("Program.fireC", number);
 			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
 			Files.save("Program.voidC", Program.voidC);
+			document.getElementById("input_voidC").value = Program.voidC;
 
 			Program.execute = false;
 			Program.generateBoard();
@@ -191,6 +191,7 @@ document.getElementById("input_waterC").addEventListener
 			Files.save("Program.waterC", number);
 			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
 			Files.save("Program.voidC", Program.voidC);
+			document.getElementById("input_voidC").value = Program.voidC;
 
 			Program.execute = false;
 			Program.generateBoard();
@@ -226,6 +227,7 @@ document.getElementById("input_lavaC").addEventListener
 			Files.save("Program.lavaC", number);
 			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
 			Files.save("Program.voidC", Program.voidC);
+			document.getElementById("input_voidC").value = Program.voidC;
 
 			Program.execute = false;
 			Program.generateBoard();
@@ -261,6 +263,7 @@ document.getElementById("input_iceC").addEventListener
 			Files.save("Program.iceC", number);
 			Program.voidC = Program.fullC - Program.grassC - Program.fireC - Program.waterC - Program.lavaC - Program.iceC;
 			Files.save("Program.voidC", Program.voidC);
+			document.getElementById("input_voidC").value = Program.voidC;
 
 			Program.execute = false;
 			Program.generateBoard();
@@ -275,4 +278,9 @@ document.getElementById("input_iceC").addEventListener
 		}
 	}
 );
+
+function refreshFields()
+{
+	document.getElementById("input_voidC").value = Program.voidC;
+}
 //#endregion

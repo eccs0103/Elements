@@ -75,9 +75,10 @@ height: 100%;">
 				<div class="bordered block" style="
 				display: block;
 				margin: 10px auto;">
-					<div class="block" id="div_program">
-						
-					</div>
+					<canvas id="canvas_program" style="
+					padding: 5px;">
+
+					</canvas>
 					<div class="block">
 						<div class="block unbordered interactive" id="div_execute">
 							<img src="../resources/play.png" title="Старт" class="resource" id="img_play" style="
@@ -244,8 +245,16 @@ height: 100%;">
 			<page id="page_settings" style="
 			display: none;">
 				<div class="bordered block" style="
+				max-width: 450px;
 				margin: 10px auto;">
 					<table>
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Настройки
+								</h2>
+							</td>
+						</tr>
 						<!-------------------- Interface --------------------->
 						<tr>
 							<td colspan="2">
@@ -302,6 +311,19 @@ height: 100%;">
 								<h2 class="subtitle">
 									Игра
 								</h2>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="text">
+									Процент пустоты
+								</p>
+								<p class="subtext">
+									Процент пустоты меняется в зависимости от остальных элементов и не может быть ниже нуля.
+								</p>
+							</td>
+							<td>
+								<input type="text" disabled="true" class="bordered block background input unavailable" id="input_voidC">
 							</td>
 						</tr>
 						<tr>
@@ -364,6 +386,13 @@ height: 100%;">
 				max-width: 600px;
 				margin: 10px auto;">
 					<table>
+						<tr>
+							<td colspan="2">
+								<h2 class="title">
+									Информация
+								</h2>
+							</td>
+						</tr>
 						<!-------------------- Reference --------------------->
 						<tr>
 							<td colspan="2">
@@ -571,8 +600,7 @@ height: 100%;">
 						<tr>
 							<td colspan="2">
 								<p class="text">
-									Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank" class="hyperlink ">Material</a><br>
-									Библиотека рисования: <a href="https://p5js.org/" target="blank" class="hyperlink ">P5</a><br>
+									Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank" class="hyperlink ">material.io</a>
 								</p>
 							</td>
 						</tr>
@@ -584,7 +612,6 @@ height: 100%;">
 	<!-------------------- Scripts --------------------->
 	<div style="
 	display: none;">
-		<script type="text/javascript" src="../scripts/p5.js"></script>
 		<script type="text/javascript" src="../scripts/functions.js"></script>
 		<script type="text/javascript" src="../scripts/classes.js"></script>
 		<script type="text/javascript" src="../scripts/data.js"></script>

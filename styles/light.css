@@ -4,7 +4,7 @@
 	color: rgb(50, 50, 50);
 }
 
-.light .text
+.light .text, .light .subtext
 {
 	color: rgb(150, 150, 150);
 }
@@ -63,13 +63,13 @@
 	filter: invert(0.1);
 }
 
+.light .unavailable 
+{
+	filter: contrast(0.5);
+}
+
 .light .input
 {
 	caret-color: rgb(50, 50, 50);
 	color: rgb(50, 50, 50);
-}
-
-.light body
-{
-	scrollbar-color: light;
 }

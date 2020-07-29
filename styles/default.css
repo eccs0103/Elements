@@ -16,6 +16,11 @@
 	font-size: 14px;
 }
 
+.subtext
+{
+	font-size: 10px;
+}
+
 .hyperlink
 {
 	text-decoration: none;
@@ -43,4 +48,11 @@
 	margin: auto 2.5px;
 	font-weight: bold;
 	cursor: pointer;
+}
+
+.unavailable
+{
+	margin: auto 2.5px;
+	font-weight: bold;
+	cursor: default;
 }
