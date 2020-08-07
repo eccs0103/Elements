@@ -15,17 +15,7 @@
 }
 
 /*------------------------- Blocks -------------------------*/
-.light .bordered
-{
-	border-color: rgb(200, 200, 200);
-}
-
-.light .unbordered
-{
-	border-color: transparent;
-}
-
-.light .block
+.light .foreground
 {
 	background-color: rgb(255, 255, 255);
 }
@@ -35,9 +25,14 @@
 	background-color: rgb(225, 225, 225);
 }
 
-.light .selected
+.light .bordered, .light .line
 {
-	background-color: rgb(225, 225, 225);
+	border-color: rgb(200, 200, 200);
+}
+
+.light .unbordered
+{
+	border-color: transparent;
 }
 
 .light .denied
@@ -72,4 +67,17 @@
 {
 	caret-color: rgb(50, 50, 50);
 	color: rgb(50, 50, 50);
+}
+
+/*------------------------- Scrollbar -------------------------*/
+.light ::-webkit-scrollbar
+{
+	background-color: rgb(225, 225, 225);
+	border-color: rgb(200, 200, 200);
+}
+
+.light ::-webkit-scrollbar-thumb
+{
+	background-color: rgb(255, 255, 255);
+	border-color: rgb(200, 200, 200);
 }

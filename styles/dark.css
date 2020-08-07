@@ -15,17 +15,7 @@
 }
 
 /*------------------------- Blocks -------------------------*/
-.dark .bordered
-{
-	border-color: rgb(100, 100, 100);
-}
-
-.dark .unbordered
-{
-	border-color: transparent;
-}
-
-.dark .block
+.dark .foreground
 {
 	background-color: rgb(25, 25, 25);
 }
@@ -35,9 +25,14 @@
 	background-color: rgb(50, 50, 50);
 }
 
-.dark .selected
+.dark .bordered, .dark .line
 {
-	background-color: rgb(50, 50, 50);
+	border-color: rgb(100, 100, 100);
+}
+
+.dark .unbordered
+{
+	border-color: transparent;
 }
 
 .dark .denied
@@ -72,4 +67,17 @@
 {
 	caret-color: rgb(200, 200, 200);
 	color: rgb(200, 200, 200);
+}
+
+/*------------------------- Scrollbar -------------------------*/
+.dark ::-webkit-scrollbar
+{
+	background-color: rgb(50, 50, 50);
+	border-color: rgb(100, 100, 100);
+}
+
+.dark ::-webkit-scrollbar-thumb
+{
+	background-color: rgb(25, 25, 25);
+	border-color: rgb(100, 100, 100);
 }

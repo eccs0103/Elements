@@ -28,31 +28,36 @@
 }
 
 /*------------------------- Blocks -------------------------*/
-.block, .selected, .denied
-{
-	width: fit-content;
-	height: fit-content;
-	padding: 5px;
-	display: flex;
-}
-
-.bordered, .unbordered
+.bordered, .unbordered, ::-webkit-scrollbar, ::-webkit-scrollbar-thumb
 {
 	border: 1px solid;
-	border-radius: 5px;
+	border-radius: 6px;
+}
+
+.line
+{
+	border-style: solid;
+}
+
+::-webkit-scrollbar, ::-webkit-scrollbar-thumb
+{
+	width: 12px;
+}
+
+table tr td
+{
+	padding: 2.5px;
 }
 
 /*------------------------- Interaction -------------------------*/
 .interactive
 {
-	margin: auto 2.5px;
 	font-weight: bold;
 	cursor: pointer;
 }
 
 .unavailable
 {
-	margin: auto 2.5px;
 	font-weight: bold;
 	cursor: default;
 }

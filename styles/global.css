@@ -7,12 +7,7 @@
 	user-select: none;
 	-webkit-user-drag: none;
 	outline: none;
+	overflow: hidden;
 
 	font-family: monospace;
-}
-
-/*------------------------- Tables -------------------------*/
-table tr td
-{
-	padding: 2.5px;
 }

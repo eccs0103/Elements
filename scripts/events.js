@@ -44,15 +44,6 @@ document.getElementById("div_reset").addEventListener
 		Program.drawElements();
 	}
 );
-
-document.getElementById("div_stats").addEventListener
-("click", 
-	function(event)
-	{
-		Program.stats = !Program.stats;
-		Files.save("Program.stats", Program.stats);
-	}
-);
 //#endregion
 
 //#region Settings
@@ -62,6 +53,14 @@ document.getElementById("div_theme").addEventListener
 	{
 		Interface.darkTheme = !Interface.darkTheme;
 		Files.save("Interface.darkTheme", Interface.darkTheme);
+	}
+);
+document.getElementById("div_stats").addEventListener
+("click", 
+	function(event)
+	{
+		Program.stats = !Program.stats;
+		Files.save("Program.stats", Program.stats);
 	}
 );
 
@@ -79,7 +78,7 @@ document.getElementById("input_size").addEventListener
 		{
 			if(event.target.classList.contains("denied"))
 			{
-				event.target.classList.replace("denied", "block");
+				event.target.classList.replace("denied", "background");
 			}
 			Program.sizeCells = event.target.value;
 			Files.save("Program.size", event.target.value);
@@ -90,9 +89,9 @@ document.getElementById("input_size").addEventListener
 		}
 		else
 		{
-			if(event.target.classList.contains("block"))
+			if(event.target.classList.contains("background"))
 			{
-				event.target.classList.replace("block", "denied");
+				event.target.classList.replace("background", "denied");
 			}
 		}
 	}
@@ -113,7 +112,7 @@ document.getElementById("input_grassC").addEventListener
 		{
 			if(event.target.classList.contains("denied"))
 			{
-				event.target.classList.replace("denied", "block");
+				event.target.classList.replace("denied", "background");
 			}
 			Program.grassC = number;
 			Files.save("Program.grassC", number);
@@ -127,9 +126,9 @@ document.getElementById("input_grassC").addEventListener
 		}
 		else
 		{
-			if(event.target.classList.contains("block"))
+			if(event.target.classList.contains("background"))
 			{
-				event.target.classList.replace("block", "denied");
+				event.target.classList.replace("background", "denied");
 			}
 		}
 	}
@@ -149,7 +148,7 @@ document.getElementById("input_fireC").addEventListener
 		{
 			if(event.target.classList.contains("denied"))
 			{
-				event.target.classList.replace("denied", "block");
+				event.target.classList.replace("denied", "background");
 			}
 			Program.fireC = number;
 			Files.save("Program.fireC", number);
@@ -163,9 +162,9 @@ document.getElementById("input_fireC").addEventListener
 		}
 		else
 		{
-			if(event.target.classList.contains("block"))
+			if(event.target.classList.contains("background"))
 			{
-				event.target.classList.replace("block", "denied");
+				event.target.classList.replace("background", "denied");
 			}
 		}
 	}
@@ -185,7 +184,7 @@ document.getElementById("input_waterC").addEventListener
 		{
 			if(event.target.classList.contains("denied"))
 			{
-				event.target.classList.replace("denied", "block");
+				event.target.classList.replace("denied", "background");
 			}
 			Program.waterC = number;
 			Files.save("Program.waterC", number);
@@ -199,9 +198,9 @@ document.getElementById("input_waterC").addEventListener
 		}
 		else
 		{
-			if(event.target.classList.contains("block"))
+			if(event.target.classList.contains("background"))
 			{
-				event.target.classList.replace("block", "denied");
+				event.target.classList.replace("background", "denied");
 			}
 		}
 	}
@@ -221,7 +220,7 @@ document.getElementById("input_lavaC").addEventListener
 		{
 			if(event.target.classList.contains("denied"))
 			{
-				event.target.classList.replace("denied", "block");
+				event.target.classList.replace("denied", "background");
 			}
 			Program.lavaC = number;
 			Files.save("Program.lavaC", number);
@@ -235,9 +234,9 @@ document.getElementById("input_lavaC").addEventListener
 		}
 		else
 		{
-			if(event.target.classList.contains("block"))
+			if(event.target.classList.contains("background"))
 			{
-				event.target.classList.replace("block", "denied");
+				event.target.classList.replace("background", "denied");
 			}
 		}
 	}
@@ -257,7 +256,7 @@ document.getElementById("input_iceC").addEventListener
 		{
 			if(event.target.classList.contains("denied"))
 			{
-				event.target.classList.replace("denied", "block");
+				event.target.classList.replace("denied", "background");
 			}
 			Program.iceC = number;
 			Files.save("Program.iceC", number);
@@ -271,9 +270,9 @@ document.getElementById("input_iceC").addEventListener
 		}
 		else
 		{
-			if(event.target.classList.contains("block"))
+			if(event.target.classList.contains("background"))
 			{
-				event.target.classList.replace("block", "denied");
+				event.target.classList.replace("background", "denied");
 			}
 		}
 	}

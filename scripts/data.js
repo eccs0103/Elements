@@ -22,14 +22,14 @@ class Interface
 			if(value)
 			{
 				document.documentElement.classList.replace("light", "dark");
-				document.getElementById("div_theme").classList.replace("block", "selected");
+				document.getElementById("div_theme").classList.replace("foreground", "background");
 				document.getElementById("div_theme").classList.replace("unbordered", "bordered");
 				document.getElementById("p_theme").textContent = "Выключить";
 			}
 			else if(!value)
 			{
 				document.documentElement.classList.replace("dark", "light");
-				document.getElementById("div_theme").classList.replace("selected", "block");
+				document.getElementById("div_theme").classList.replace("background", "foreground");
 				document.getElementById("div_theme").classList.replace("bordered", "unbordered");
 				document.getElementById("p_theme").textContent = "Включить";
 			}
@@ -69,9 +69,9 @@ class Navigate
 			for (let index = 0; index < this.#list.length; index++) 
 			{
 				this.#list[index][0].style.display = "none";
-				if(this.#list[index][1].classList.contains("selected"))
+				if(this.#list[index][1].classList.contains("background"))
 				{
-					this.#list[index][1].classList.replace("selected", "block");
+					this.#list[index][1].classList.replace("background", "foreground");
 				}
 				if(this.#list[index][1].classList.contains("bordered"))
 				{
@@ -79,7 +79,7 @@ class Navigate
 				}
 			}
 			this.#list[value][0].style.display = "flex";
-			this.#list[value][1].classList.replace("block", "selected");
+			this.#list[value][1].classList.replace("foreground", "background");
 			this.#list[value][1].classList.replace("unbordered", "bordered");
 			this.#activePageId = value;
 		}
@@ -154,10 +154,12 @@ class Program
 		}
 	}
 
+	static #widthPixels = document.documentElement.clientWidth - 40;
+	static #heightPixels = document.getElementById("div_program").clientHeight - 20 - document.getElementById("div_program_contol").scrollHeight;
 	static sizePixels = Math.min
 	(
-		document.documentElement.clientWidth - 70,
-		document.documentElement.clientHeight - 160
+		this.#widthPixels,
+		this.#heightPixels
 	);
 	//#endregion
 
@@ -199,8 +201,8 @@ class Program
 
 	static drawElements()
 	{
-		let cellWidth = Program.sizePixels / Program.widthCells;
-		let cellHeight = Program.sizePixels / Program.heightCells;
+		let cellWidth = document.getElementById("canvas_program").width / Program.widthCells;
+		let cellHeight = document.getElementById("canvas_program").height / Program.heightCells;
 
 		for (let y = 0; y < Program.heightCells; y++) 
 		{
@@ -346,15 +348,17 @@ class Program
 		{
 			if(value)
 			{
-				document.getElementById("div_stats_table").style.display = "block";
-				document.getElementById("div_stats").classList.replace("block", "selected");
+				document.getElementById("div_stats_table").style.display = "flex";
+				document.getElementById("div_stats").classList.replace("foreground", "background");
 				document.getElementById("div_stats").classList.replace("unbordered", "bordered");
+				document.getElementById("p_stats").textContent = "Скрыть";
 			}
 			else if(!value)
 			{
 				document.getElementById("div_stats_table").style.display = "none";
-				document.getElementById("div_stats").classList.replace("selected", "block");
+				document.getElementById("div_stats").classList.replace("background", "foreground");
 				document.getElementById("div_stats").classList.replace("bordered", "unbordered");
+				document.getElementById("p_stats").textContent = "Показать";
 			}
 			this.#stats = value;
 		}
