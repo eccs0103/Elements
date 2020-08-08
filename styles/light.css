@@ -1,82 +1,82 @@
 /*------------------------- Texts -------------------------*/
-.light .subtitle, .light .title
+.Light .Subtitle, .Light .Title
 {
 	color: rgb(50, 50, 50);
 }
 
-.light .text, .light .subtext
+.Light .Text, .Light .Subtext
 {
 	color: rgb(150, 150, 150);
 }
 
-.light .hyperlink
+.Light .Hyperlink
 {
 	color: rgb(0, 128, 255);
 }
 
 /*------------------------- Blocks -------------------------*/
-.light .foreground
+.Light .Foreground
 {
 	background-color: rgb(255, 255, 255);
 }
 
-.light .background
+.Light .Background
 {
 	background-color: rgb(225, 225, 225);
 }
 
-.light .bordered, .light .line
+.Light .Bordered, .Light .Line
 {
 	border-color: rgb(200, 200, 200);
 }
 
-.light .unbordered
+.Light .Unbordered
 {
 	border-color: transparent;
 }
 
-.light .denied
+.Light .Denied
 {
 	background-color: rgb(255, 200, 200);
 	border-color: rgb(255, 100, 100);
 }
 
 /*------------------------- Resources -------------------------*/
-.light .resource
+.Light .Resource
 {
-	filter: invert(1);
+	filter: invert(0);
 }
 
 /*------------------------- Interaction -------------------------*/
-.light .interactive .text
+.Light .Interactive .Text
 {
 	color: rgb(50, 50, 50);
 }
 
-.light .interactive:hover
+.Light .Interactive:hover
 {
 	filter: invert(0.1);
 }
 
-.light .unavailable 
+.Light .Unavailable 
 {
 	filter: contrast(0.5);
 }
 
-.light .input
+.Light .Input
 {
 	caret-color: rgb(50, 50, 50);
 	color: rgb(50, 50, 50);
 }
 
 /*------------------------- Scrollbar -------------------------*/
-.light ::-webkit-scrollbar
+.Light ::-webkit-scrollbar
 {
 	background-color: rgb(225, 225, 225);
-	border-color: rgb(200, 200, 200);
+	border-color: transparent;
 }
 
-.light ::-webkit-scrollbar-thumb
+.Light ::-webkit-scrollbar-thumb
 {
 	background-color: rgb(255, 255, 255);
 	border-color: rgb(200, 200, 200);

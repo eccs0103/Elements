@@ -1,372 +1,293 @@
 //#region Interface
-class Interface
-{
-	//#region Loading
-	static #loadingTime = 0.5;
-	static get loadingTime()
-	{
-		return this.#loadingTime;
-	} 
-	//#endregion
-
-	//#region Theme
-	static #darkTheme = false;
-	static get darkTheme()
-	{
-		return this.#darkTheme;
-	}
-	static set darkTheme(value)
-	{
-		if(typeof(value) == "boolean")
-		{
-			if(value)
-			{
-				document.documentElement.classList.replace("light", "dark");
-				document.getElementById("div_theme").classList.replace("foreground", "background");
-				document.getElementById("div_theme").classList.replace("unbordered", "bordered");
-				document.getElementById("p_theme").textContent = "Выключить";
-			}
-			else if(!value)
-			{
-				document.documentElement.classList.replace("dark", "light");
-				document.getElementById("div_theme").classList.replace("background", "foreground");
-				document.getElementById("div_theme").classList.replace("bordered", "unbordered");
-				document.getElementById("p_theme").textContent = "Включить";
-			}
-			this.#darkTheme = value;
-		}
-		else
-		{
-			throw new TypeError(typeof(value));
-		}
-	}
-	//#endregion
-}
+var Interface = /** @class */ (function () {
+    function Interface() {
+    }
+    Object.defineProperty(Interface, "LoadingTime", {
+        get: function () {
+            return this._LoadingTime;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Interface, "DarkTheme", {
+        get: function () {
+            return this._DarkTheme;
+        },
+        set: function (Value) {
+            if (Value) {
+                document.documentElement.classList.replace("Light", "Dark");
+                document.getElementById("ButtonTheme").classList.replace("Foreground", "Background");
+                document.getElementById("ButtonTheme").classList.replace("Unbordered", "Bordered");
+                document.getElementById("TextTheme").textContent = "Выключить";
+            }
+            else if (!Value) {
+                document.documentElement.classList.replace("Dark", "Light");
+                document.getElementById("ButtonTheme").classList.replace("Background", "Foreground");
+                document.getElementById("ButtonTheme").classList.replace("Bordered", "Unbordered");
+                document.getElementById("TextTheme").textContent = "Включить";
+            }
+            this._DarkTheme = Value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    //#region Loading
+    Interface._LoadingTime = 0.5;
+    //#endregion
+    //#region Theme
+    Interface._DarkTheme = false;
+    return Interface;
+}());
 //#endregion
-
 //#region Navigate
-class Navigate
-{
-	//#region List
-	static #list = 
-	[
-		[document.getElementById("page_home"), document.getElementById("div_home")],
-		[document.getElementById("page_settings"), document.getElementById("div_settings")],
-		[document.getElementById("page_information"), document.getElementById("div_information")],
-	];
-	//#endregion
-
-	//#region Id
-	static #activePageId = 0;
-	static get id()
-	{
-		return this.#activePageId;
-	}
-	static set id (value)
-	{
-		if(0 <= value && value < this.#list.length)
-		{
-			for (let index = 0; index < this.#list.length; index++) 
-			{
-				this.#list[index][0].style.display = "none";
-				if(this.#list[index][1].classList.contains("background"))
-				{
-					this.#list[index][1].classList.replace("background", "foreground");
-				}
-				if(this.#list[index][1].classList.contains("bordered"))
-				{
-					this.#list[index][1].classList.replace("bordered", "unbordered");
-				}
-			}
-			this.#list[value][0].style.display = "flex";
-			this.#list[value][1].classList.replace("foreground", "background");
-			this.#list[value][1].classList.replace("unbordered", "bordered");
-			this.#activePageId = value;
-		}
-		else
-		{
-			throw new RangeError(value);
-		}
-	}
-	//#endregion
-};
+var Navigate = /** @class */ (function () {
+    function Navigate() {
+    }
+    Object.defineProperty(Navigate, "Id", {
+        get: function () {
+            return this._Id;
+        },
+        set: function (Value) {
+            if (0 <= Value && Value < this._List.length) {
+                for (var index = 0; index < this._List.length; index++) {
+                    this._List[index][0].style.display = "none";
+                    if (this._List[index][1].classList.contains("Background")) {
+                        this._List[index][1].classList.replace("Background", "Foreground");
+                    }
+                    if (this._List[index][1].classList.contains("Bordered")) {
+                        this._List[index][1].classList.replace("Bordered", "Unbordered");
+                    }
+                }
+                this._List[Value][0].style.display = "flex";
+                this._List[Value][1].classList.replace("Foreground", "Background");
+                this._List[Value][1].classList.replace("Unbordered", "Bordered");
+                this._Id = Value;
+            }
+            else {
+                throw new RangeError(String(Value));
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    //#region List
+    Navigate._List = [
+        [document.getElementById("PageHome"), document.getElementById("ButtonHome")],
+        [document.getElementById("PageSettings"), document.getElementById("ButtonSettings")],
+        [document.getElementById("PageInformation"), document.getElementById("ButtonInformation")],
+    ];
+    //#endregion
+    //#region Id
+    Navigate._Id = 0;
+    return Navigate;
+}());
+;
 //#endregion
-
 //#region Program
-class Program
-{
-	//#region Canvas
-	static canvas = document.getElementById("canvas_program");
-	static desk = this.canvas.getContext("2d");
-
-	static matrix = [];
-
-	static framesCount = 60;
-
-	static fullC = 100;
-	static grassC = 4;
-	static fireC = 2;
-	static waterC = 2;
-	static lavaC = 1;
-	static iceC = 1;
-	static voidC = this.fullC - this.grassC - this.fireC - this.waterC - this.lavaC - this.iceC;
-	//#endregion
-
-	//#region Size
-	static #widthCells;
-	static get widthCells()
-	{
-		return this.#widthCells;
-	}
-
-	static #heightCells;
-	static get heightCells()
-	{
-		return this.#heightCells;
-	}
-
-	static minSizeCells = 10;
-	static maxSizeCells = 50;
-	static set sizeCells(value)
-	{
-		let number = parseInt(value);
-		if(typeof(number) == "number")
-		{
-			if(this.minSizeCells <= number && number <= this.maxSizeCells)
-			{
-				this.#widthCells = number;
-				this.#heightCells = number;
-
-				this.matrix = [];
-				for (let y = 0; y < this.#heightCells; y++)
-				{
-					this.matrix[y] = [];
-				}
-			}
-			else
-			{
-				throw new RangeError(number);
-			}
-		}
-		else
-		{
-			throw new TypeError(number);
-		}
-	}
-
-	static #widthPixels = document.documentElement.clientWidth - 40;
-	static #heightPixels = document.getElementById("div_program").clientHeight - 20 - document.getElementById("div_program_contol").scrollHeight;
-	static sizePixels = Math.min
-	(
-		this.#widthPixels,
-		this.#heightPixels
-	);
-	//#endregion
-
-	//#region Functions
-	static generateBoard()
-	{
-		for (let y = 0; y < this.heightCells; y++) 
-		{
-			for (let x = 0; x < this.widthCells; x++) 
-			{
-				let randomElement = Random.number(0, this.fullC)
-				if (randomElement >= 0 && randomElement < this.voidC)
-				{
-					this.matrix[y][x] = new Void(x, y);
-				}
-				else if (randomElement >= this.voidC && randomElement < this.voidC + this.grassC) 
-				{
-					this.matrix[y][x] = new Grass(x, y);
-				}
-				else if (randomElement >= this.voidC + this.grassC && randomElement < this.voidC + this.grassC+ this.fireC) 
-				{
-					this.matrix[y][x] = new Fire(x, y);
-				}
-				else if (randomElement >= this.voidC + this.grassC+ this.fireC && randomElement < this.voidC + this.grassC+ this.fireC + this.waterC) 
-				{
-					this.matrix[y][x] = new Water(x, y);
-				}
-				else if (randomElement >= this.voidC + this.grassC+ this.fireC + this.waterC && randomElement < this.voidC + this.grassC+ this.fireC + this.waterC + this.lavaC) 
-				{
-					this.matrix[y][x] = new Lava(x, y, 3);
-				}
-				else if (randomElement >= this.voidC + this.grassC+ this.fireC + this.waterC + this.lavaC && randomElement < this.fullC) 
-				{
-					this.matrix[y][x] = new Ice(x, y, 3);
-				}
-			}
-		}
-	}
-
-	static drawElements()
-	{
-		let cellWidth = document.getElementById("canvas_program").width / Program.widthCells;
-		let cellHeight = document.getElementById("canvas_program").height / Program.heightCells;
-
-		for (let y = 0; y < Program.heightCells; y++) 
-		{
-			for (let x = 0; x < Program.widthCells; x++) 
-			{
-				let element = Program.matrix[y][x];
-				if (element instanceof Void)
-				{
-					this.desk.fillStyle = "rgb(225, 225, 225)";
-					this.desk.fillRect(x * cellWidth, y * cellHeight, cellWidth + 1, cellHeight + 1);
-				}
-				else if (element instanceof Grass)
-				{
-					this.desk.fillStyle = "rgb(0, 128, 0)";
-					this.desk.fillRect(x * cellWidth, y * cellHeight, cellWidth + 1, cellHeight + 1);
-				}
-				else if (element instanceof Fire)
-				{
-					this.desk.fillStyle = "rgb(255, 150, 0)";
-					this.desk.fillRect(x * cellWidth, y * cellHeight, cellWidth + 1, cellHeight + 1);
-				}
-				else if (element instanceof Water)
-				{
-					this.desk.fillStyle = "rgb(0, 50, 255)";
-					this.desk.fillRect(x * cellWidth, y * cellHeight, cellWidth + 1, cellHeight + 1);
-				}
-				else if (element instanceof Lava)
-				{
-					if(element.density == 3)
-					{
-						this.desk.fillStyle = "rgb(255, 0, 0)";
-					}
-					else if(element.density == 2)
-					{
-						this.desk.fillStyle = "rgb(255, 50, 0)";
-					}
-					else if(element.density == 1)
-					{
-						this.desk.fillStyle = "rgb(255, 100, 0)";
-					}
-					this.desk.fillRect(x * cellWidth, y * cellHeight, cellWidth + 1, cellHeight + 1);
-				}
-				else if (element instanceof Ice)
-				{
-					if(element.density == 3)
-					{
-						this.desk.fillStyle = "rgb(0, 200, 255)";
-					}
-					else if(element.density == 2)
-					{
-						this.desk.fillStyle = "rgb(0, 150, 255)";
-					}
-					else if(element.density == 1)
-					{
-						this.desk.fillStyle = "rgb(0, 100, 255)";
-					}
-					this.desk.fillRect(x * cellWidth, y * cellHeight, cellWidth + 1, cellHeight + 1);
-				}
-			}
-		}
-	}
-
-	static executeFrame()
-	{
-		for (let y = 0; y < Program.heightCells; y++) 
-		{
-			for (let x = 0; x < Program.widthCells; x++) 
-			{
-				let element = Program.matrix[y][x];
-				if (element instanceof Void)
-				{
-
-				}
-				else if (element instanceof Grass)
-				{
-					element.grow();
-				}
-				else if (element instanceof Fire)
-				{
-					element.burn();
-					element.fade();
-				}
-				else if (element instanceof Water)
-				{
-					element.flow();
-					element.evaporate();
-				}
-				else if (element instanceof Lava)
-				{
-					element.flow();
-					element.burn();
-					element.fade();
-				}
-				else if (element instanceof Ice)
-				{
-					element.flow();
-					element.melt();
-					element.evaporate();
-				}
-			}
-		}
-	}
-	//#endregion
-
-	//#region Execute
-	static #execute = false;
-	static get execute()
-	{
-		return this.#execute;
-	}
-	static set execute(value)
-	{
-		if(typeof(value) == "boolean")
-		{
-			if(value)
-			{
-				document.getElementById("img_play").src = "../resources/pause.png";
-				document.getElementById("img_play").alt = "Пауза";
-			}
-			else if(!value)
-			{
-				document.getElementById("img_play").src = "../resources/play.png";
-				document.getElementById("img_play").alt = "Старт";
-			}
-			this.#execute = value;
-		}
-		else
-		{
-			throw new TypeError(typeof(value));
-		}
-	}
-	//#endregion
-
-	//#region Stats
-	static #stats = true;
-	static get stats()
-	{
-		return this.#stats;
-	}	
-	static set stats(value)
-	{
-		if(typeof(value) == "boolean")
-		{
-			if(value)
-			{
-				document.getElementById("div_stats_table").style.display = "flex";
-				document.getElementById("div_stats").classList.replace("foreground", "background");
-				document.getElementById("div_stats").classList.replace("unbordered", "bordered");
-				document.getElementById("p_stats").textContent = "Скрыть";
-			}
-			else if(!value)
-			{
-				document.getElementById("div_stats_table").style.display = "none";
-				document.getElementById("div_stats").classList.replace("background", "foreground");
-				document.getElementById("div_stats").classList.replace("bordered", "unbordered");
-				document.getElementById("p_stats").textContent = "Показать";
-			}
-			this.#stats = value;
-		}
-		else
-		{
-			throw new TypeError(typeof(value));
-		}
-	}
-	//#endregion
-}
+var Program = /** @class */ (function () {
+    function Program() {
+    }
+    Object.defineProperty(Program, "WidthCells", {
+        get: function () {
+            return this._WidthCells;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Program, "HeightCells", {
+        get: function () {
+            return this._HeightCells;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Program, "SizeCells", {
+        set: function (Value) {
+            if (this.MinSizeCells <= Value && Value <= this.MaxSizeCells) {
+                this._WidthCells = Value;
+                this._HeightCells = Value;
+                this.Matrix = [];
+                for (var Y = 0; Y < this._HeightCells; Y++) {
+                    this.Matrix[Y] = [];
+                }
+            }
+            else {
+                throw new RangeError(String(Value));
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    //#endregion
+    //#region Functions
+    Program.GenerateBoard = function () {
+        for (var Y = 0; Y < this.HeightCells; Y++) {
+            for (var X = 0; X < this.WidthCells; X++) {
+                var RandomElement = Random.Integer(0, this.FullC);
+                if (RandomElement >= 0 && RandomElement < this.VoidC) {
+                    this.Matrix[Y][X] = new Void(X, Y);
+                }
+                else if (RandomElement >= this.VoidC && RandomElement < this.VoidC + this.GrassC) {
+                    this.Matrix[Y][X] = new Grass(X, Y);
+                }
+                else if (RandomElement >= this.VoidC + this.GrassC && RandomElement < this.VoidC + this.GrassC + this.FireC) {
+                    this.Matrix[Y][X] = new Fire(X, Y);
+                }
+                else if (RandomElement >= this.VoidC + this.GrassC + this.FireC && RandomElement < this.VoidC + this.GrassC + this.FireC + this.WaterC) {
+                    this.Matrix[Y][X] = new Water(X, Y);
+                }
+                else if (RandomElement >= this.VoidC + this.GrassC + this.FireC + this.WaterC && RandomElement < this.VoidC + this.GrassC + this.FireC + this.WaterC + this.LavaC) {
+                    this.Matrix[Y][X] = new Lava(X, Y, 3);
+                }
+                else if (RandomElement >= this.VoidC + this.GrassC + this.FireC + this.WaterC + this.LavaC && RandomElement < this.FullC) {
+                    RandomElement;
+                    this.Matrix[Y][X] = new Ice(X, Y, 3);
+                }
+            }
+        }
+    };
+    Program.DrawElements = function () {
+        var CellWidth = document.getElementById("CanvasProgram").width / Program.WidthCells;
+        var CellHeight = document.getElementById("CanvasProgram").height / Program.HeightCells;
+        for (var Y = 0; Y < Program.HeightCells; Y++) {
+            for (var X = 0; X < Program.WidthCells; X++) {
+                var Element_1 = Program.Matrix[Y][X];
+                if (Element_1 instanceof Void) {
+                    this.Desk.fillStyle = "rgb(225, 225, 225)";
+                    this.Desk.fillRect(X * CellWidth, Y * CellHeight, CellWidth + 1, CellHeight + 1);
+                }
+                else if (Element_1 instanceof Grass) {
+                    this.Desk.fillStyle = "rgb(0, 128, 0)";
+                    this.Desk.fillRect(X * CellWidth, Y * CellHeight, CellWidth + 1, CellHeight + 1);
+                }
+                else if (Element_1 instanceof Fire) {
+                    this.Desk.fillStyle = "rgb(255, 150, 0)";
+                    this.Desk.fillRect(X * CellWidth, Y * CellHeight, CellWidth + 1, CellHeight + 1);
+                }
+                else if (Element_1 instanceof Water) {
+                    this.Desk.fillStyle = "rgb(0, 50, 255)";
+                    this.Desk.fillRect(X * CellWidth, Y * CellHeight, CellWidth + 1, CellHeight + 1);
+                }
+                else if (Element_1 instanceof Lava) {
+                    if (Element_1.Density == 3) {
+                        this.Desk.fillStyle = "rgb(255, 0, 0)";
+                    }
+                    else if (Element_1.Density == 2) {
+                        this.Desk.fillStyle = "rgb(255, 50, 0)";
+                    }
+                    else if (Element_1.Density == 1) {
+                        this.Desk.fillStyle = "rgb(255, 100, 0)";
+                    }
+                    this.Desk.fillRect(X * CellWidth, Y * CellHeight, CellWidth + 1, CellHeight + 1);
+                }
+                else if (Element_1 instanceof Ice) {
+                    if (Element_1.Density == 3) {
+                        this.Desk.fillStyle = "rgb(0, 200, 255)";
+                    }
+                    else if (Element_1.Density == 2) {
+                        this.Desk.fillStyle = "rgb(0, 150, 255)";
+                    }
+                    else if (Element_1.Density == 1) {
+                        this.Desk.fillStyle = "rgb(0, 100, 255)";
+                    }
+                    this.Desk.fillRect(X * CellWidth, Y * CellHeight, CellWidth + 1, CellHeight + 1);
+                }
+            }
+        }
+    };
+    Program.ExecuteFrame = function () {
+        for (var Y = 0; Y < Program.HeightCells; Y++) {
+            for (var X = 0; X < Program.WidthCells; X++) {
+                var Element_2 = Program.Matrix[Y][X];
+                if (Element_2 instanceof Void) {
+                }
+                else if (Element_2 instanceof Grass) {
+                    Element_2.Grow();
+                }
+                else if (Element_2 instanceof Fire) {
+                    Element_2.Burn();
+                    Element_2.Fade();
+                }
+                else if (Element_2 instanceof Water) {
+                    Element_2.Flow();
+                    Element_2.Evaporate();
+                }
+                else if (Element_2 instanceof Lava) {
+                    Element_2.Flow();
+                    Element_2.Burn();
+                    Element_2.Fade();
+                }
+                else if (Element_2 instanceof Ice) {
+                    Element_2.Flow();
+                    Element_2.Melt();
+                    Element_2.Evaporate();
+                }
+            }
+        }
+    };
+    Object.defineProperty(Program, "Execute", {
+        get: function () {
+            return this._Eexecute;
+        },
+        set: function (Value) {
+            if (Value) {
+                document.getElementById("ImagePlay").src = "../Resources/Pause.png";
+                document.getElementById("ImagePlay").alt = "Пауза";
+            }
+            else if (!Value) {
+                document.getElementById("ImagePlay").src = "../Resources/PlayArrow.png";
+                document.getElementById("ImagePlay").alt = "Старт";
+            }
+            this._Eexecute = Value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Program, "Stats", {
+        get: function () {
+            return this._Stats;
+        },
+        set: function (Value) {
+            if (Value) {
+                document.getElementById("DivStats").style.display = "flex";
+                document.getElementById("ButtonStats").classList.replace("Foreground", "Background");
+                document.getElementById("ButtonStats").classList.replace("Unbordered", "Bordered");
+                document.getElementById("TextStats").textContent = "Скрыть";
+            }
+            else if (!Value) {
+                document.getElementById("DivStats").style.display = "none";
+                document.getElementById("ButtonStats").classList.replace("Background", "Foreground");
+                document.getElementById("ButtonStats").classList.replace("Bordered", "Unbordered");
+                document.getElementById("TextStats").textContent = "Показать";
+            }
+            this._Stats = Value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    //#region Canvas
+    Program.Canvas = document.getElementById("CanvasProgram");
+    Program.Desk = document.getElementById("CanvasProgram").getContext("2d");
+    Program.Matrix = [];
+    Program.FramesCount = 60;
+    Program.FullC = 100;
+    Program.GrassC = 4;
+    Program.FireC = 2;
+    Program.WaterC = 2;
+    Program.LavaC = 1;
+    Program.IceC = 1;
+    Program.VoidC = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
+    Program.MinSizeCells = 10;
+    Program.MaxSizeCells = 50;
+    Program._WidthPixels = document.documentElement.clientWidth - 40;
+    Program._HeightPixels = document.getElementById("DivProgram").clientHeight - 20 - document.getElementById("DivProgramContol").scrollHeight;
+    Program.SizePixels = Math.min(Program._WidthPixels, Program._HeightPixels);
+    //#endregion
+    //#region Execute
+    Program._Eexecute = false;
+    //#endregion
+    //#region Stats
+    Program._Stats = true;
+    return Program;
+}());
 //#endregion

@@ -1,51 +1,44 @@
 //#region Random
-class Random
-{
-	static number(min, max)
-	{
-		return parseInt((Math.random() * (max - min) + min));
-	}
-
-	static arrayElement(array)
-	{
-		return array[Random.number(0, array.length)];
-	}
-}
+var Random = /** @class */ (function () {
+    function Random() {
+    }
+    Random.Integer = function (Min, Max) {
+        return parseInt(String(Math.random() * (Max - Min) + Min));
+    };
+    Random.Element = function (array) {
+        return array[Random.Integer(0, array.length)];
+    };
+    return Random;
+}());
 //#endregion
-
-//#region Data
-class Files
-{
-	static #path = "FiveElements.LocalKey.";
-	static save(key, value)
-	{
-		localStorage.setItem(this.#path + key, value);
-	}
-	static load(key, value)
-	{
-		if(localStorage.getItem(this.#path + key) === null)
-		{
-			return value;
-		}
-		else
-		{
-			let value = localStorage.getItem(this.#path + key);
-			//Number Check
-			if(!isNaN(parseInt(value)))
-			{
-				return parseInt(value);
-			}
-			//Boolean Check
-			else if(value === "true" || value === "false")
-			{
-				return (value === "true");
-			}
-			//String Check
-			else
-			{
-				return value;
-			}
-		}
-	}
-}
+//#region Files
+var Files = /** @class */ (function () {
+    function Files() {
+    }
+    Files.Save = function (Key, Value) {
+        window.localStorage.setItem(this._Path + Key, Value);
+    };
+    Files.Load = function (Key, Value) {
+        if (window.localStorage.getItem(this._Path + Key) === null) {
+            return Value;
+        }
+        else {
+            var Value_1 = localStorage.getItem(this._Path + Key);
+            //Number Check
+            if (!isNaN(Number(Value_1))) {
+                return Number(Value_1);
+            }
+            //Boolean Check
+            else if (Value_1 === "true" || Value_1 === "false") {
+                return (Value_1 === "true");
+            }
+            //String Check
+            else {
+                return Value_1;
+            }
+        }
+    };
+    Files._Path = "FiveEelements.LocalKey.";
+    return Files;
+}());
 //#endregion

@@ -1,40 +1,40 @@
 /*------------------------- Texts -------------------------*/
-.title
+.Title
 {
 	font-size: 30px;
 	font-weight: bold;
 }
 
-.subtitle
+.Subtitle
 {
 	font-size: 18px;
 	font-weight: bolder;
 }
 
-.text
+.Text
 {
 	font-size: 14px;
 }
 
-.subtext
+.Subtext
 {
 	font-size: 10px;
 }
 
-.hyperlink
+.Hyperlink
 {
 	text-decoration: none;
 	font-size: 14px;
 }
 
 /*------------------------- Blocks -------------------------*/
-.bordered, .unbordered, ::-webkit-scrollbar, ::-webkit-scrollbar-thumb
+.Bordered, .Unbordered, ::-webkit-scrollbar, ::-webkit-scrollbar-thumb
 {
 	border: 1px solid;
 	border-radius: 6px;
 }
 
-.line
+.Line
 {
 	border-style: solid;
 }
@@ -50,13 +50,13 @@ table tr td
 }
 
 /*------------------------- Interaction -------------------------*/
-.interactive
+.Interactive
 {
 	font-weight: bold;
 	cursor: pointer;
 }
 
-.unavailable
+.Unavailable
 {
 	font-weight: bold;
 	cursor: default;

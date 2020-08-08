@@ -1,82 +1,82 @@
 /*------------------------- Texts -------------------------*/
-.dark .subtitle, .dark .title
+.Dark .Subtitle, .Dark .Title
 {
 	color: rgb(200, 200, 200);
 }
 
-.dark .text, .dark .subtext
+.Dark .Text, .Dark .Subtext
 {
 	color: rgb(150, 150, 150);
 }
 
-.dark .hyperlink
+.Dark .Hyperlink
 {
 	color: rgb(0, 128, 255);
 }
 
 /*------------------------- Blocks -------------------------*/
-.dark .foreground
+.Dark .Foreground
 {
 	background-color: rgb(25, 25, 25);
 }
 
-.dark .background
+.Dark .Background
 {
 	background-color: rgb(50, 50, 50);
 }
 
-.dark .bordered, .dark .line
+.Dark .Bordered, .Dark .Line
 {
 	border-color: rgb(100, 100, 100);
 }
 
-.dark .unbordered
+.Dark .Unbordered
 {
 	border-color: transparent;
 }
 
-.dark .denied
+.Dark .Denied
 {
 	background-color: rgb(255, 100, 100);
 	border-color: rgb(255, 200, 200);
 }
 
 /*------------------------- Resources -------------------------*/
-.dark .resource
+.Dark .Resource
 {
-	filter: invert(0);
+	filter: invert(1);
 }
 
 /*------------------------- Interaction -------------------------*/
-.dark .interactive .text
+.Dark .Interactive .Text
 {
 	color: rgb(200, 200, 200);
 }
 
-.dark .interactive:hover
+.Dark .Interactive:hover
 {
 	filter: invert(0.1);
 }
 
-.dark .unavailable
+.Dark .Unavailable
 {
 	filter: contrast(0.5);
 }
 
-.dark .input
+.Dark .Input
 {
 	caret-color: rgb(200, 200, 200);
 	color: rgb(200, 200, 200);
 }
 
 /*------------------------- Scrollbar -------------------------*/
-.dark ::-webkit-scrollbar
+.Dark ::-webkit-scrollbar
 {
 	background-color: rgb(50, 50, 50);
-	border-color: rgb(100, 100, 100);
+	border-color: transparent;
 }
 
-.dark ::-webkit-scrollbar-thumb
+.Dark ::-webkit-scrollbar-thumb
 {
 	background-color: rgb(25, 25, 25);
 	border-color: rgb(100, 100, 100);

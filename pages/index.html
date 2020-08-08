@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html class="light">
+<html class="Light">
 	<!-------------------- Head --------------------->
 	<head>
-		<title>Five Elements</title>
+		<Title>Five Elements</Title>
 		<meta charset="utf8">
-		<link rel="stylesheet" href="../styles/global.css">
-		<link rel="stylesheet" href="../styles/default.css">
-		<link rel="stylesheet" href="../styles/light.css">
-		<link rel="stylesheet" href="../styles/dark.css">
+		<link rel="stylesheet" href="../Styles/Global.css">
+		<link rel="stylesheet" href="../Styles/Default.css">
+		<link rel="stylesheet" href="../Styles/Light.css">
+		<link rel="stylesheet" href="../Styles/Dark.css">
 	</head>
 	<!-------------------- Body --------------------->
 	<body>
 		<!-------------------- Loading --------------------->
-		<loading class="foreground" id="loading_block" style="
+		<loading class="Foreground" id="DivLoading" style="
 		top: 0px;
 		bottom: 0px;
 		left: 0px;
@@ -24,11 +24,11 @@
 		justify-content: center;
 		flex-direction: column;
 		align-items: center;">
-			<img src="../resources/wap.png" title="Лого" style="
+			<img src="../Resources/Wap.png" Title="Лого" style="
 			width: 300px;
 			height: 300px;">
-			<h2 class="title" style="
-			text-align: center;
+			<h2 class="Title" style="
+			Text-align: center;
 			margin-top: 20px;">
 				Загрузка
 			</h2>
@@ -43,7 +43,7 @@
 		right: 0px;
 		position: fixed">
 			<!-------------------- Header --------------------->
-			<header class="bordered foreground" style="
+			<header class="Bordered Foreground" style="
 			height: 54px;
 			width: 100%;
 			border-radius: 0px;
@@ -55,99 +55,100 @@
 			flex-direction: row;
 			align-items: center;
 			padding: 5px;">
-				<div class="foreground unbordered interactive" id="div_home" style="
+				<div class="Foreground Unbordered Interactive" id="ButtonHome" style="
 				width: 40px;
 				height: 40px;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				margin: 0px 2.5px;">
-					<img src="../resources/home.png" title="Главная" class="resource" style="
+					<img src="../Resources/Home.png" Title="Главная" class="Resource" style="
 					width: 30px;
 					height: 30px;">
 				</div>
-				<div class="foreground unbordered interactive" id="div_settings" style="
+				<div class="Foreground Unbordered Interactive" id="ButtonSettings" style="
 				width: 40px;
 				height: 40px;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				margin: 0px 2.5px;">
-					<img src="../resources/settings.png" title="Настройки" class="resource" style="
+					<img src="../Resources/Settings.png" Title="Настройки" class="Resource" style="
 					width: 30px;
 					height: 30px;">
 				</div>
-				<div class="foreground unbordered interactive" id="div_information" style="
+				<div class="Foreground Unbordered Interactive" id="ButtonInformation" style="
 				width: 40px;
 				height: 40px;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				margin: 0px 2.5px;">
-					<img src="../resources/info.png" title="Информация" class="resource" style="
+					<img src="../Resources/Info.png" Title="Информация" class="Resource" style="
 					width: 30px;
 					height: 30px;">
 				</div>
 			</header>
 			<!-------------------- Container --------------------->
-			<container class="background" style="
+			<container class="Background" style="
 			width: 100%;
 			height: calc(100% - 54px);
 			display: flex;">
 				<!-------------------- Home --------------------->
-				<page id="page_home" style="
+				<home id="PageHome" style="
 				width: 100%;
 				height: 100%;
 				display: flex;
-				justify-content: center;">
+				justify-content: center;
+				position: relative;">
 					<!-------------------- Canvas --------------------->
-					<div class="bordered foreground" id="div_program" style="
+					<div class="Bordered Foreground" id="DivProgram" style="
 					display: flex;
 					flex-direction: column;
 					margin: 10px;
 					padding: 5px;">
-						<canvas id="canvas_program" style="
+						<canvas id="CanvasProgram" style="
 						width: 100%;
 						height: 100%;
 						display: flex;
 						padding: 5px;">
-
+							<!-- Canvas -->
 						</canvas>
-						<div id="div_program_contol" style="
+						<div id="DivProgramContol" style="
 						padding: 5px;
 						display: flex;">
-							<div class="foreground unbordered interactive" id="div_execute" style="
+							<div class="Foreground Unbordered Interactive" id="ButtonExecute" style="
 							width: 40px;
 							height: 40px;
 							display: flex;
 							justify-content: center;
 							align-items: center;
 							margin: 0px 2.5px;">
-								<img src="../resources/play.png" title="Старт" class="resource" id="img_play" style="
+								<img src="../Resources/PlayArrow.png" Title="Старт" class="Resource" id="ImagePlay" style="
 								width: 30px;
 								height: 30px;">
 							</div>
-							<div class="foreground unbordered interactive" id="div_reset" style="
+							<div class="Foreground Unbordered Interactive" id="ButtonReset" style="
 							width: 40px;
 							height: 40px;
 							display: flex;
 							justify-content: center;
 							align-items: center;
 							margin: 0px 2.5px;">
-								<img src="../resources/refresh.png" title="Заново" class="resource" style="
+								<img src="../Resources/Refresh.png" Title="Заново" class="Resource" style="
 								width: 30px;
 								height: 30px;">
 							</div>
 						</div>
 					</div>
 					<!-------------------- Stats --------------------->
-					<div class="bordered foreground" id="div_stats_table" style="
+					<div class="Bordered Foreground" id="DivStats" style="
 					border-top-right-radius: 0px;
 					border-bottom-right-radius: 0px;
 					border-right-width: 0px;
 					position: absolute;
 					margin-top: 10px;
-					display: flex;
+					display: none;
 					padding: 5px;
 					right: 0px;">
 						<table style="
@@ -157,10 +158,10 @@
 
 								</td>
 								<td>
-									<h2 class="subtitle">Элемент</h2>
+									<h2 class="Subtitle">Элемент</h2>
 								</td>
 								<td>
-									<h2 class="subtitle">Количество</h2>
+									<h2 class="Subtitle">Количество</h2>
 								</td>
 							</tr>
 							<tr>
@@ -169,16 +170,16 @@
 									width: 15px;
 									height: 15px;
 									border: 1px solid rgb(150, 150, 150);
-									background-color: rgb(225, 225, 225);">
+									Background-color: rgb(225, 225, 225);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Пустота
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_void_count">
+									<p class="Text" id="TextVoid">
 										0
 									</p>
 								</td>
@@ -189,16 +190,16 @@
 									width: 15px;
 									height: 15px;
 									border: 1px solid rgb(150, 150, 150);
-									background-color: rgb(0, 128, 0);">
+									Background-color: rgb(0, 128, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Трава
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_grass_count">
+									<p class="Text" id="TextGrass">
 										0
 									</p>
 								</td>
@@ -209,16 +210,16 @@
 									width: 15px;
 									height: 15px;
 									border: 1px solid rgb(150, 150, 150);
-									background-color: rgb(255, 150, 0);">
+									Background-color: rgb(255, 150, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Огонь
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_fire_count">
+									<p class="Text" id="TextFire">
 										0
 									</p>
 								</td>
@@ -229,16 +230,16 @@
 									width: 15px;
 									height: 15px;
 									border: 1px solid rgb(150, 150, 150);
-									background-color: rgb(0, 50, 255);">
+									Background-color: rgb(0, 50, 255);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Вода
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_water_count">
+									<p class="Text" id="TextWater">
 										0
 									</p>
 								</td>
@@ -249,16 +250,16 @@
 									width: 15px;
 									height: 15px;
 									border: 1px solid rgb(150, 150, 150);
-									background-color: rgb(255, 0, 0);">
+									Background-color: rgb(255, 0, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лава
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_lava_count">
+									<p class="Text" id="TextLava">
 										0
 									</p>
 								</td>
@@ -269,23 +270,23 @@
 									width: 15px;
 									height: 15px;
 									border: 1px solid rgb(150, 150, 150);
-									background-color: rgb(0, 200, 255);">
+									Background-color: rgb(0, 200, 255);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лёд
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_ice_count">
+									<p class="Text" id="TextIce">
 										0
 									</p>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3">
-									<hr class="line">
+									<hr class="Line">
 								</td>
 							</tr>
 							<tr>
@@ -293,26 +294,26 @@
 									
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Суммарно
 									</p>
 								</td>
 								<td>
-									<p class="text" id="div_all_count">
+									<p class="Text" id="TextAll">
 										0
 									</p>
 								</td>
 							</tr>
 						</table>
 					</div>
-				</page>
+				</home>
 				<!-------------------- Settings --------------------->
-				<page id="page_settings" style="
+				<settings id="PageSettings" style="
 				width: 100%;
 				height: 100%;
 				display: none;
 				justify-content: center;">
-					<div class="bordered foreground" style="
+					<div class="Bordered Foreground" style="
 					max-width: 500px;
 					margin: 10px;
 					padding: 5px;
@@ -320,7 +321,7 @@
 						<table>
 							<tr>
 								<td colspan="2">
-									<h2 class="title">
+									<h2 class="Title">
 										Настройки
 									</h2>
 								</td>
@@ -328,149 +329,149 @@
 							<!-------------------- Interface --------------------->
 							<tr>
 								<td colspan="2">
-									<h2 class="subtitle">
+									<h2 class="Subtitle">
 										Интерфейс
 									</h2>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Тёмная тема
 									</p>
 								</td>
 								<td>
-									<div class="unbordered foreground interactive" id="div_theme" style="
+									<div class="Unbordered Foreground Interactive" id="ButtonTheme" style="
 									padding: 5px;
-									text-align: center;">
-										<p class="text" id="p_theme">Включить</p>
+									Text-align: center;">
+										<p class="Text" id="TextTheme">Включить</p>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Панель статистики
 									</p>
 								</td>
 								<td>
-									<div class="unbordered foreground interactive" id="div_stats" style="
+									<div class="Unbordered Foreground Interactive" id="ButtonStats" style="
 									padding: 5px;
-									text-align: center;">
-										<p class="text" id="p_stats">Скрыть</p>
+									Text-align: center;">
+										<p class="Text" id="TextStats">Скрыть</p>
 									</div>
 								</td>
 							</tr>
 							<!-------------------- Line --------------------->
 							<tr>
 								<td colspan="2">
-									<hr class="line">
+									<hr class="Line">
 								</td>
 							</tr>
 							<!-------------------- Game --------------------->
 							<tr>
 								<td colspan="2">
-									<h2 class="subtitle">
+									<h2 class="Subtitle">
 										Игра
 									</h2>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Ширина и высота
 									</p>
 								</td>
 								<td>
-									<input type="text" class="bordered background interactive input" id="input_size" style="
+									<input type="Text" class="Bordered Background Interactive Input" id="InputSize" style="
 									padding: 5px;">
 								</td>
 							</tr>
 							<!-------------------- Line --------------------->
 							<tr>
 								<td colspan="2">
-									<hr class="line">
+									<hr class="Line">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Процент пустоты
 									</p>
-									<p class="subtext">
+									<p class="Subtext">
 										Процент пустоты меняется в зависимости от остальных элементов и не может быть ниже нуля.
 									</p>
 								</td>
 								<td>
-									<input type="text" disabled="" class="bordered background input unavailable" id="input_voidC" style="
+									<input type="Text" disabled="" class="Bordered Background Input Unavailable" id="InputVoidC" style="
 									padding: 5px;">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Процент травы
 									</p>
 								</td>
 								<td>
-									<input type="text" class="bordered background interactive input" id="input_grassC" style="
+									<input type="Text" class="Bordered Background Interactive Input" id="InputGrassC" style="
 									padding: 5px;">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Процент огня
 									</p>
 								</td>
 								<td>
-									<input type="text" class="bordered background interactive input" id="input_fireC" style="
+									<input type="Text" class="Bordered Background Interactive Input" id="InputFireC" style="
 									padding: 5px;">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Процент воды
 									</p>
 								</td>
 								<td>
-									<input type="text" class="bordered background interactive input" id="input_waterC" style="
+									<input type="Text" class="Bordered Background Interactive Input" id="InputWaterC" style="
 									padding: 5px;">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Процент лавы
 									</p>
 								</td>
 								<td>
-									<input type="text" class="bordered background interactive input" id="input_lavaC" style="
+									<input type="Text" class="Bordered Background Interactive Input" id="InputLavaC" style="
 									padding: 5px;">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Процент льда
 									</p>
 								</td>
 								<td>
-									<input type="text" class="bordered background interactive input" id="input_iceC" style="
+									<input type="Text" class="Bordered Background Interactive Input" id="InputIceC" style="
 									padding: 5px;">
 								</td>
 							</tr>
 						</table>
 					</div>
-				</page>
+				</settings>
 				<!-------------------- information --------------------->
-				<page id="page_information" style="
+				<information id="PageInformation" style="
 				width: 100%;
 				height: 100%;
 				display: none;
 				justify-content: center;">
-					<div class="bordered foreground center scrolled" style="
+					<div class="Bordered Foreground" style="
 					max-width: 500px;
 					margin: 10px;
 					padding: 5px;
@@ -478,7 +479,7 @@
 						<table>
 							<tr>
 								<td colspan="2">
-									<h2 class="title">
+									<h2 class="Title">
 										Информация
 									</h2>
 								</td>
@@ -486,7 +487,7 @@
 							<!-------------------- Reference --------------------->
 							<tr>
 								<td colspan="2">
-									<h2 class="subtitle">
+									<h2 class="Subtitle">
 										Справка
 									</h2>
 								</td>
@@ -497,11 +498,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(225, 225, 225);">
+										Background-color: rgb(225, 225, 225);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Пустота.<br>
 										Нет особых функций. 
 									</p>
@@ -513,11 +514,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(0, 128, 0);">
+										Background-color: rgb(0, 128, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Трава.<br>
 										Растёт по пустоте в рандомном направлении.
 									</p>
@@ -529,11 +530,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(255, 150, 0);">
+										Background-color: rgb(255, 150, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Огонь.<br>
 										Сжигает ближайшую траву. Не находив траву поблизости некоторое время, угасает.
 									</p>
@@ -545,11 +546,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(0, 50, 255);">
+										Background-color: rgb(0, 50, 255);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Вода.<br>
 										Течёт в рандомном направлении по пустоте. При контакте с огнём тушит огонь, а сама испаряется.
 									</p>
@@ -561,11 +562,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(255, 0, 0);">
+										Background-color: rgb(255, 0, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лава с высокой плотностью.<br>
 										Течёт в рандомном направлении по пустоте, но кажый следующий блок имеет более низкую плотность. Сжигает траву поблизости. При контакте с водой теряет плотнось, а вода испаряется.
 									</p>
@@ -577,11 +578,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(255, 50, 0);">
+										Background-color: rgb(255, 50, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лава с средней плотностью.<br>
 										Течёт в рандомном направлении по пустоте, но кажый следующий блок имеет более низкую плотность. Сжигает траву поблизости. При контакте с водой теряет плотнось, а вода испаряется.
 									</p>
@@ -593,11 +594,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(255, 100, 0);">
+										Background-color: rgb(255, 100, 0);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лава с низкой плотностью.<br>
 										Не может распространяться дальше. Сжигает траву поблизости. При контакте с водой испаряются, как вода, так и лава.
 									</p>
@@ -609,11 +610,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(0, 200, 255);">
+										Background-color: rgb(0, 200, 255);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лёд с высокой плотностью.<br>
 										Замораживает пустоту, но кажый следующий блок имеет более низкую плотность. При контакте с огнём тушит огонь и теряет плотность. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
 									</p>
@@ -625,11 +626,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(0, 150, 255);">
+										Background-color: rgb(0, 150, 255);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лёд с средней плотностью.<br>
 										Замораживает пустоту, но кажый следующий блок имеет более низкую плотность. При контакте с огнём тушит огонь и теряет плотность. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
 									</p>
@@ -641,11 +642,11 @@
 										width: 15px;
 										height: 15px;
 										border: 1px solid rgb(150, 150, 150);
-										background-color: rgb(0, 100, 255);">
+										Background-color: rgb(0, 100, 255);">
 									</div>
 								</td>
 								<td>
-									<p class="text">
+									<p class="Text">
 										Лёд с низкой плотностью.<br>
 										Не может замораживать дальше. При контакте с огнём тушит огонь и превращается в воду. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
 									</p>
@@ -654,59 +655,58 @@
 							<!-------------------- Line --------------------->
 							<tr>
 								<td colspan="2">
-									<hr class="line">
+									<hr class="Line">
 								</td>
 							</tr>
 							<!-------------------- Contact --------------------->
 							<tr>
 								<td colspan="2">
-									<h2 class="subtitle">
+									<h2 class="Subtitle">
 										Связь
 									</h2>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
-									<p class="text">
-										GitHub: <a href="https://github.com/Eccs0103" target="blank" class="hyperlink">github.com/Eccs0103</a><br>
-										Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="hyperlink">eccs0103@gmail.com</a><br>
+									<p class="Text">
+										GitHub: <a href="https://github.com/Eccs0103" target="blank" class="Hyperlink">github.com/Eccs0103</a><br>
+										Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="Hyperlink">eccs0103@gmail.com</a><br>
 									</p>
 								</td>
 							</tr>
 							<!-------------------- Line --------------------->
 							<tr>
 								<td colspan="2">
-									<hr class="line">
+									<hr class="Line">
 								</td>
 							</tr>
 							<!-------------------- Resources --------------------->
 							<tr>
 								<td colspan="2">
-									<h2 class="subtitle">
+									<h2 class="Subtitle">
 										Ресурсы
 									</h2>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
-									<p class="text">
-										Иконки: <a href="https://material.io/resources/icons/?style=baseline" target="blank" class="hyperlink ">material.io</a>
+									<p class="Text">
+										Иконки: <a href="https://material.io/Resources/icons/?style=baseLine" target="blank" class="Hyperlink ">material.io</a>
 									</p>
 								</td>
 							</tr>
 						</table>
 					</div>
-				</page>
+				</information>
 			</container>
 		</workspace>
 	</body>
 	<!-------------------- Scripts --------------------->
 	<object>
-		<script type="text/javascript" src="../scripts/functions.js"></script>
-		<script type="text/javascript" src="../scripts/classes.js"></script>
-		<script type="text/javascript" src="../scripts/data.js"></script>
-		<script type="text/javascript" src="../scripts/initialize.js"></script>
-		<script type="text/javascript" src="../scripts/events.js"></script>
+		<script type="Text/javascript" src="../Scripts/Functions.js"></script>
+		<script type="Text/javascript" src="../Scripts/Classes.js"></script>
+		<script type="Text/javascript" src="../Scripts/Data.js"></script>
+		<script type="Text/javascript" src="../Scripts/Initialize.js"></script>
+		<script type="Text/javascript" src="../Scripts/Events.js"></script>
 	</object>
 </html>
-<!--------------------  --------------------->
