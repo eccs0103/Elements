@@ -1,0 +1,63 @@
+/*------------------------- Texts -------------------------*/
+.Title
+{
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.Subtitle
+{
+	font-size: 18px;
+	font-weight: bolder;
+}
+
+.Text
+{
+	font-size: 14px;
+}
+
+.Subtext
+{
+	font-size: 10px;
+}
+
+.Hyperlink
+{
+	text-decoration: none;
+	font-size: 14px;
+}
+
+/*------------------------- Blocks -------------------------*/
+.Bordered, .Unbordered, ::-webkit-scrollbar, ::-webkit-scrollbar-thumb
+{
+	border: 1px solid;
+	border-radius: 6px;
+}
+
+.Line
+{
+	border-style: solid;
+}
+
+::-webkit-scrollbar, ::-webkit-scrollbar-thumb
+{
+	width: 12px;
+}
+
+table tr td
+{
+	padding: 2.5px;
+}
+
+/*------------------------- Interaction -------------------------*/
+.Interactive
+{
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.Unavailable
+{
+	font-weight: bold;
+	cursor: default;
+}

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html class="Light">
+	<!-------------------- Head --------------------->
+	<head>
+		<Title>Five Elements</Title>
+		<meta charset="utf8">
+		<link rel="stylesheet" href="../Styles/Global.css">
+		<link rel="stylesheet" href="../Styles/Default.css">
+		<link rel="stylesheet" href="../Styles/Light.css">
+		<link rel="stylesheet" href="../Styles/Dark.css">
+	</head>
+	<!-------------------- Body --------------------->
+	<body>
+		<!-------------------- Loading --------------------->
+		<loading class="Foreground" id="DivLoading" style="
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		position: fixed;
+		z-index: 999;
+		visibility: visible;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;">
+			<img src="../Resources/Wap.png" Title="Лого" style="
+			width: 300px;
+			height: 300px;">
+			<h2 class="Title" style="
+			Text-align: center;
+			margin-top: 20px;">
+				Загрузка
+			</h2>
+		</loading>
+		<!-------------------- Workspace --------------------->
+		<workspace style="
+		display: flex;
+		flex-direction: column;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		position: fixed">
+			<!-------------------- Header --------------------->
+			<header class="Bordered Foreground" style="
+			height: 54px;
+			width: 100%;
+			border-radius: 0px;
+			border-left-color: rgba(0, 0, 0, 0);
+			border-top-color: rgba(0, 0, 0, 0);
+			border-right-color: rgba(0, 0, 0, 0);
+			display: flex;
+			justify-content: flex-start;
+			flex-direction: row;
+			align-items: center;
+			padding: 5px;">
+				<div class="Foreground Unbordered Interactive" id="ButtonHome" style="
+				width: 40px;
+				height: 40px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0px 2.5px;">
+					<img src="../Resources/Home.png" Title="Главная" class="Resource" style="
+					width: 30px;
+					height: 30px;">
+				</div>
+				<div class="Foreground Unbordered Interactive" id="ButtonSettings" style="
+				width: 40px;
+				height: 40px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0px 2.5px;">
+					<img src="../Resources/Settings.png" Title="Настройки" class="Resource" style="
+					width: 30px;
+					height: 30px;">
+				</div>
+				<div class="Foreground Unbordered Interactive" id="ButtonInformation" style="
+				width: 40px;
+				height: 40px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0px 2.5px;">
+					<img src="../Resources/Info.png" Title="Информация" class="Resource" style="
+					width: 30px;
+					height: 30px;">
+				</div>
+			</header>
+			<!-------------------- Container --------------------->
+			<container class="Background" style="
+			width: 100%;
+			height: calc(100% - 54px);
+			display: flex;">
+				<!-------------------- Home --------------------->
+				<home id="PageHome" style="
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				position: relative;">
+					<!-------------------- Canvas --------------------->
+					<div class="Bordered Foreground" id="DivProgram" style="
+					display: flex;
+					flex-direction: column;
+					margin: 10px;
+					padding: 5px;">
+						<canvas id="CanvasProgram" style="
+						width: 100%;
+						height: 100%;
+						display: flex;
+						padding: 5px;">
+							<!-- Canvas -->
+						</canvas>
+						<div id="DivProgramContol" style="
+						padding: 5px;
+						display: flex;">
+							<div class="Foreground Unbordered Interactive" id="ButtonExecute" style="
+							width: 40px;
+							height: 40px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							margin: 0px 2.5px;">
+								<img src="../Resources/PlayArrow.png" Title="Старт" class="Resource" id="ImagePlay" style="
+								width: 30px;
+								height: 30px;">
+							</div>
+							<div class="Foreground Unbordered Interactive" id="ButtonReset" style="
+							width: 40px;
+							height: 40px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							margin: 0px 2.5px;">
+								<img src="../Resources/Refresh.png" Title="Заново" class="Resource" style="
+								width: 30px;
+								height: 30px;">
+							</div>
+						</div>
+					</div>
+					<!-------------------- Stats --------------------->
+					<div class="Bordered Foreground" id="DivStats" style="
+					border-top-right-radius: 0px;
+					border-bottom-right-radius: 0px;
+					border-right-width: 0px;
+					position: absolute;
+					margin-top: 10px;
+					display: none;
+					padding: 5px;
+					right: 0px;">
+						<table style="
+						padding: 5px;">
+							<tr>
+								<td>
+
+								</td>
+								<td>
+									<h2 class="Subtitle">Элемент</h2>
+								</td>
+								<td>
+									<h2 class="Subtitle">Количество</h2>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									Background-color: rgb(225, 225, 225);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Пустота
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextVoid">
+										0
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									Background-color: rgb(0, 128, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Трава
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextGrass">
+										0
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									Background-color: rgb(255, 150, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Огонь
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextFire">
+										0
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									Background-color: rgb(0, 50, 255);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Вода
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextWater">
+										0
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									Background-color: rgb(255, 0, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лава
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextLava">
+										0
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+									width: 15px;
+									height: 15px;
+									border: 1px solid rgb(150, 150, 150);
+									Background-color: rgb(0, 200, 255);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лёд
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextIce">
+										0
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<hr class="Line">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									<p class="Text">
+										Суммарно
+									</p>
+								</td>
+								<td>
+									<p class="Text" id="TextAll">
+										0
+									</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</home>
+				<!-------------------- Settings --------------------->
+				<settings id="PageSettings" style="
+				width: 100%;
+				height: 100%;
+				display: none;
+				justify-content: center;">
+					<div class="Bordered Foreground" style="
+					max-width: 500px;
+					margin: 10px;
+					padding: 5px;
+					overflow-y: auto;">
+						<table>
+							<tr>
+								<td colspan="2">
+									<h2 class="Title">
+										Настройки
+									</h2>
+								</td>
+							</tr>
+							<!-------------------- Interface --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Интерфейс
+									</h2>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Тёмная тема
+									</p>
+								</td>
+								<td>
+									<div class="Unbordered Foreground Interactive" id="ButtonTheme" style="
+									padding: 5px;
+									Text-align: center;">
+										<p class="Text" id="TextTheme">Включить</p>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Панель статистики
+									</p>
+								</td>
+								<td>
+									<div class="Unbordered Foreground Interactive" id="ButtonStats" style="
+									padding: 5px;
+									Text-align: center;">
+										<p class="Text" id="TextStats">Скрыть</p>
+									</div>
+								</td>
+							</tr>
+							<!-------------------- Line --------------------->
+							<tr>
+								<td colspan="2">
+									<hr class="Line">
+								</td>
+							</tr>
+							<!-------------------- Game --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Игра
+									</h2>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Ширина и высота
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputSize" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<!-------------------- Line --------------------->
+							<tr>
+								<td colspan="2">
+									<hr class="Line">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Процент пустоты
+									</p>
+									<p class="Subtext">
+										Процент пустоты меняется в зависимости от остальных элементов и не может быть ниже нуля.
+									</p>
+								</td>
+								<td>
+									<input type="Text" disabled="" class="Bordered Background Input Unavailable" id="InputVoidC" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Процент травы
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputGrassC" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Процент огня
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputFireC" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Процент воды
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputWaterC" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Процент лавы
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputLavaC" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Процент льда
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputIceC" style="
+									padding: 5px;">
+								</td>
+							</tr>
+						</table>
+					</div>
+				</settings>
+				<!-------------------- information --------------------->
+				<information id="PageInformation" style="
+				width: 100%;
+				height: 100%;
+				display: none;
+				justify-content: center;">
+					<div class="Bordered Foreground" style="
+					max-width: 500px;
+					margin: 10px;
+					padding: 5px;
+					overflow-y: auto;">
+						<table>
+							<tr>
+								<td colspan="2">
+									<h2 class="Title">
+										Информация
+									</h2>
+								</td>
+							</tr>
+							<!-------------------- Reference --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Справка
+									</h2>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(225, 225, 225);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Пустота.<br>
+										Нет особых функций. 
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(0, 128, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Трава.<br>
+										Растёт по пустоте в рандомном направлении.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(255, 150, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Огонь.<br>
+										Сжигает ближайшую траву. Не находив траву поблизости некоторое время, угасает.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(0, 50, 255);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Вода.<br>
+										Течёт в рандомном направлении по пустоте. При контакте с огнём тушит огонь, а сама испаряется.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(255, 0, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лава с высокой плотностью.<br>
+										Течёт в рандомном направлении по пустоте, но кажый следующий блок имеет более низкую плотность. Сжигает траву поблизости. При контакте с водой теряет плотнось, а вода испаряется.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(255, 50, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лава с средней плотностью.<br>
+										Течёт в рандомном направлении по пустоте, но кажый следующий блок имеет более низкую плотность. Сжигает траву поблизости. При контакте с водой теряет плотнось, а вода испаряется.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(255, 100, 0);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лава с низкой плотностью.<br>
+										Не может распространяться дальше. Сжигает траву поблизости. При контакте с водой испаряются, как вода, так и лава.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(0, 200, 255);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лёд с высокой плотностью.<br>
+										Замораживает пустоту, но кажый следующий блок имеет более низкую плотность. При контакте с огнём тушит огонь и теряет плотность. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(0, 150, 255);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лёд с средней плотностью.<br>
+										Замораживает пустоту, но кажый следующий блок имеет более низкую плотность. При контакте с огнём тушит огонь и теряет плотность. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="
+										width: 15px;
+										height: 15px;
+										border: 1px solid rgb(150, 150, 150);
+										Background-color: rgb(0, 100, 255);">
+									</div>
+								</td>
+								<td>
+									<p class="Text">
+										Лёд с низкой плотностью.<br>
+										Не может замораживать дальше. При контакте с огнём тушит огонь и превращается в воду. При контакте с лавой оба теряют плотность до сих пор пока один из них не исчезнет.
+									</p>
+								</td>
+							</tr>
+							<!-------------------- Line --------------------->
+							<tr>
+								<td colspan="2">
+									<hr class="Line">
+								</td>
+							</tr>
+							<!-------------------- Contact --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Связь
+									</h2>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p class="Text">
+										GitHub: <a href="https://github.com/Eccs0103" target="blank" class="Hyperlink">github.com/Eccs0103</a><br>
+										Gmail: <a href="https://mail.google.com/mail/u/0/view=cm&fs=1&tf=1&source=mailto&to=ec.cs.0103@gmail.com" target="blank" class="Hyperlink">eccs0103@gmail.com</a><br>
+									</p>
+								</td>
+							</tr>
+							<!-------------------- Line --------------------->
+							<tr>
+								<td colspan="2">
+									<hr class="Line">
+								</td>
+							</tr>
+							<!-------------------- Resources --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Ресурсы
+									</h2>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p class="Text">
+										Иконки: <a href="https://material.io/Resources/icons/?style=baseLine" target="blank" class="Hyperlink ">material.io</a>
+									</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</information>
+			</container>
+		</workspace>
+	</body>
+	<!-------------------- Scripts --------------------->
+	<object>
+		<script type="Text/javascript" src="../Scripts/Functions.js"></script>
+		<script type="Text/javascript" src="../Scripts/Classes.js"></script>
+		<script type="Text/javascript" src="../Scripts/Data.js"></script>
+		<script type="Text/javascript" src="../Scripts/Initialize.js"></script>
+		<script type="Text/javascript" src="../Scripts/Events.js"></script>
+	</object>
+</html>
