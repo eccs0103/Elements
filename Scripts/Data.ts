@@ -2,15 +2,20 @@
 class Interface
 {
 	//#region Loading
-	private static _LoadingTime = 0.5;
-	public static get LoadingTime()
+	private static _LoadingTime: number;
+	public static get LoadingTime(): number
 	{
 		return this._LoadingTime;
 	} 
+	public static set LoadingTime(Value: number)
+	{
+		this._LoadingTime = Value;
+		Files.Save("Interface.LoadingTime", this._LoadingTime);
+	}
 	//#endregion
 
 	//#region Theme
-	private static _DarkTheme = false;
+	private static _DarkTheme: boolean;
 	public static get DarkTheme(): boolean
 	{
 		return this._DarkTheme;
@@ -32,6 +37,7 @@ class Interface
 			document.getElementById("TextTheme").textContent = "Включить";
 		}
 		this._DarkTheme = Value;
+		Files.Save("Interface.DarkTheme", this._DarkTheme);
 	}
 	//#endregion
 }
@@ -50,7 +56,7 @@ class Navigate
 	//#endregion
 
 	//#region Id
-	private static _Id = 0;
+	private static _Id: number;
 	public static get Id(): number
 	{
 		return this._Id;
@@ -75,6 +81,7 @@ class Navigate
 			this._List[Value][1].classList.replace("Foreground", "Background");
 			this._List[Value][1].classList.replace("Unbordered", "Bordered");
 			this._Id = Value;
+			Files.Save("Navigate.Id", this._Id);
 		}
 		else
 		{
@@ -88,50 +95,57 @@ class Navigate
 //#region Program
 class Program
 {
-	//#region Canvas
+	//#region Elements
 	public static Canvas = document.getElementById("CanvasProgram");
 	public static Desk = document.getElementById("CanvasProgram").getContext("2d");
+	//#endregion
 
+	//#region Matrix
 	public static Matrix: any[][] = [];
+	//#endregion
 
-	public static FramesCount: number = 60;
-
-	public static FullC: number = 100;
-	public static GrassC: number = 4;
-	public static FireC: number = 2;
-	public static WaterC: number = 2;
-	public static LavaC: number = 1;
-	public static IceC: number = 1;
-	public static VoidC: number = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
+	//#region Frames Count
+	private static _FramesCount: number;
+	private static _MinFramesCount: number = 30;
+	private static _MaxFramesCount: number = 120;
+	public static get FramesCount(): number
+	{
+		return this._FramesCount;
+	}
+	public static set FramesCount(Value: number)
+	{
+		if(this._MinFramesCount <= Value && Value <= this._MaxFramesCount)
+		{
+			this._FramesCount = Value;
+			Files.Save("Program.FramesCount", this._FramesCount);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
 	//#endregion
 
 	//#region Size
 	private static _WidthCells: number;
+	private static _MinWidthCells: number = 10;
+	private static _MaxWidthCells: number = 50;
 	public static get WidthCells(): number
 	{
 		return this._WidthCells;
 	}
-
-	private static _HeightCells: number;
-	public static get HeightCells(): number
+	public static set WidthCells(Value: number)
 	{
-		return this._HeightCells;
-	}
-
-	public static MinSizeCells: number = 10;
-	public static MaxSizeCells: number = 50;
-	public static set SizeCells(Value: number)
-	{
-		if(this.MinSizeCells <= Value && Value <= this.MaxSizeCells)
+		if(this._MinWidthCells <= Value && Value <= this._MaxWidthCells)
 		{
 			this._WidthCells = Value;
-			this._HeightCells = Value;
 
 			this.Matrix = [];
 			for (let Y = 0; Y < this._HeightCells; Y++)
 			{
 				this.Matrix[Y] = [];
 			}
+			Files.Save("Program.WidthCells", this._WidthCells);
 		}
 		else
 		{
@@ -139,6 +153,34 @@ class Program
 		}
 	}
 
+	private static _HeightCells: number;
+	private static _MinHeightCells: number = 10;
+	private static _MaxHeightCells: number = 50;
+	public static get HeightCells(): number
+	{
+		return this._HeightCells;
+	}
+	public static set HeightCells(Value: number)
+	{
+		if(this._MinHeightCells <= Value && Value <= this._MaxHeightCells)
+		{
+			this._HeightCells = Value;
+
+			this.Matrix = [];
+			for (let Y = 0; Y < this._HeightCells; Y++)
+			{
+				this.Matrix[Y] = [];
+			}
+			Files.Save("Program.HeightCells", this._HeightCells);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	//#endregion
+
+	//#region Resolution
 	private static _WidthPixels: number = document.documentElement.clientWidth - 40;
 	private static _HeightPixels: number = document.getElementById("DivProgram").clientHeight - 20 - document.getElementById("DivProgramContol").scrollHeight;
 	public static SizePixels: number = Math.min
@@ -146,6 +188,79 @@ class Program
 		Program._WidthPixels,
 		Program._HeightPixels
 	);
+	//#endregion
+
+	//#region Coefficents
+	private static _FullC: number = 100;
+	public static get FullC(): number
+	{
+		return this._FullC;
+	}
+
+	private static _VoidC: number;
+	public static get VoidC(): number
+	{
+		return this._VoidC;
+	}
+
+	private static _GrassC: number;
+	public static get GrassC(): number
+	{
+		return this._GrassC;
+	}
+
+	private static _FireC: number;
+	public static get FireC(): number
+	{
+		return this._FireC;
+	}
+
+	private static _WaterC: number;
+	public static get WaterC(): number
+	{
+		return this._WaterC;
+	}
+
+	private static _LavaC: number;
+	public static get LavaC(): number
+	{
+		return this._LavaC;
+	}
+
+	private static _IceC: number;
+	public static get IceC(): number
+	{
+		return this._IceC;
+	}
+
+	public static Coefficents(GrassC: number, FireC: number, WaterC: number, LavaC: number, IceC: number)
+	{
+		let TotalC: number = GrassC + FireC + WaterC + LavaC + IceC;
+		if(0 <= TotalC && TotalC <= this._FullC)
+		{
+			this._VoidC = this._FullC - TotalC;
+			this._GrassC = GrassC;
+			this._FireC = FireC;
+			this._WaterC = WaterC;
+			this._LavaC = LavaC;
+			this._IceC = IceC;
+
+			this.Execute = false;
+			this.GenerateBoard();
+			this.DrawElements();
+
+			Files.Save("Program.VoidC", this._VoidC);
+			Files.Save("Program.GrassC", this._GrassC);
+			Files.Save("Program.FireC", this._FireC);
+			Files.Save("Program.WaterC", this._WaterC);
+			Files.Save("Program.LavaC", this._LavaC);
+			Files.Save("Program.IceC", this._IceC);
+		}
+		else
+		{
+			throw new RangeError(String(GrassC + ", " + FireC + ", " + WaterC + ", " + LavaC + ", " + IceC));
+		}
+	}
 	//#endregion
 
 	//#region Functions
@@ -315,7 +430,7 @@ class Program
 	//#endregion
 
 	//#region Stats
-	private static _Stats = true;
+	private static _Stats: boolean = true;
 	public static get Stats(): boolean
 	{
 		return this._Stats;
@@ -337,7 +452,85 @@ class Program
 			document.getElementById("TextStats").textContent = "Показать";
 		}
 		this._Stats = Value;
+		Files.Save("Program.Stats", this._Stats);
 	}
 	//#endregion
+}
+//#endregion
+
+//#region Default
+class Default
+{
+	private static _LoadingTime: number = 0.5;
+	public static get LoadingTime(): number
+	{
+		return this._LoadingTime;
+	}
+
+	private static _DarkTheme: boolean = false;
+	public static get DarkTheme(): boolean
+	{
+		return this._DarkTheme;
+	}
+
+	private static _NavigateId: number = 0;
+	public static get NavigateId(): number
+	{
+		return this._NavigateId;
+	}
+
+	private static _WidthCells: number = 25;
+	public static get WidthCells(): number
+	{
+		return this._WidthCells;
+	}
+
+	private static _HeightCells: number = 25;
+	public static get HeightCells(): number
+	{
+		return this._HeightCells;
+	}
+
+	private static _FramesCount: number = 60;
+	public static get FramesCount(): number
+	{
+		return this._FramesCount;
+	}
+
+	private static _Stats: boolean = false;
+	public static get Stats(): boolean
+	{
+		return this._Stats;
+	}
+
+	private static _GrassC: number = 4;
+	public static get GrassC(): number
+	{
+		return this._GrassC;
+	}
+
+	private static _FireC: number = 2;
+	public static get FireC(): number
+	{
+		return this._FireC;
+	}
+
+	private static _WaterC: number = 2;
+	public static get WaterC(): number
+	{
+		return this._WaterC;
+	}
+
+	private static _LavaC: number = 1;
+	public static get LavaC(): number
+	{
+		return this._LavaC;
+	}
+
+	private static _IceC: number = 1;
+	public static get IceC(): number
+	{
+		return this._IceC;
+	}
 }
 //#endregion

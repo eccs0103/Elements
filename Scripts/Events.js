@@ -1,15 +1,20 @@
 //#region Navigation
 document.getElementById("ButtonHome").addEventListener("click", function (Event) {
     Navigate.Id = 0;
-    Files.Save("Navigate.Id", Navigate.Id);
 });
 document.getElementById("ButtonSettings").addEventListener("click", function (Event) {
     Navigate.Id = 1;
-    Files.Save("Navigate.Id", Navigate.Id);
 });
 document.getElementById("ButtonInformation").addEventListener("click", function (Event) {
     Navigate.Id = 2;
-    Files.Save("Navigate.Id", Navigate.Id);
+});
+//#endregion
+//#region Interface
+document.getElementById("ButtonTheme").addEventListener("click", function (Event) {
+    Interface.DarkTheme = !Interface.DarkTheme;
+});
+document.getElementById("ButtonStats").addEventListener("click", function (Event) {
+    Program.Stats = !Program.Stats;
 });
 //#endregion
 //#region Program
@@ -20,155 +25,92 @@ document.getElementById("ButtonReset").addEventListener("click", function (Event
     Program.GenerateBoard();
     Program.DrawElements();
 });
-//#endregion
-//#region Settings
-document.getElementById("ButtonTheme").addEventListener("click", function (Event) {
-    Interface.DarkTheme = !Interface.DarkTheme;
-    Files.Save("Interface.DarkTheme", Interface.DarkTheme);
-});
-document.getElementById("ButtonStats").addEventListener("click", function (Event) {
-    Program.Stats = !Program.Stats;
-    Files.Save("Program.Stats", Program.Stats);
-});
 document.getElementById("InputSize").addEventListener("input", function (Event) {
     var InputField = Event.target;
     InputField.value = InputField.value.replace(/[^0-9]/g, "");
     var Value = Number(InputField.value);
-    if (Value >= Program.MinSizeCells &&
-        Value <= Program.MaxSizeCells) {
-        if (InputField.classList.contains("Denied")) {
-            InputField.classList.replace("Denied", "Background");
-        }
-        Program.SizeCells = Value;
-        Files.Save("Program.Size", Value);
+    try {
+        Program.WidthCells = Value;
+        Program.HeightCells = Value;
         Program.Execute = false;
         Program.GenerateBoard();
         Program.DrawElements();
+        if (InputField.classList.contains("Denied")) {
+            InputField.classList.replace("Denied", "Background");
+        }
     }
-    else {
+    catch (_a) {
         if (InputField.classList.contains("Background")) {
             InputField.classList.replace("Background", "Denied");
         }
     }
 });
-document.getElementById("InputGrassC").addEventListener("input", function (Event) {
+document.getElementById("InputFramesCount").addEventListener("input", function (Event) {
     var InputField = Event.target;
     InputField.value = InputField.value.replace(/[^0-9]/g, "");
     var Value = Number(InputField.value);
-    if (Value >= 0 &&
-        Value + Program.FireC + Program.WaterC + Program.LavaC + Program.IceC <= Program.FullC) {
+    try {
+        Program.FramesCount = Value;
+        // Program.Execute = false;
+        // Program.GenerateBoard();
+        // Program.DrawElements();
         if (InputField.classList.contains("Denied")) {
             InputField.classList.replace("Denied", "Background");
         }
-        Program.GrassC = Value;
-        Files.Save("Program.GrassC", Value);
-        Program.VoidC = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
-        Files.Save("Program.VoidC", Program.VoidC);
-        document.getElementById("InputVoidC").value = Program.VoidC;
-        Program.Execute = false;
-        Program.GenerateBoard();
-        Program.DrawElements();
     }
-    else {
+    catch (_a) {
         if (InputField.classList.contains("Background")) {
             InputField.classList.replace("Background", "Denied");
         }
     }
 });
-document.getElementById("InputFireC").addEventListener("input", function (Event) {
-    var InputField = Event.target;
-    InputField.value = InputField.value.replace(/[^0-9]/g, "");
-    var Value = Number(InputField.value);
-    if (Value >= 0 &&
-        Value + Program.GrassC + Program.WaterC + Program.LavaC + Program.IceC <= Program.FullC) {
-        if (InputField.classList.contains("Denied")) {
-            InputField.classList.replace("Denied", "Background");
+//#endregion
+//#region Coefficents
+var InputCoefficentsList = [
+    document.getElementById("InputGrassC"),
+    document.getElementById("InputFireC"),
+    document.getElementById("InputWaterC"),
+    document.getElementById("InputLavaC"),
+    document.getElementById("InputIceC"),
+];
+var _loop_1 = function (Index) {
+    var InputCoefficent = InputCoefficentsList[Index];
+    InputCoefficent.addEventListener("input", function (Event) {
+        var InputField = Event.target;
+        InputField.value = InputField.value.replace(/[^0-9]/g, "");
+        var Value = Number(InputField.value);
+        try {
+            if (Index === 0) {
+                Program.Coefficents(Value, Program.FireC, Program.WaterC, Program.LavaC, Program.IceC);
+            }
+            else if (Index === 1) {
+                Program.Coefficents(Program.GrassC, Value, Program.WaterC, Program.LavaC, Program.IceC);
+            }
+            else if (Index === 2) {
+                Program.Coefficents(Program.GrassC, Program.FireC, Value, Program.LavaC, Program.IceC);
+            }
+            else if (Index === 3) {
+                Program.Coefficents(Program.GrassC, Program.FireC, Program.WaterC, Value, Program.IceC);
+            }
+            else if (Index === 4) {
+                Program.Coefficents(Program.GrassC, Program.FireC, Program.WaterC, Program.LavaC, Value);
+            }
+            document.getElementById("InputVoidC").value = Program.VoidC;
+            for (var Index2 = 0; Index2 < InputCoefficentsList.length; Index2++) {
+                var InputField2 = InputCoefficentsList[Index2];
+                if (InputField2.classList.contains("Denied")) {
+                    InputField2.classList.replace("Denied", "Background");
+                }
+            }
         }
-        Program.FireC = Value;
-        Files.Save("Program.FireC", Value);
-        Program.VoidC = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
-        Files.Save("Program.VoidC", Program.VoidC);
-        document.getElementById("InputVoidC").value = Program.VoidC;
-        Program.Execute = false;
-        Program.GenerateBoard();
-        Program.DrawElements();
-    }
-    else {
-        if (InputField.classList.contains("Background")) {
-            InputField.classList.replace("Background", "Denied");
+        catch (_a) {
+            if (InputField.classList.contains("Background")) {
+                InputField.classList.replace("Background", "Denied");
+            }
         }
-    }
-});
-document.getElementById("InputWaterC").addEventListener("input", function (Event) {
-    var InputField = Event.target;
-    InputField.value = InputField.value.replace(/[^0-9]/g, "");
-    var Value = Number(InputField.value);
-    if (Value >= 0 &&
-        Value + Program.GrassC + Program.FireC + Program.LavaC + Program.IceC <= Program.FullC) {
-        if (InputField.classList.contains("Denied")) {
-            InputField.classList.replace("Denied", "Background");
-        }
-        Program.WaterC = Value;
-        Files.Save("Program.WaterC", Value);
-        Program.VoidC = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
-        Files.Save("Program.VoidC", Program.VoidC);
-        document.getElementById("InputVoidC").value = Program.VoidC;
-        Program.Execute = false;
-        Program.GenerateBoard();
-        Program.DrawElements();
-    }
-    else {
-        if (InputField.classList.contains("Background")) {
-            InputField.classList.replace("Background", "Denied");
-        }
-    }
-});
-document.getElementById("InputLavaC").addEventListener("input", function (Event) {
-    var InputField = Event.target;
-    InputField.value = InputField.value.replace(/[^0-9]/g, "");
-    var Value = Number(InputField.value);
-    if (Value >= 0 &&
-        Value + Program.GrassC + Program.FireC + Program.WaterC + Program.IceC <= Program.FullC) {
-        if (InputField.classList.contains("Denied")) {
-            InputField.classList.replace("Denied", "Background");
-        }
-        Program.LavaC = Value;
-        Files.Save("Program.LavaC", Value);
-        Program.VoidC = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
-        Files.Save("Program.VoidC", Program.VoidC);
-        document.getElementById("InputVoidC").value = Program.VoidC;
-        Program.Execute = false;
-        Program.GenerateBoard();
-        Program.DrawElements();
-    }
-    else {
-        if (InputField.classList.contains("Background")) {
-            InputField.classList.replace("Background", "Denied");
-        }
-    }
-});
-document.getElementById("InputIceC").addEventListener("input", function (Event) {
-    var InputField = Event.target;
-    InputField.value = InputField.value.replace(/[^0-9]/g, "");
-    var Value = Number(InputField.value);
-    if (Value >= 0 &&
-        Value + Program.GrassC + Program.FireC + Program.WaterC + Program.LavaC <= Program.FullC) {
-        if (InputField.classList.contains("Denied")) {
-            InputField.classList.replace("Denied", "Background");
-        }
-        Program.IceC = Value;
-        Files.Save("Program.IceC", Value);
-        Program.VoidC = Program.FullC - Program.GrassC - Program.FireC - Program.WaterC - Program.LavaC - Program.IceC;
-        Files.Save("Program.VoidC", Program.VoidC);
-        document.getElementById("InputVoidC").value = Program.VoidC;
-        Program.Execute = false;
-        Program.GenerateBoard();
-        Program.DrawElements();
-    }
-    else {
-        if (InputField.classList.contains("Background")) {
-            InputField.classList.replace("Background", "Denied");
-        }
-    }
-});
+    });
+};
+for (var Index = 0; Index < InputCoefficentsList.length; Index++) {
+    _loop_1(Index);
+}
 //#endregion

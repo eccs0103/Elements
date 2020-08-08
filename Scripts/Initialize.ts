@@ -3,7 +3,8 @@ document.addEventListener
 	function(Event)
 	{
 		//#region Loading
-		Interface.DarkTheme = Files.Load("Interface.DarkTheme", false);
+		Interface.LoadingTime = Files.Load("Interface.LoadingTime", Default.LoadingTime);
+		Interface.DarkTheme = Files.Load("Interface.DarkTheme", Default.DarkTheme);
 
 		setTimeout
 		(
@@ -20,40 +21,47 @@ document.addEventListener
 		//#endregion
 
 		//#region Navigation
-		Navigate.Id = Files.Load("Navigate.Id", 0);
+		Navigate.Id = Files.Load("Navigate.Id", Default.NavigateId);
 		//#endregion
 
 		//#region Program
 		Program.Canvas.width = Program.SizePixels;
 		Program.Canvas.height = Program.SizePixels;
 
-		Program.SizeCells = Files.Load("Program.Size", 25);
+		Program.WidthCells = Files.Load("Program.WidthCells", Default.WidthCells);
+		Program.HeightCells = Files.Load("Program.HeightCells", Default.HeightCells);
+		Program.FramesCount = Files.Load("Program.FramesCount", Default.FramesCount);
 		Program.Execute = false;
-		Program.Stats = Files.Load("Program.Stats", false);
-
-		Program.VoidC = Files.Load("Program.VoidC", 90);
-		Program.GrassC = Files.Load("Program.GrassC", 4);
-		Program.FireC = Files.Load("Program.FireC", 2);
-		Program.WaterC = Files.Load("Program.WaterC", 2);
-		Program.LavaC = Files.Load("Program.LavaC", 1);
-		Program.IceC = Files.Load("Program.IceC", 1);
+		Program.Stats = Files.Load("Program.Stats", Default.Stats);
+		
+		Program.Coefficents
+		(
+			Files.Load("Program.GrassC", Default.GrassC),
+			Files.Load("Program.FireC", Default.FireC),
+			Files.Load("Program.WaterC", Default.WaterC),
+			Files.Load("Program.LavaC", Default.LavaC),
+			Files.Load("Program.IceC", Default.IceC)
+		);
 
 		Program.GenerateBoard();
 		Program.DrawElements();
+		//#endregion
 
-		setInterval
-		(
-			function()
-			{ 
-				//#region Execute
+		//#region Efficiency
+		setTimeout(Update, 1000 / Program.FramesCount);
+
+		function Update()
+		{
+			setTimeout(Update, 1000 / Program.FramesCount);
+			//#region Execute
 				if(Program.Execute)
 				{
 					Program.DrawElements();
 					Program.ExecuteFrame();
 				}
 				//#endregion
-		
-				//#region Stats
+
+			//#region Stats
 				let VoidCount = 0;
 				let GrassCount = 0;
 				let FireCount = 0;
@@ -104,13 +112,12 @@ document.addEventListener
 					document.getElementById("TextAll").textContent = String(Program.WidthCells * Program.HeightCells);
 				}
 				//#endregion
-			}, 
-			1000 / Program.FramesCount
-		);
+		}
 		//#endregion
 
 		//#region Settings
 		document.getElementById("InputSize").value = Program.WidthCells;
+		document.getElementById("InputFramesCount").value = Program.FramesCount;
 
 		document.getElementById("InputVoidC").value = Program.VoidC;
 		document.getElementById("InputGrassC").value = Program.GrassC;
