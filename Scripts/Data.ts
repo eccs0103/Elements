@@ -270,7 +270,7 @@ class Program
 		{
 			for (let X = 0; X < this.WidthCells; X++) 
 			{
-				let RandomElement = Random.Integer(0, this.FullC)
+				let RandomElement = Random.Integer(0, this.FullC);
 				if (RandomElement >= 0 && RandomElement < this.VoidC)
 				{
 					this.Matrix[Y][X] = new Void(X, Y);
@@ -292,7 +292,7 @@ class Program
 					this.Matrix[Y][X] = new Lava(X, Y, 3);
 				}
 				else if (RandomElement >= this.VoidC + this.GrassC+ this.FireC + this.WaterC + this.LavaC && RandomElement < this.FullC) 
-				{RandomElement
+				{
 					this.Matrix[Y][X] = new Ice(X, Y, 3);
 				}
 			}
@@ -531,6 +531,72 @@ class Default
 	public static get IceC(): number
 	{
 		return this._IceC;
+	}
+
+	private static _GrassGrowCountdownMax: number = 10;
+	public static get GrassGrowCountdownMax(): number
+	{
+		return this._GrassGrowCountdownMax;
+	}
+
+	private static _FireLifespanMax: number = 16;
+	public static get FireLifespanMax(): number
+	{
+		return this._FireLifespanMax;
+	}
+	
+	private static _FireBurnCountdownMax: number = 4;
+	public static get FireBurnCountdownMax(): number
+	{
+		return this._FireBurnCountdownMax;
+	}
+
+	private static _WaterFlowCountdownMax: number = 8;
+	public static get WaterFlowCountdownMax(): number
+	{
+		return this._WaterFlowCountdownMax;
+	}
+
+	private static _WaterEvaporateCountdownMax: number = 4;
+	public static get WaterEvaporateCountdownMax(): number
+	{
+		return this._WaterEvaporateCountdownMax;
+	}
+
+	private static _LavaFlowCountdownMax: number = 15;
+	public static get LavaFlowCountdownMax(): number
+	{
+		return this._LavaFlowCountdownMax;
+	}
+
+	private static _LavaBurnCountdownMax: number = 8;
+	public static get LavaBurnCountdownMax(): number
+	{
+		return this._LavaBurnCountdownMax;
+	}
+
+	private static _LavaFadeCountdownMax: number = 4;
+	public static get LavaFadeCountdownMax(): number
+	{
+		return this._LavaFadeCountdownMax;
+	}
+
+	private static _IceFlowCountdownMax: number = 12;
+	public static get IceFlowCountdownMax(): number
+	{
+		return this._IceFlowCountdownMax;
+	}
+
+	private static _IceMeltCountdownMax: number = 4;
+	public static get IceMeltCountdownMax(): number
+	{
+		return this._IceMeltCountdownMax;
+	}
+
+	private static _IceEvaporateCountdownMax: number = 4;
+	public static get IceEvaporateCountdownMax(): number
+	{
+		return this._IceEvaporateCountdownMax;
 	}
 }
 //#endregion

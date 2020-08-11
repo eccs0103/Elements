@@ -235,7 +235,6 @@ var Program = /** @class */ (function () {
                     this.Matrix[Y][X] = new Lava(X, Y, 3);
                 }
                 else if (RandomElement >= this.VoidC + this.GrassC + this.FireC + this.WaterC + this.LavaC && RandomElement < this.FullC) {
-                    RandomElement;
                     this.Matrix[Y][X] = new Ice(X, Y, 3);
                 }
             }
@@ -478,6 +477,83 @@ var Default = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(Default, "GrassGrowCountdownMax", {
+        get: function () {
+            return this._GrassGrowCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "FireLifespanMax", {
+        get: function () {
+            return this._FireLifespanMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "FireBurnCountdownMax", {
+        get: function () {
+            return this._FireBurnCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "WaterFlowCountdownMax", {
+        get: function () {
+            return this._WaterFlowCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "WaterEvaporateCountdownMax", {
+        get: function () {
+            return this._WaterEvaporateCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "LavaFlowCountdownMax", {
+        get: function () {
+            return this._LavaFlowCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "LavaBurnCountdownMax", {
+        get: function () {
+            return this._LavaBurnCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "LavaFadeCountdownMax", {
+        get: function () {
+            return this._LavaFadeCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "IceFlowCountdownMax", {
+        get: function () {
+            return this._IceFlowCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "IceMeltCountdownMax", {
+        get: function () {
+            return this._IceMeltCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "IceEvaporateCountdownMax", {
+        get: function () {
+            return this._IceEvaporateCountdownMax;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Default._LoadingTime = 0.5;
     Default._DarkTheme = false;
     Default._NavigateId = 0;
@@ -490,6 +566,17 @@ var Default = /** @class */ (function () {
     Default._WaterC = 2;
     Default._LavaC = 1;
     Default._IceC = 1;
+    Default._GrassGrowCountdownMax = 10;
+    Default._FireLifespanMax = 16;
+    Default._FireBurnCountdownMax = 4;
+    Default._WaterFlowCountdownMax = 8;
+    Default._WaterEvaporateCountdownMax = 4;
+    Default._LavaFlowCountdownMax = 15;
+    Default._LavaBurnCountdownMax = 8;
+    Default._LavaFadeCountdownMax = 4;
+    Default._IceFlowCountdownMax = 12;
+    Default._IceMeltCountdownMax = 4;
+    Default._IceEvaporateCountdownMax = 4;
     return Default;
 }());
 //#endregion

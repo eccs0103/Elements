@@ -28,14 +28,32 @@ class Void extends Pixel
 class Grass extends Pixel
 {
 	//#region Constructor
-	public Directions: number[][];
-	private GrowCountdownMax: number;
-	private GrowCountdown: number;
+	private _Directions: number[][];
+	private static _MinDuration: number = 1;
+	private static _MaxDuration: number = 30;
+	private _GrowCountdown: number;
+	private static _GrowCountdownMax: number;
+	public static get GrowCountdownMax(): number
+	{
+		return this._GrowCountdownMax;
+	}
+	public static set GrowCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._GrowCountdownMax = Value;
+			Files.Save("Grass.GrowCountdownMax", this._GrowCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
 
 	constructor(X: number, Y: number)
 	{
 		super(X, Y);
-		this.Directions = 
+		this._Directions = 
 		[
 			[this.X - 1, this.Y - 1],
 			[this.X    , this.Y - 1],
@@ -46,24 +64,24 @@ class Grass extends Pixel
 			[this.X    , this.Y + 1],
 			[this.X + 1, this.Y + 1]
 		];
-		this.GrowCountdownMax = 10;
-		this.GrowCountdown = this.GrowCountdownMax;
+		//this._GrowCountdownMax = 10;
+		this._GrowCountdown = Grass._GrowCountdownMax;
 	}
 	//#endregion
 
 	//#region Grow
 	public Grow() 
 	{
-		if(this.GrowCountdown > 0)
+		if(this._GrowCountdown > 0)
 		{
-			this.GrowCountdown--;
+			this._GrowCountdown--;
 		}
 		else
 		{
 			let Moves = [];
-			for (let Index = 0; Index < this.Directions.length; Index++) 
+			for (let Index = 0; Index < this._Directions.length; Index++) 
 			{
-				let Cell = this.Directions[Index];
+				let Cell = this._Directions[Index];
 				let X = Cell[0];
 				let Y = Cell[1];
 				if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -80,7 +98,7 @@ class Grass extends Pixel
 				let X = Move[0];
 				let Y = Move[1];
 				Program.Matrix[Y][X] = new Grass(X, Y);
-				this.GrowCountdown = this.GrowCountdownMax;
+				this._GrowCountdown = Grass._GrowCountdownMax;
 			}
 		}
 	}
@@ -90,42 +108,76 @@ class Grass extends Pixel
 class Fire extends Pixel
 {
 	//#region Constructor
-	public Directions: number[][];
-	private LifespanMax: number;
-	private Lifespan: number;
-	private BurnCountdownMax: number;
-	private BurnCountdown: number;
+	private _Directions: number[][];
+	private static _MinDuration: number = 1;
+	private static _MaxDuration: number = 30;
+	private _Lifespan: number;
+	private static _LifespanMax: number;
+	public static get LifespanMax(): number
+	{
+		return this._LifespanMax;
+	}
+	public static set LifespanMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._LifespanMax = Value;
+			Files.Save("Fire.LifespanMax", this._LifespanMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	private _BurnCountdown: number;
+	private static _BurnCountdownMax: number;
+	public static get BurnCountdownMax(): number
+	{
+		return this._BurnCountdownMax;
+	}
+	public static set BurnCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._BurnCountdownMax = Value;
+			Files.Save("Fire.BurnCountdownMax", this._BurnCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
 
 	constructor(X: number, Y: number)
 	{
 		super(X, Y);
-		this.Directions = 
+		this._Directions = 
 		[
 			[this.X    , this.Y - 1],
 			[this.X - 1, this.Y    ],
 			[this.X + 1, this.Y    ],
 			[this.X    , this.Y + 1],
 		];
-		this.LifespanMax = 16;
-		this.Lifespan = this.LifespanMax;
-		this.BurnCountdownMax = 4;
-		this.BurnCountdown = this.BurnCountdownMax;
+		//this._LifespanMax = 16;
+		this._Lifespan = Fire._LifespanMax;
+		//this._BurnCountdownMax = 4;
+		this._BurnCountdown = Fire._BurnCountdownMax;
 	}
 	//#endregion
 
 	//#region Burn
 	public Burn()
 	{
-		if(this.BurnCountdown > 0)
+		if(this._BurnCountdown > 0)
 		{
-			this.BurnCountdown--;
+			this._BurnCountdown--;
 		}
 		else
 		{
 			let Moves = [];
-			for (let Index = 0; Index < this.Directions.length; Index++) 
+			for (let Index = 0; Index < this._Directions.length; Index++) 
 			{
-				let Cell = this.Directions[Index];
+				let Cell = this._Directions[Index];
 				let X = Cell[0];
 				let Y = Cell[1];
 				if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -142,9 +194,9 @@ class Fire extends Pixel
 				let X = Move[0];
 				let Y = Move[1];
 				Program.Matrix[Y][X] = new Fire(X, Y);
-				this.Lifespan = this.LifespanMax;
+				this._Lifespan = Fire._LifespanMax;
 			}
-			this.BurnCountdown = this.BurnCountdownMax;
+			this._BurnCountdown = Fire._BurnCountdownMax;
 		}
 	}
 	//#endregion
@@ -152,9 +204,9 @@ class Fire extends Pixel
 	//#region Fade
 	public Fade()
 	{
-		if(this.Lifespan > 0)
+		if(this._Lifespan > 0)
 		{
-			this.Lifespan--;
+			this._Lifespan--;
 		}
 		else
 		{
@@ -167,16 +219,50 @@ class Fire extends Pixel
 class Water extends Pixel
 {
 	//#region Constructor
-	public Directions: number[][];
-	private FlowCountdownMax: number;
-	private FlowCountdown: number;
-	private EvaporateCountdownMax: number;
-	private EvaporateCountdown: number;
+	private _Directions: number[][];
+	private static _MinDuration: number = 1;
+	private static _MaxDuration: number = 30;
+	private _FlowCountdown: number;
+	private static _FlowCountdownMax: number;
+	public static get FlowCountdownMax(): number
+	{
+		return this._FlowCountdownMax;
+	}
+	public static set FlowCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._FlowCountdownMax = Value;
+			Files.Save("Water.FlowCountdownMax", this._FlowCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	private _EvaporateCountdown: number;
+	private static _EvaporateCountdownMax: number;
+	public static get EvaporateCountdownMax(): number
+	{
+		return this._EvaporateCountdownMax;
+	}
+	public static set EvaporateCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._EvaporateCountdownMax = Value;
+			Files.Save("Water.EvaporateCountdownMax", this._EvaporateCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
 
 	constructor(X: number, Y: number)
 	{
 		super(X, Y);
-		this.Directions = 
+		this._Directions = 
 		[
 			[this.X - 1, this.Y - 1],
 			[this.X    , this.Y - 1],
@@ -187,26 +273,26 @@ class Water extends Pixel
 			[this.X    , this.Y + 1],
 			[this.X + 1, this.Y + 1],
 		];
-		this.FlowCountdownMax = 8;
-		this.FlowCountdown = this.FlowCountdownMax;
-		this.EvaporateCountdownMax = 4;
-		this.EvaporateCountdown = this.EvaporateCountdownMax;
+		//this._FlowCountdownMax = 8;
+		this._FlowCountdown = Water._FlowCountdownMax;
+		//this._EvaporateCountdownMax = 4;
+		this._EvaporateCountdown = Water._EvaporateCountdownMax;
 	}
 	//#endregion
 
 	//#region Flow
 	public Flow()
 	{
-		if(this.FlowCountdown > 0)
+		if(this._FlowCountdown > 0)
 		{
-			this.FlowCountdown--;
+			this._FlowCountdown--;
 		}
 		else
 		{
 			let Moves = [];
-			for (let Index = 0; Index < this.Directions.length; Index++) 
+			for (let Index = 0; Index < this._Directions.length; Index++) 
 			{
-				let Cell = this.Directions[Index];
+				let Cell = this._Directions[Index];
 				let X = Cell[0];
 				let Y = Cell[1];
 				if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -225,7 +311,7 @@ class Water extends Pixel
 				Program.Matrix[Y][X] = new Water(X, Y);
 				//Program.Matrix[this.Y][this.X] = new Void(this.X, this.Y);
 			}
-			this.FlowCountdown = this.FlowCountdownMax;
+			this._FlowCountdown = Water._FlowCountdownMax;
 		}
 	}
 	//#endregion
@@ -234,9 +320,9 @@ class Water extends Pixel
 	public Evaporate()
 	{
 		let Moves = [];
-		for (let Index = 0; Index < this.Directions.length; Index++) 
+		for (let Index = 0; Index < this._Directions.length; Index++) 
 		{
-			let Cell = this.Directions[Index];
+			let Cell = this._Directions[Index];
 			let X = Cell[0];
 			let Y = Cell[1];
 			if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -249,9 +335,9 @@ class Water extends Pixel
 		}
 		if(Moves.length > 0)
 		{
-			if(this.EvaporateCountdown > 0)
+			if(this._EvaporateCountdown > 0)
 			{
-				this.EvaporateCountdown--;
+				this._EvaporateCountdown--;
 			}
 			else
 			{
@@ -269,48 +355,102 @@ class Water extends Pixel
 class Lava extends Pixel
 {
 	//#region Constructor
-	public Directions: number[][];
-	public Density: number;
-	private FlowCountdownMax: number;
-	private FlowCountdown: number;
-	private BurnCountdownMax: number;
-	private BurnCountdown: number;
-	private FadeCountdownMax: number;
-	private FadeCountdown: number;
+	private _Directions: number[][];
+	private static _MinDuration: number = 1;
+	private static _MaxDuration: number = 30;
+	private _Density: number;
+	public get Density(): number
+	{
+		return this._Density;
+	}
+	private _FlowCountdown: number;
+	private static _FlowCountdownMax: number;
+	public static get FlowCountdownMax(): number
+	{
+		return this._FlowCountdownMax;
+	}
+	public static set FlowCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._FlowCountdownMax = Value;
+			Files.Save("Lava.FlowCountdownMax", this._FlowCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	private _BurnCountdown: number;
+	private static _BurnCountdownMax: number;
+	public static get BurnCountdownMax(): number
+	{
+		return this._BurnCountdownMax;
+	}
+	public static set BurnCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._BurnCountdownMax = Value;
+			Files.Save("Lava.BurnCountdownMax", this._BurnCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	private _FadeCountdown: number;
+	private static _FadeCountdownMax: number;
+	public static get FadeCountdownMax(): number
+	{
+		return this._FadeCountdownMax;
+	}
+	public static set FadeCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._FadeCountdownMax = Value;
+			Files.Save("Lava.FadeCountdownMax", this._FadeCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
 
 	constructor(X: number, Y: number, Density: number)
 	{
 		super(X, Y);
-		this.Directions = 
+		this._Directions = 
 		[
 			[this.X    , this.Y - 1],
 			[this.X - 1, this.Y    ],
 			[this.X + 1, this.Y    ],
 			[this.X    , this.Y + 1],
 		];
-		this.Density = Density;
-		this.FlowCountdownMax = 15;
-		this.FlowCountdown = this.FlowCountdownMax;
-		this.BurnCountdownMax = 8;
-		this.BurnCountdown = this.BurnCountdownMax;
-		this.FadeCountdownMax = 4;
-		this.FadeCountdown = this.FadeCountdownMax;
+		this._Density = Density;
+		//this._FlowCountdownMax = 15;
+		this._FlowCountdown = Lava._FlowCountdownMax;
+		//this._BurnCountdownMax = 8;
+		this._BurnCountdown = Lava._BurnCountdownMax;
+		//this._FadeCountdownMax = 4;
+		this._FadeCountdown = Lava._FadeCountdownMax;
 	}
 	//#endregion
 
 	//#region Flow
 	public Flow()
 	{
-		if(this.FlowCountdown > 0)
+		if(this._FlowCountdown > 0)
 		{
-			this.FlowCountdown--;
+			this._FlowCountdown--;
 		}
 		else
 		{
 			let Moves = [];
-			for (let Index = 0; Index < this.Directions.length; Index++) 
+			for (let Index = 0; Index < this._Directions.length; Index++) 
 			{
-				let Cell = this.Directions[Index];
+				let Cell = this._Directions[Index];
 				let X = Cell[0];
 				let Y = Cell[1];
 				if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -321,14 +461,14 @@ class Lava extends Pixel
 					}
 				}
 			}
-			if(Moves.length > 0 && this.Density > 1)
+			if(Moves.length > 0 && this._Density > 1)
 			{
 				let Move = Random.Element(Moves);
 				let X = Move[0];
 				let Y = Move[1];
-				Program.Matrix[Y][X] = new Lava(X, Y, this.Density - 1);
+				Program.Matrix[Y][X] = new Lava(X, Y, this._Density - 1);
 			}
-			this.FlowCountdown = this.FlowCountdownMax;
+			this._FlowCountdown = Lava._FlowCountdownMax;
 		}
 	}
 	//#endregion
@@ -336,16 +476,16 @@ class Lava extends Pixel
 	//#region Burn
 	public Burn()
 	{
-		if(this.BurnCountdown > 0)
+		if(this._BurnCountdown > 0)
 		{
-			this.BurnCountdown--;
+			this._BurnCountdown--;
 		}
 		else
 		{
 			let Moves = [];
-			for (let Index = 0; Index < this.Directions.length; Index++) 
+			for (let Index = 0; Index < this._Directions.length; Index++) 
 			{
-				let Cell = this.Directions[Index];
+				let Cell = this._Directions[Index];
 				let X = Cell[0];
 				let Y = Cell[1];
 				if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -363,7 +503,7 @@ class Lava extends Pixel
 				let Y = Move[1];
 				Program.Matrix[Y][X] = new Fire(X, Y);
 			}
-			this.BurnCountdown = this.BurnCountdownMax;
+			this._BurnCountdown = Lava._BurnCountdownMax;
 		}
 	}
 	//#endregion
@@ -372,9 +512,9 @@ class Lava extends Pixel
 	public Fade()
 	{
 		let Moves = [];
-		for (let Index = 0; Index < this.Directions.length; Index++) 
+		for (let Index = 0; Index < this._Directions.length; Index++) 
 		{
-			let Cell = this.Directions[Index];
+			let Cell = this._Directions[Index];
 			let X = Cell[0];
 			let Y = Cell[1];
 			if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -387,9 +527,9 @@ class Lava extends Pixel
 		}
 		if(Moves.length > 0)
 		{
-			if(this.FadeCountdown > 0)
+			if(this._FadeCountdown > 0)
 			{
-				this.FadeCountdown--;
+				this._FadeCountdown--;
 			}
 			else
 			{
@@ -397,8 +537,8 @@ class Lava extends Pixel
 				let X = Move[0];
 				let Y = Move[1];
 				Program.Matrix[Y][X] = new Void(X, Y);
-				this.Density--;
-				if(this.Density <= 0)
+				this._Density--;
+				if(this._Density <= 0)
 				{
 					Program.Matrix[this.Y][this.X] = new Void(this.X, this.Y);
 				}
@@ -411,48 +551,102 @@ class Lava extends Pixel
 class Ice extends Pixel
 {
 	//#region Constructor
-	public Directions: number[][];
-	public Density: number;
-	private FlowCountdownMax: number;
-	private FlowCountdown: number;
-	private MeltCountdownMax: number;
-	private MeltCountdown: number;
-	private EvaporateCountdownMax: number;
-	private EvaporateCountdown: number;
+	private _Directions: number[][];
+	private static _MinDuration: number = 1;
+	private static _MaxDuration: number = 30;
+	private _Density: number;
+	public get Density(): number
+	{
+		return this._Density;
+	}
+	private _FlowCountdown: number;
+	private static _FlowCountdownMax: number;
+	public static get FlowCountdownMax(): number
+	{
+		return this._FlowCountdownMax;
+	}
+	public static set FlowCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._FlowCountdownMax = Value;
+			Files.Save("Ice.FlowCountdownMax", this._FlowCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	private _MeltCountdown: number;
+	private static _MeltCountdownMax: number;
+	public static get MeltCountdownMax(): number
+	{
+		return this._MeltCountdownMax;
+	}
+	public static set MeltCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._MeltCountdownMax = Value;
+			Files.Save("Ice.MeltCountdownMax", this._MeltCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
+	private _EvaporateCountdown: number;
+	private static _EvaporateCountdownMax: number;
+	public static get EvaporateCountdownMax(): number
+	{
+		return this._EvaporateCountdownMax;
+	}
+	public static set EvaporateCountdownMax(Value: number)
+	{
+		if(this._MinDuration <= Value && Value <= this._MaxDuration)
+		{
+			this._EvaporateCountdownMax = Value;
+			Files.Save("Ice.EvaporateCountdownMax", this._EvaporateCountdownMax);
+		}
+		else
+		{
+			throw new RangeError(String(Value));
+		}
+	}
 
 	constructor(X: number, Y: number, Density: number)
 	{
 		super(X, Y);
-		this.Directions =
+		this._Directions =
 		[
 			[this.X    , this.Y - 1],
 			[this.X - 1, this.Y    ],
 			[this.X + 1, this.Y    ],
 			[this.X    , this.Y + 1],
 		];
-		this.Density = Density;
-		this.FlowCountdownMax = 12;
-		this.FlowCountdown = this.FlowCountdownMax;
-		this.MeltCountdownMax = 4;
-		this.MeltCountdown = this.MeltCountdownMax;
-		this.EvaporateCountdownMax = 4;
-		this.EvaporateCountdown = this.EvaporateCountdownMax;
+		this._Density = Density;
+		//this._FlowCountdownMax = 12;
+		this._FlowCountdown = Ice._FlowCountdownMax;
+		//this._MeltCountdownMax = 4;
+		this._MeltCountdown = Ice._MeltCountdownMax;
+		//this._EvaporateCountdownMax = 4;
+		this._EvaporateCountdown = Ice._EvaporateCountdownMax;
 	}
 	//#endregion
 
 	//#region Flow
 	public Flow()
 	{
-		if(this.FlowCountdown > 0)
+		if(this._FlowCountdown > 0)
 		{
-			this.FlowCountdown--;
+			this._FlowCountdown--;
 		}
 		else
 		{
 			let Moves = [];
-			for (let Index = 0; Index < this.Directions.length; Index++) 
+			for (let Index = 0; Index < this._Directions.length; Index++) 
 			{
-				let Cell = this.Directions[Index];
+				let Cell = this._Directions[Index];
 				let X = Cell[0];
 				let Y = Cell[1];
 				if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -463,14 +657,14 @@ class Ice extends Pixel
 					}
 				}
 			}
-			if(Moves.length > 0 && this.Density > 1)
+			if(Moves.length > 0 && this._Density > 1)
 			{
 				let Move = Random.Element(Moves);
 				let X = Move[0];
 				let Y = Move[1];
-				Program.Matrix[Y][X] = new Ice(X, Y, this.Density - 1);
+				Program.Matrix[Y][X] = new Ice(X, Y, this._Density - 1);
 			}
-			this.FlowCountdown = this.FlowCountdownMax;
+			this._FlowCountdown = Ice._FlowCountdownMax;
 		}
 	}
 	//#endregion
@@ -479,9 +673,9 @@ class Ice extends Pixel
 	public Melt()
 	{
 		let Moves = [];
-		for (let Index = 0; Index < this.Directions.length; Index++) 
+		for (let Index = 0; Index < this._Directions.length; Index++) 
 		{
-			let Cell = this.Directions[Index];
+			let Cell = this._Directions[Index];
 			let X = Cell[0];
 			let Y = Cell[1];
 			if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -497,15 +691,15 @@ class Ice extends Pixel
 			let Move = Random.Element(Moves);
 			let X = Move[0];
 			let Y = Move[1];
-			if(this.MeltCountdown > 0)
+			if(this._MeltCountdown > 0)
 			{
-				this.MeltCountdown--;
+				this._MeltCountdown--;
 			}
 			else
 			{
 				Program.Matrix[Y][X] = new Void(X, Y);
-				this.Density--;
-				if(this.Density <= 0)
+				this._Density--;
+				if(this._Density <= 0)
 				{
 					Program.Matrix[this.Y][this.X] = new Water(this.X, this.Y);
 				}
@@ -518,9 +712,9 @@ class Ice extends Pixel
 	public Evaporate()
 	{
 		let Moves = [];
-		for (let Index = 0; Index < this.Directions.length; Index++) 
+		for (let Index = 0; Index < this._Directions.length; Index++) 
 		{
-			let Cell = this.Directions[Index];
+			let Cell = this._Directions[Index];
 			let X = Cell[0];
 			let Y = Cell[1];
 			if( 0 <= Y && Y < Program.HeightCells && 0 <= X && X < Program.WidthCells)
@@ -533,23 +727,23 @@ class Ice extends Pixel
 		}
 		if(Moves.length > 0)
 		{
-			if(this.EvaporateCountdown > 0)
+			if(this._EvaporateCountdown > 0)
 			{
-				this.EvaporateCountdown--;
+				this._EvaporateCountdown--;
 			}
 			else
 			{
 				let Move = Random.Element(Moves);
 				let X = Move[0];
 				let Y = Move[1];
-				let Loss = Math.min(Program.Matrix[Y][X].density, this.Density);
+				let Loss = Math.min(Program.Matrix[Y][X].density, this._Density);
 				Program.Matrix[Y][X].density -= Loss;
-				this.Density -= Loss;
+				this._Density -= Loss;
 				if(Program.Matrix[Y][X].density <= 0)
 				{
 					Program.Matrix[Y][X] = new Void(X, Y);
 				}
-				if(this.Density <= 0)
+				if(this._Density <= 0)
 				{
 					Program.Matrix[this.Y][this.X] = new Water(this.X, this.Y);
 				}

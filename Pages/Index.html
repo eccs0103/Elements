@@ -356,7 +356,6 @@
 									</div>
 								</td>
 							</tr>
-							<!-------------------- Line --------------------->
 							<tr>
 								<td colspan="2">
 									<hr class="Line">
@@ -392,16 +391,23 @@
 									padding: 5px;">
 								</td>
 							</tr>
-							<!-------------------- Line --------------------->
 							<tr>
 								<td colspan="2">
 									<hr class="Line">
 								</td>
 							</tr>
+							<!-------------------- Desk --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Доска
+									</h2>
+								</td>
+							</tr>
 							<tr>
 								<td>
 									<p class="Text">
-										Процент пустоты
+										Процент пустоты (%)
 									</p>
 									<p class="Subtext">
 										Процент пустоты меняется в зависимости от остальных элементов и не может быть ниже нуля.
@@ -415,7 +421,7 @@
 							<tr>
 								<td>
 									<p class="Text">
-										Процент травы
+										Процент травы (%)
 									</p>
 								</td>
 								<td>
@@ -426,7 +432,7 @@
 							<tr>
 								<td>
 									<p class="Text">
-										Процент огня
+										Процент огня (%)
 									</p>
 								</td>
 								<td>
@@ -437,7 +443,7 @@
 							<tr>
 								<td>
 									<p class="Text">
-										Процент воды
+										Процент воды (%)
 									</p>
 								</td>
 								<td>
@@ -448,7 +454,7 @@
 							<tr>
 								<td>
 									<p class="Text">
-										Процент лавы
+										Процент лавы (%)
 									</p>
 								</td>
 								<td>
@@ -459,12 +465,163 @@
 							<tr>
 								<td>
 									<p class="Text">
-										Процент льда
+										Процент льда (%)
 									</p>
 								</td>
 								<td>
 									<input type="Text" class="Bordered Background Interactive Input" id="InputIceC" style="
 									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<hr class="Line">
+								</td>
+							</tr>
+							<!-------------------- Elements --------------------->
+							<tr>
+								<td colspan="2">
+									<h2 class="Subtitle">
+										Элементы
+									</h2>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность распространения травы (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputGrassGrow" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность существования огня (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputFireLifespan" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность сжигания огня (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputFireBurn" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность вытекания воды (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputWaterFlow" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность испарения воды (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputWaterEvaporate" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность вытекания лавы (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputLavaFlow" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность сжигания лавы (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputLavaBurn" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность испарения лавы (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputLavaFade" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность замораживания льда (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputIceFlow" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность плавления льда (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputIceMelt" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p class="Text">
+										Длительность испарения льда (кадры)
+									</p>
+								</td>
+								<td>
+									<input type="Text" class="Bordered Background Interactive Input" id="InputIceEvaporate" style="
+									padding: 5px;">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<hr class="Line">
+								</td>
+							</tr>
+							<!-------------------- Reset --------------------->
+							<tr>
+								<td colspan="2">
+									<div class="Unbordered Foreground Interactive" id="ButtonResetSettings" style="
+									width: fit-content;
+									margin: auto;
+									padding: 5px;
+									Text-align: center;">
+										<p class="Text" id="TextTheme">Восстановить настройки по умаолчанию</p>
+									</div>
 								</td>
 							</tr>
 						</table>

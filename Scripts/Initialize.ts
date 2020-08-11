@@ -43,6 +43,18 @@ document.addEventListener
 			Files.Load("Program.IceC", Default.IceC)
 		);
 
+		Grass.GrowCountdownMax = Files.Load("Grass.GrowCountdownMax", Default.GrassGrowCountdownMax);
+		Fire.LifespanMax = Files.Load("Fire.LifespanMax", Default.FireLifespanMax);
+		Fire.BurnCountdownMax = Files.Load("Fire.BurnCountdownMax", Default.FireBurnCountdownMax);
+		Water.FlowCountdownMax = Files.Load("Water.FlowCountdownMax", Default.WaterFlowCountdownMax);
+		Water.EvaporateCountdownMax = Files.Load("Water.EvaporateCountdownMax", Default.WaterEvaporateCountdownMax);
+		Lava.FlowCountdownMax = Files.Load("Lava.FlowCountdownMax", Default.LavaFlowCountdownMax);
+		Lava.BurnCountdownMax = Files.Load("Lava.BurnCountdownMax", Default.LavaBurnCountdownMax);
+		Lava.FadeCountdownMax = Files.Load("Lava.FadeCountdownMax", Default.LavaFadeCountdownMax);
+		Ice.FlowCountdownMax = Files.Load("Ice.FlowCountdownMax", Default.IceFlowCountdownMax);
+		Ice.MeltCountdownMax = Files.Load("Ice.MeltCountdownMax", Default.IceMeltCountdownMax);
+		Ice.EvaporateCountdownMax = Files.Load("Ice.EvaporateCountdownMax", Default.IceEvaporateCountdownMax);
+
 		Program.GenerateBoard();
 		Program.DrawElements();
 		//#endregion
@@ -125,6 +137,18 @@ document.addEventListener
 		document.getElementById("InputWaterC").value = Program.WaterC;
 		document.getElementById("InputLavaC").value = Program.LavaC;
 		document.getElementById("InputIceC").value = Program.IceC;
+
+		document.getElementById("InputGrassGrow").value = Grass.GrowCountdownMax;
+		document.getElementById("InputFireLifespan").value = Fire.LifespanMax;
+		document.getElementById("InputFireBurn").value = Fire.BurnCountdownMax;
+		document.getElementById("InputWaterFlow").value = Water.FlowCountdownMax;
+		document.getElementById("InputWaterEvaporate").value = Water.EvaporateCountdownMax;
+		document.getElementById("InputLavaFlow").value = Lava.FlowCountdownMax;
+		document.getElementById("InputLavaBurn").value = Lava.BurnCountdownMax;
+		document.getElementById("InputLavaFade").value = Lava.FadeCountdownMax;
+		document.getElementById("InputIceFlow").value = Ice.FlowCountdownMax;
+		document.getElementById("InputIceMelt").value = Ice.MeltCountdownMax;
+		document.getElementById("InputIceEvaporate").value = Ice.EvaporateCountdownMax;
 		//#endregion
 	}
 );
