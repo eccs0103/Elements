@@ -1,7 +1,7 @@
 # Five-Elements
 Игра в стиле песочница.
 
-![img]https://i.imgur.com/t4QBCUW.png[/img]
+![Imgur](https://i.imgur.com/t4QBCUW.png)
 
 ## Лицензия
 Данный проект защищён лицензией [Apache License Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt). 
