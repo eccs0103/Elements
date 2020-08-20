@@ -2,17 +2,6 @@
 var Interface = /** @class */ (function () {
     function Interface() {
     }
-    Object.defineProperty(Interface, "LoadingTime", {
-        get: function () {
-            return this._LoadingTime;
-        },
-        set: function (Value) {
-            this._LoadingTime = Value;
-            Files.Save("Interface.LoadingTime", this._LoadingTime);
-        },
-        enumerable: false,
-        configurable: true
-    });
     Object.defineProperty(Interface, "DarkTheme", {
         get: function () {
             return this._DarkTheme;
@@ -32,6 +21,28 @@ var Interface = /** @class */ (function () {
             }
             this._DarkTheme = Value;
             Files.Save("Interface.DarkTheme", this._DarkTheme);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Interface, "SlideTime", {
+        get: function () {
+            return this._SlideTime;
+        },
+        set: function (Value) {
+            this._SlideTime = Value;
+            Files.Save("Interface.SlideTime", this._SlideTime);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Interface, "ConsoleTime", {
+        get: function () {
+            return this._ConsoleTime;
+        },
+        set: function (Value) {
+            this._ConsoleTime = Value;
+            Files.Save("Interface.ConsoleTime", this._ConsoleTime);
         },
         enumerable: false,
         configurable: true
@@ -393,9 +404,16 @@ var Program = /** @class */ (function () {
 var Default = /** @class */ (function () {
     function Default() {
     }
-    Object.defineProperty(Default, "LoadingTime", {
+    Object.defineProperty(Default, "SlideTime", {
         get: function () {
-            return this._LoadingTime;
+            return this._SlideTime;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Default, "ConsoleTime", {
+        get: function () {
+            return this._ConsoleTime;
         },
         enumerable: false,
         configurable: true
@@ -554,7 +572,8 @@ var Default = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Default._LoadingTime = 0.5;
+    Default._SlideTime = 0.5;
+    Default._ConsoleTime = 2;
     Default._DarkTheme = false;
     Default._NavigateId = 0;
     Default._WidthCells = 25;

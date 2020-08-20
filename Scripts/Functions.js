@@ -42,3 +42,21 @@ var Files = /** @class */ (function () {
     return Files;
 }());
 //#endregion
+//#region Console
+var Console = /** @class */ (function () {
+    function Console() {
+    }
+    Console.Write = function (Message) {
+        document.getElementById("TextConsole").textContent = Message;
+        document.getElementById("DivConsole").style.visibility = "visible";
+        document.getElementById("DivConsole").style.transform = "translateY(0%)";
+        document.getElementById("DivConsole").style.transition = Interface.SlideTime + "s";
+        setTimeout(function () {
+            document.getElementById("DivConsole").style.transform = "translateY(-100%)";
+            document.getElementById("DivConsole").style.transition = Interface.SlideTime + "s";
+            document.getElementById("DivConsole").style.visibility = "hidden";
+        }, Interface.ConsoleTime * 1000);
+    };
+    return Console;
+}());
+//#endregion

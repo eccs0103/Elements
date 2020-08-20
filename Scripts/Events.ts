@@ -511,6 +511,8 @@ document.getElementById("ButtonResetSettings").addEventListener
 		document.getElementById("InputIceFlow").value = Ice.FlowCountdownMax;
 		document.getElementById("InputIceMelt").value = Ice.MeltCountdownMax;
 		document.getElementById("InputIceEvaporate").value = Ice.EvaporateCountdownMax;
+
+		Console.Write("Настройки восстановлены по умолчанию.");
 	}
 );
 //#endregion

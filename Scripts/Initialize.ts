@@ -2,21 +2,22 @@ document.addEventListener
 ("DOMContentLoaded", 
 	function(Event)
 	{
-		//#region Loading
-		Interface.LoadingTime = Files.Load("Interface.LoadingTime", Default.LoadingTime);
+		//#region Initialize
+		Interface.SlideTime = Files.Load("Interface.SlideTime", Default.SlideTime);
+		Interface.ConsoleTime = Files.Load("Interface.ConsoleTime", Default.ConsoleTime);
 		Interface.DarkTheme = Files.Load("Interface.DarkTheme", Default.DarkTheme);
 
 		setTimeout
 		(
 			function()
 			{
-				document.getElementById("DivLoading").style.visibility = "hidden";
 				document.getElementById("DivLoading").style.transform = "translateY(-100%)";
-				document.getElementById("DivLoading").style.transition = "visibility 0s " + Interface.LoadingTime + "s, transform " + Interface.LoadingTime + "s";
+				document.getElementById("DivLoading").style.transition = Interface.SlideTime + "s";
+				document.getElementById("DivLoading").style.visibility = "hidden";
 				document.body.style.overflow = "auto";
 				
 			}, 
-			Interface.LoadingTime * 1000
+			Interface.SlideTime * 1000
 		);
 		//#endregion
 

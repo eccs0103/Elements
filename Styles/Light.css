@@ -25,6 +25,12 @@
 	background-color: rgb(225, 225, 225);
 }
 
+.Light .Denied
+{
+	background-color: rgb(255, 200, 200);
+	border-color: rgb(255, 100, 100);
+}
+
 .Light .Bordered, .Light .Line
 {
 	border-color: rgb(200, 200, 200);
@@ -33,12 +39,6 @@
 .Light .Unbordered
 {
 	border-color: transparent;
-}
-
-.Light .Denied
-{
-	background-color: rgb(255, 200, 200);
-	border-color: rgb(255, 100, 100);
 }
 
 /*------------------------- Resources -------------------------*/

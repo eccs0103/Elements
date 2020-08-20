@@ -1,19 +1,6 @@
 //#region Interface
 class Interface
 {
-	//#region Loading
-	private static _LoadingTime: number;
-	public static get LoadingTime(): number
-	{
-		return this._LoadingTime;
-	} 
-	public static set LoadingTime(Value: number)
-	{
-		this._LoadingTime = Value;
-		Files.Save("Interface.LoadingTime", this._LoadingTime);
-	}
-	//#endregion
-
 	//#region Theme
 	private static _DarkTheme: boolean;
 	public static get DarkTheme(): boolean
@@ -38,6 +25,32 @@ class Interface
 		}
 		this._DarkTheme = Value;
 		Files.Save("Interface.DarkTheme", this._DarkTheme);
+	}
+	//#endregion
+
+	//#region Slide
+	private static _SlideTime: number;
+	public static get SlideTime(): number
+	{
+		return this._SlideTime;
+	} 
+	public static set SlideTime(Value: number)
+	{
+		this._SlideTime = Value;
+		Files.Save("Interface.SlideTime", this._SlideTime);
+	}
+	//#endregion
+
+	//#region  Console
+	private static _ConsoleTime: number;
+	public static get ConsoleTime(): number
+	{
+		return this._ConsoleTime;
+	} 
+	public static set ConsoleTime(Value: number)
+	{
+		this._ConsoleTime = Value;
+		Files.Save("Interface.ConsoleTime", this._ConsoleTime);
 	}
 	//#endregion
 }
@@ -461,10 +474,16 @@ class Program
 //#region Default
 class Default
 {
-	private static _LoadingTime: number = 0.5;
-	public static get LoadingTime(): number
+	private static _SlideTime: number = 0.5;
+	public static get SlideTime(): number
 	{
-		return this._LoadingTime;
+		return this._SlideTime;
+	}
+
+	private static _ConsoleTime: number = 2;
+	public static get ConsoleTime(): number
+	{
+		return this._ConsoleTime;
 	}
 
 	private static _DarkTheme: boolean = false;
