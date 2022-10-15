@@ -1,0 +1,106 @@
+/* Main */
+:root {
+	--time-duration: 85ms;
+}
+
+body {
+	background-color: var(--color-background);
+	color: var(--color-text);
+	outline-color: var(--color-highlight);
+}
+
+body * {
+	background-color: inherit;
+	color: inherit;
+	outline-color: inherit;
+}
+
+body *::placeholder {
+	color: inherit;
+	filter: brightness(0.75);
+}
+
+/* Global */
+*.layer {
+	background-color: var(--color-foreground);
+	/* box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow); */
+}
+
+*.depth {
+	background-color: var(--color-background);
+	/* box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow) inset; */
+}
+
+*.transparent {
+	background-color: transparent;
+}
+
+*.modal {
+	background-color: var(--color-modal);
+	box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow) inset;
+}
+
+*.modal {
+	color: var(--color-text-reverse);
+}
+
+button:enabled:hover,
+input[type="text"]:enabled:hover,
+textarea:enabled:hover,
+input[type="datetime"]:enabled:hover,
+input[type="checkbox"]:enabled+label[role="checkbox"]:hover,
+input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:hover {
+	filter: invert(0.1);
+	transition: var(--time-duration);
+}
+
+button:enabled:active,
+input[type="text"]:enabled:not(:read-only):active,
+textarea:enabled:not(:read-only):active,
+input[type="datetime"]:not(:read-only):active,
+label:active>input[type="checkbox"]:enabled+label[role="checkbox"],
+label:active>input[type="radio"]:enabled:not(:checked)+label[role="combobox"] {
+	filter: invert(0.2);
+	transition: var(--time-duration);
+}
+
+input[type="checkbox"]:checked+label[role="checkbox"],
+input[type="radio"]:checked+label[role="combobox"] {
+	background-color: var(--color-highlight);
+	transition: var(--time-duration);
+}
+
+button:disabled,
+input[type="text"]:disabled,
+textarea:disabled,
+input[type="datetime"]:disabled,
+input[type="checkbox"]:disabled+label[role="checkbox"],
+input[type="radio"]:disabled+label[role="combobox"] {
+	filter: opacity(0.5);
+	transition: var(--time-duration);
+}
+
+input[type="text"]:invalid,
+textarea:invalid,
+input[type="datetime"]:invalid {
+	color: var(--color-text-negative);
+	transition: var(--time-duration);
+}
+
+form:invalid {
+	outline-color: var(--color-highlight-negative);
+	outline-style: solid;
+}
+
+hr {
+	background-color: var(--color-background);
+}
+
+kbd {
+	background-color: var(--color-background);
+}
+
+/* Local */
+img {
+	background-color: transparent;
+}
