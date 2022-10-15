@@ -23,12 +23,12 @@
 			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 			<img src="../resources/home.png" class="icon">
 		</label>
-		<input id="toggle-settings" type="radio" name="navigation" hidden>
+		<input id="toggle-settings" type="radio" name="navigation" hidden disabled>
 		<label for="toggle-settings" role="combobox"
 			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 			<img src="../resources/settings.png" class="icon">
 		</label>
-		<input id="toggle-information" type="radio" name="navigation" hidden>
+		<input id="toggle-information" type="radio" name="navigation" hidden disabled>
 		<label for="toggle-information" role="combobox"
 			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 			<img src="../resources/info.png" class="icon">
@@ -38,7 +38,7 @@
 		<div class="layer"
 			style="width: fit-content; height: 100%; display: flex; flex-direction: column; gap: var(--size-gap); padding: var(--size-gap);">
 			<canvas id="view" class="depth" style="display: flex; height: 100%; aspect-ratio: 1 / 1;"></canvas>
-			<div style="display: flex; flex-direction: row; gap: var(--size-gap);">
+			<div style="display: flex; flex-direction: row; gap: var(--size-gap);" hidden>
 				<input id="toggle-play" type="checkbox" hidden>
 				<label for="toggle-play" role="checkbox"
 					style="display: flex; width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
