@@ -23,12 +23,12 @@ body *::placeholder {
 /* Global */
 *.layer {
 	background-color: var(--color-foreground);
-	/* box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow); */
+	box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow);
 }
 
 *.depth {
 	background-color: var(--color-background);
-	/* box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow) inset; */
+	box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow) inset;
 }
 
 *.transparent {
@@ -103,4 +103,8 @@ kbd {
 /* Local */
 img {
 	background-color: transparent;
+}
+
+input[type="checkbox"]#toggle-play:checked+label[role="checkbox"] {
+	background-color: inherit;
 }

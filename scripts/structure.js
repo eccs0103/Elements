@@ -1,4 +1,3 @@
-//#region Primary
 //#region Coordinate
 class Coordinate {
 	constructor(/** @type {Number} */ x, /** @type {Number} */ y) {
@@ -96,9 +95,27 @@ class _Element {
 	/** @readonly */ get abilities() {
 		return this.#abilities;
 	}
+	execute() {
+		let moves = false;
+		for (const ability of this.abilities) {
+			if (ability.progress > ability.countdown) {
+				throw new RangeError(`Invalid progress value - ${ability.progress}, at ability - ${ability.name}, at element ${Object.getPrototypeOf(this)}, in position - ${this.#position.toString()}`);
+			} else if (ability.progress == ability.countdown) {
+				const reset = ability.action();
+				if (reset) {
+					ability.progress = 0;
+					moves = true;
+				}
+			} else {
+				ability.progress++;
+				moves = true;
+			}
+		}
+		return moves;
+	}
 }
 //#endregion
-//#region Generator
+//#region _Generator
 class _Generator {
 	/** @type {Array<{ value: typeof _Element, coefficient: Number }>} */ #cases = [];
 	setCase(/** @type {typeof _Element} */ value, /** @type {Number} */ coefficient) {
@@ -134,7 +151,7 @@ class _Generator {
 		if (selection) {
 			return selection;
 		} else {
-			throw new ReferenceError(`список вариантов пуста: ${summary}, ${random}`);
+			throw new ReferenceError(`Can't select random element. Maybe stack is empty.`);
 		}
 	}
 	// /** @protected */ _getELementCollection(/** @type {Array<Coordinate>} */ list) {
@@ -147,11 +164,42 @@ class _Generator {
 	// }
 }
 //#endregion
+//#region Engine
+class Engine extends _Generator {
+	constructor() {
+		super();
+		console.log(`Standart FPS rate setted to: ${this.#framesCount}.`);
+		let previousFrame = Date.now();
+		setInterval(() => {
+			let currentFrame = Date.now();
+			this.FPS = (() => {
+				return 1000 / (currentFrame - previousFrame);
+			})();
+			previousFrame = currentFrame;
+			///
+			if (this.#execute) {
+				this._updateFrame();
+			}
+		}, 1000 / this.#framesCount);
+	}
+	/** @type {Number} */ #framesCount = 60;
+	/** @type {Boolean} */ #execute = false;
+	get execute() {
+		return this.#execute;
+	}
+	set execute(value) {
+		this.#execute = value;
+	}
+	/** @protected @type {() => void} */ _updateFrame;
+	/** @type {Number} */ FPS;
+}
+//#endregion
 //#region Board
-class Board extends _Generator {
+class Board extends Engine {
 	constructor(/** @type {Coordinate} */ size, /** @type {CanvasRenderingContext2D | null} */ context) {
 		super();
 		this.#size = size;
+		console.log(`The board is generated as ${this.#size.x} × ${this.#size.x}.`);
 		this.#data = [];
 		for (let y = 0; y < size.y; y++) {
 			this.#data[y] = [];
@@ -159,46 +207,38 @@ class Board extends _Generator {
 				this.#data[y][x] = new _Element(new Coordinate(x, y));
 			}
 		}
-		///
 		if (context) {
-			console.log(`Standart FPS rate setted to: ${this.#framesCount}`);
-			this.#drawFrame(context);
-			let previousFrame = Date.now();
-			setInterval(() => {
-				let currentFrame = Date.now();
-				this.FPS = (() => {
-					return 1000 / (currentFrame - previousFrame);
-				})();
-				previousFrame = currentFrame;
-				///
-				this.#executeFrame();
-				this.#drawFrame(context);
-			}, 1000 / this.#framesCount);
+			this.#context = context;
+			// this.#drawFrame();
 		} else {
-			throw new ReferenceError(`не удалось найти текстуру`);
+			throw new ReferenceError(`Can't reach the texture.`);
 		}
+		this._updateFrame = () => {
+			this.#executeFrame();
+			this.#drawFrame();
+		};
 	}
 	/** @type {Coordinate} */ #size;
 	/** @readonly */ get size() {
 		return this.#size;
 	}
+	/** @type {CanvasRenderingContext2D} */ #context;
 	/** @type {Array<Array<_Element>>} */ #data;
 	/** @readonly */ get data() {
 		return this.#data;
 	}
-	/** @type {Number} */ #framesCount = 60;
 	/** @template {_Element} Type */ setCell(/** @type {Coordinate} */ position, /** @type {Type} */ value) {
 		if (this.hasCell(position)) {
 			this.#data[position.y][position.x] = value;
 		} else {
-			throw new RangeError(`позиция ${position.toString()} выходит за границы слоя`);
+			throw new RangeError(`Position ${position.toString()} is out of layer edges.`);
 		}
 	}
 	getCell(/** @type {Coordinate} */ position) {
 		if (this.hasCell(position)) {
 			return this.#data[position.y][position.x];
 		} else {
-			throw new RangeError(`позиция ${position.toString()} выходит за границы слоя`);
+			throw new RangeError(`Position ${position.toString()} is out of layer edges.`);
 		}
 	}
 	hasCell(/** @type {Coordinate} */ position) {
@@ -216,42 +256,37 @@ class Board extends _Generator {
 		}
 		return result;
 	}
-	#drawFrame(/** @type {CanvasRenderingContext2D} */ context) {
+	#drawFrame() {
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Coordinate(x, y);
 				const element = this.getCell(position);
-				context.fillStyle = element.color.toString();
-				const cellSize = new Coordinate(context.canvas.width / this.size.x, context.canvas.height / this.size.y);
-				context.fillRect(position.x * cellSize.x, position.y * cellSize.y, cellSize.x, cellSize.y);
+				this.#context.fillStyle = element.color.toString();
+				const cellSize = new Coordinate(this.#context.canvas.width / this.size.x, this.#context.canvas.height / this.size.y);
+				this.#context.fillRect(position.x * cellSize.x, position.y * cellSize.y, cellSize.x, cellSize.y);
 			}
 		}
 	}
 	#executeFrame() {
+		let moves = false;
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Coordinate(x, y);
 				const element = this.getCell(position);
-				if (element) {
-
-				}
-				for (const ability of element.abilities) {
-					if (ability.progress > ability.countdown) {
-						throw new RangeError(`недопустимое значаение прогресса - ${ability.progress}, способности - ${ability.name}, у элемента ${Object.getPrototypeOf(element)}, в позиции - ${element.position.toString()}`);
-					} else if (ability.progress == ability.countdown) {
-						const reset = ability.action();
-						if (reset) {
-							ability.progress = 0;
-						}
-					} else {
-						ability.progress++;
-					}
+				if (element.execute()) {
+					moves = true;
 				}
 			}
 		}
+		if (!moves) {
+			this.execute = false;
+			if (window.confirm(`Elements have no more moves. Do you want to reload the board?`)) {
+				this.fill();
+				this.execute = true;
+			}
+		}
 	}
-	/** @type {Number} */ FPS;
-	generateArea(/** @type {Coordinate} */ from, /** @type {Coordinate} */ to) {
+	fill(from = new Coordinate(0, 0), to = new Coordinate(this.size.x, this.size.y)) {
 		const start = new Coordinate(Math.min(from.x, to.x), Math.min(from.y, to.y));
 		const end = new Coordinate(Math.max(from.x, to.x), Math.max(from.y, to.y));
 		for (let y = start.y; y < end.y; y++) {
@@ -260,29 +295,32 @@ class Board extends _Generator {
 				this.setCell(position, this._getElement(position));
 			}
 		}
+		this.#drawFrame();
 	}
 }
 //#endregion
-//#endregion
+//#region Initialize
 const canvasView = /** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`));
 canvasView.width = canvasView.getBoundingClientRect().width;
 canvasView.height = canvasView.getBoundingClientRect().height;
 const contextView = canvasView.getContext(`2d`);
-const input = window.prompt(`Input board size`, `100`);
-const size = (() => {
+///
+// const input = window.prompt(`Input board size`, `100`);
+const size = 50; /* (() => {
 	if (input == null) {
-		throw new TypeError(`invalid input`);
+		throw new TypeError(`Input mustn't be empty.`);
 	}
 	const result = Number.parseInt(input);
 	if (Number.isNaN(result)) {
-		throw new TypeError(`invalid input`);
+		throw new TypeError(`Input must be converted to a number.`);
 	} else {
 		return result;
 	}
-})();
+})(); */
 const board = new Board(new Coordinate(size, size), contextView);
-//
+///
 const bCounterFPS = /** @type {HTMLElement} */ (document.querySelector(`b#counter-fps`));
 setInterval(() => {
 	bCounterFPS.innerText = board.FPS.toFixed(0);
 }, 1000 / 4);
+//#endregion
