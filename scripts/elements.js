@@ -1,14 +1,16 @@
+//#region Initial Elementals
 //#region Void
-class Void extends _Element {
+class Void extends Elemental {
 	static color = new Color(225, 225, 225);
 	constructor(/** @type {Coordinate} */ position) {
 		super(position);
 		this._color = Void.color;
 	}
 }
+board.setCase(Void, 90);
 //#endregion
 //#region Grass
-class Grass extends _Element {
+class Grass extends Elemental {
 	static color = new Color(0, 128, 0);
 	static durationGrow = 10;
 	constructor(/** @type {Coordinate} */ position) {
@@ -27,19 +29,20 @@ class Grass extends _Element {
 			new Coordinate(this.position.x, this.position.y + 1),
 			new Coordinate(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = board.getElementsOfType(positions, Void);
+		const targets = board.getElementalsOfType(positions, Void);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Grass(target.position));
+			board.set(target.position, new Grass(target.position));
 			return true;
 		} else {
 			return false;
 		}
 	}, Grass.durationGrow);
 }
+board.setCase(Grass, 4);
 //#endregion
 //#region Fire
-class Fire extends _Element {
+class Fire extends Elemental {
 	static color = new Color(255, 150, 0);
 	static durationBurn = 4;
 	static durationFade = 16;
@@ -55,10 +58,10 @@ class Fire extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Grass);
+		const targets = board.getElementalsOfType(positions, Grass);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Fire(target.position));
+			board.set(target.position, new Fire(target.position));
 			this.#fade.progress = 0;
 			return true;
 		} else {
@@ -66,13 +69,14 @@ class Fire extends _Element {
 		}
 	}, Fire.durationBurn);
 	#fade = new Ability(`Fade`, () => {
-		board.setCell(this.position, new Void(this.position));
+		board.set(this.position, new Void(this.position));
 		return false;
 	}, Fire.durationFade);
 }
+board.setCase(Fire, 2);
 //#endregion
 //#region Water
-class Water extends _Element {
+class Water extends Elemental {
 	static color = new Color(0, 50, 255);
 	static durationFlow = 8;
 	static durationEvaporate = 8;
@@ -92,10 +96,10 @@ class Water extends _Element {
 			new Coordinate(this.position.x, this.position.y + 1),
 			new Coordinate(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = board.getElementsOfType(positions, Void);
+		const targets = board.getElementalsOfType(positions, Void);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Water(target.position));
+			board.set(target.position, new Water(target.position));
 			return true;
 		} else {
 			return false;
@@ -109,20 +113,21 @@ class Water extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Fire);
+		const targets = board.getElementalsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Void(target.position));
-			board.setCell(this.position, new Void(this.position));
+			board.set(target.position, new Void(target.position));
+			board.set(this.position, new Void(this.position));
 			return true;
 		} else {
 			return false;
 		}
 	}, Water.durationEvaporate);
 }
+board.setCase(Water, 2);
 //#endregion
 //#region Lava
-class Lava extends _Element {
+class Lava extends Elemental {
 	static color = new Color(255, 0, 0);
 	static maxDensity = 3;
 	static durationFlow = 15;
@@ -145,7 +150,7 @@ class Lava extends _Element {
 	set density(value) {
 		this.#density = value;
 		if (this.#density <= 0) {
-			board.setCell(this.position, new Void(this.position));
+			board.set(this.position, new Void(this.position));
 		}
 	}
 	#flow = new Ability(`Flow`, () => {
@@ -155,12 +160,12 @@ class Lava extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Void);
+		const targets = board.getElementalsOfType(positions, Void);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			const lifespan = this.#density - 1;
 			if (lifespan > 0) {
-				board.setCell(target.position, new Lava(target.position, lifespan));
+				board.set(target.position, new Lava(target.position, lifespan));
 			}
 			return true;
 		} else {
@@ -174,10 +179,10 @@ class Lava extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Grass);
+		const targets = board.getElementalsOfType(positions, Grass);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Fire(target.position));
+			board.set(target.position, new Fire(target.position));
 			return true;
 		} else {
 			return false;
@@ -190,10 +195,10 @@ class Lava extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Water);
+		const targets = board.getElementalsOfType(positions, Water);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Void(target.position));
+			board.set(target.position, new Void(target.position));
 			this.density--;
 			return true;
 		} else {
@@ -201,9 +206,10 @@ class Lava extends _Element {
 		}
 	}, Lava.durationFade);
 }
+board.setCase(Lava, 1);
 //#endregion
 //#region Ice
-class Ice extends _Element {
+class Ice extends Elemental {
 	static color = new Color(0, 200, 255);
 	static maxDensity = 3;
 	static durationFlow = 12;
@@ -226,7 +232,7 @@ class Ice extends _Element {
 	set density(value) {
 		this.#density = value;
 		if (this.#density <= 0) {
-			board.setCell(this.position, new Water(this.position));
+			board.set(this.position, new Water(this.position));
 		}
 	}
 	#flow = new Ability(`Flow`, () => {
@@ -236,12 +242,12 @@ class Ice extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Void);
+		const targets = board.getElementalsOfType(positions, Void);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			const lifespan = this.#density - 1;
 			if (lifespan > 0) {
-				board.setCell(target.position, new Ice(target.position, lifespan));
+				board.set(target.position, new Ice(target.position, lifespan));
 			}
 			return true;
 		} else {
@@ -255,10 +261,10 @@ class Ice extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Fire);
+		const targets = board.getElementalsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Lava(target.position));
+			board.set(target.position, new Lava(target.position));
 			this.density--;
 			return true;
 		} else {
@@ -272,15 +278,34 @@ class Ice extends _Element {
 			new Coordinate(this.position.x + 1, this.position.y),
 			new Coordinate(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementsOfType(positions, Lava);
+		const targets = board.getElementalsOfType(positions, Lava);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.setCell(target.position, new Void(target.position));
-			board.setCell(this.position, new Void(this.position));
+			board.set(target.position, new Void(target.position));
+			board.set(this.position, new Void(this.position));
 			return true;
 		} else {
 			return false;
 		}
 	}, Ice.durationEvaporate);
 }
+board.setCase(Ice, 1);
+//#endregion
+//#endregion
+//#region Custom Elementals
+//#region NewElemental
+class NewElemental extends Elemental {
+	static color = new Color(0, 0, 0); // Цвет элемента
+	static durationAbilityName = 1; // Длительность перезарядки способности
+	constructor(/** @type {Coordinate} */ position) {
+		super(position);
+		this._color = NewElemental.color; // Присваивание цвета элемента
+		this.abilities.push(this.#abilityName); // Подключение способностей
+	}
+	#abilityName = new Ability(`Ability Name`, () => {
+		// Действия при активации
+		return true; // Сбросить прогресс при активации?
+	}, NewElemental.durationAbilityName); // Способность
+}
+//#endregion
 //#endregion

@@ -17,6 +17,46 @@ class Coordinate {
 	}
 }
 //#endregion
+//#region Matrix
+/** @template Type */ class Matrix {
+	constructor(/** @type {Coordinate} */ size, /** @type {(position: Coordinate) => Type} */ initial) {
+		this.#size = size;
+		console.log(`The matrix is generated as ${this.#size.x} × ${this.#size.x}.`);
+		this.#data = [];
+		for (let y = 0; y < size.y; y++) {
+			this.#data[y] = [];
+			for (let x = 0; x < size.x; x++) {
+				this.#data[y][x] = initial(new Coordinate(x, y));
+			}
+		}
+	}
+	/** @type {Coordinate} */ #size;
+	/** @readonly */ get size() {
+		return this.#size;
+	}
+	/** @type {Array<Array<Type>>} */ #data;
+	/** @readonly */ get data() {
+		return this.#data;
+	}
+	set(/** @type {Coordinate} */ position, /** @type {Type} */ value) {
+		if (this.has(position)) {
+			this.#data[position.y][position.x] = value;
+		} else {
+			throw new RangeError(`Position ${position.toString()} is out of layer edges.`);
+		}
+	}
+	get(/** @type {Coordinate} */ position) {
+		if (this.has(position)) {
+			return this.#data[position.y][position.x];
+		} else {
+			throw new RangeError(`Position ${position.toString()} is out of layer edges.`);
+		}
+	}
+	has(/** @type {Coordinate} */ position) {
+		return (0 <= position.x && position.x < this.#size.x && 0 <= position.y && position.y < this.#size.y);
+	}
+}
+//#endregion
 //#region Color
 class Color {
 	/** @readonly */ static get white() {
@@ -75,19 +115,19 @@ class Ability {
 	/** @type {Number} */ progress;
 }
 //#endregion
-//#region _Element
-class _Element {
+//#region Elemental
+class Elemental {
 	static color = new Color(0, 0, 0);
 	constructor(/** @type {Coordinate} */ position) {
 		this.#position = position;
-		this._color = _Element.color;
+		this._color = Elemental.color;
 		this.#abilities = [];
 	}
 	/** @type {Coordinate} */ #position;
 	/** @readonly */ get position() {
 		return this.#position;
 	}
-	/** @protected */ _color;
+	/** @protected @type {Color} */ _color;
 	/** @readonly */ get color() {
 		return this._color;
 	}
@@ -116,9 +156,12 @@ class _Element {
 }
 //#endregion
 //#region _Generator
-class _Generator {
-	/** @type {Array<{ value: typeof _Element, coefficient: Number }>} */ #cases = [];
-	setCase(/** @type {typeof _Element} */ value, /** @type {Number} */ coefficient) {
+/** @extends {Matrix<Elemental>} */ class _Generator extends Matrix {
+	constructor(/** @type {Coordinate} */ size) {
+		super(size, (position) => new Elemental(position));
+	}
+	/** @type {Array<{ value: typeof Elemental, coefficient: Number }>} */ #cases = [];
+	setCase(/** @type {typeof Elemental} */ value, /** @type {Number} */ coefficient) {
 		const result = this.#cases.find((_case) => _case.value == value);
 		if (result) {
 			result.coefficient = coefficient;
@@ -127,7 +170,7 @@ class _Generator {
 		}
 		return (result != undefined);
 	}
-	removeCase(/** @type {typeof _Element} */ value) {
+	removeCase(/** @type {typeof Elemental} */ value) {
 		const index = this.#cases.findIndex((_case) => _case.value == value);
 		const result = (index == -1);
 		if (result) {
@@ -135,7 +178,7 @@ class _Generator {
 		}
 		return result;
 	}
-	/** @protected */ _getElement(/** @type {Coordinate} */ position) {
+	/** @protected */ _generateValue(/** @type {Coordinate} */ position) {
 		const summary = this.#cases.reduce((previous, current) => previous + current.coefficient, 0);
 		const random = Random.number(0, summary);
 		let selection = null;
@@ -154,11 +197,11 @@ class _Generator {
 			throw new ReferenceError(`Can't select random element. Maybe stack is empty.`);
 		}
 	}
-	// /** @protected */ _getELementCollection(/** @type {Array<Coordinate>} */ list) {
+	// /** @protected */ _generateValueCollection(/** @type {Array<Coordinate>} */ list) {
 	// 	const array = [];
 	// 	for (let index = 0; index < list.length; index++) {
 	// 		const position = list[index];
-	// 		array[index] = this._getElement(position);
+	// 		array[index] = this._generateValue(position);
 	// 	}
 	// 	return array;
 	// }
@@ -166,8 +209,8 @@ class _Generator {
 //#endregion
 //#region Engine
 class Engine extends _Generator {
-	constructor() {
-		super();
+	constructor(/** @type {Coordinate} */ size) {
+		super(size);
 		console.log(`Standart FPS rate setted to: ${this.#framesCount}.`);
 		let previousFrame = Date.now();
 		setInterval(() => {
@@ -197,16 +240,7 @@ class Engine extends _Generator {
 //#region Board
 class Board extends Engine {
 	constructor(/** @type {Coordinate} */ size, /** @type {CanvasRenderingContext2D | null} */ context) {
-		super();
-		this.#size = size;
-		console.log(`The board is generated as ${this.#size.x} × ${this.#size.x}.`);
-		this.#data = [];
-		for (let y = 0; y < size.y; y++) {
-			this.#data[y] = [];
-			for (let x = 0; x < size.x; x++) {
-				this.#data[y][x] = new _Element(new Coordinate(x, y));
-			}
-		}
+		super(size);
 		if (context) {
 			this.#context = context;
 			// this.#drawFrame();
@@ -218,37 +252,12 @@ class Board extends Engine {
 			this.#drawFrame();
 		};
 	}
-	/** @type {Coordinate} */ #size;
-	/** @readonly */ get size() {
-		return this.#size;
-	}
 	/** @type {CanvasRenderingContext2D} */ #context;
-	/** @type {Array<Array<_Element>>} */ #data;
-	/** @readonly */ get data() {
-		return this.#data;
-	}
-	/** @template {_Element} Type */ setCell(/** @type {Coordinate} */ position, /** @type {Type} */ value) {
-		if (this.hasCell(position)) {
-			this.#data[position.y][position.x] = value;
-		} else {
-			throw new RangeError(`Position ${position.toString()} is out of layer edges.`);
-		}
-	}
-	getCell(/** @type {Coordinate} */ position) {
-		if (this.hasCell(position)) {
-			return this.#data[position.y][position.x];
-		} else {
-			throw new RangeError(`Position ${position.toString()} is out of layer edges.`);
-		}
-	}
-	hasCell(/** @type {Coordinate} */ position) {
-		return (0 <= position.x && position.x < this.#size.x && 0 <= position.y && position.y < this.#size.y);
-	}
-	/** @template {typeof _Element} Type */ getElementsOfType(/** @type {Array<Coordinate>} */ positions, /** @type {Type} */ type) {
+	/** @template {typeof Elemental} Type */ getElementalsOfType(/** @type {Array<Coordinate>} */ positions, /** @type {Type} */ type) {
 		const result = [];
 		for (const position of positions) {
-			if (this.hasCell(position)) {
-				const datul = this.#data[position.y][position.x];
+			if (this.has(position)) {
+				const datul = this.get(position);
 				if (datul instanceof type) {
 					result.push((/** @type {InstanceType<Type>} */ (datul)));
 				}
@@ -260,7 +269,7 @@ class Board extends Engine {
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Coordinate(x, y);
-				const element = this.getCell(position);
+				const element = this.get(position);
 				this.#context.fillStyle = element.color.toString();
 				const cellSize = new Coordinate(this.#context.canvas.width / this.size.x, this.#context.canvas.height / this.size.y);
 				this.#context.fillRect(position.x * cellSize.x, position.y * cellSize.y, cellSize.x, cellSize.y);
@@ -272,7 +281,7 @@ class Board extends Engine {
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Coordinate(x, y);
-				const element = this.getCell(position);
+				const element = this.get(position);
 				if (element.execute()) {
 					moves = true;
 				}
@@ -280,7 +289,7 @@ class Board extends Engine {
 		}
 		if (!moves) {
 			this.execute = false;
-			if (window.confirm(`Elements have no more moves. Do you want to reload the board?`)) {
+			if (window.confirm(`Elementals have no more moves. Do you want to reload the board?`)) {
 				this.fill();
 				this.execute = true;
 			}
@@ -292,7 +301,7 @@ class Board extends Engine {
 		for (let y = start.y; y < end.y; y++) {
 			for (let x = start.x; x < end.x; x++) {
 				const position = new Coordinate(x, y);
-				this.setCell(position, this._getElement(position));
+				this.set(position, this._generateValue(position));
 			}
 		}
 		this.#drawFrame();
