@@ -353,7 +353,7 @@ canvasView.height = canvasView.getBoundingClientRect().height;
 const contextView = canvasView.getContext(`2d`);
 ///
 // const input = window.prompt(`Input board size`, `100`);
-const size = 150; /* (() => {
+const size = 50; /* (() => {
 	if (input == null) {
 		throw new TypeError(`Input mustn't be empty.`);
 	}
