@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Главная - Элементы</title>
+	<title>Main - Elements</title>
 	<link rel="stylesheet" href="../styles/style.css" />
 	<link rel="stylesheet" href="../styles/theme.css" />
 	<link rel="stylesheet" href="../styles/themes/light.css" />
@@ -55,9 +55,20 @@
 		</div>
 	</div>
 	<div class="layer"
-		style="position: absolute; inset: 0 0 0 auto; display: flex; justify-content: center; align-items: flex-start;">
+		style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; justify-content: start; align-items: center;">
 		<b id="counter-fps"
-			style="width: var(--size-standart-2); height: var(--size-standart-2); display: flex; justify-content: center; align-items: center; padding: var(--size-gap);"></b>
+			style="width: var(--size-standart-2); height: var(--size-standart-2); align-self: end; display: flex; justify-content: center; align-items: center; padding: var(--size-gap);"></b>
+		<table id="elements-counter">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Element</th>
+					<th>Count</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 </body>
 

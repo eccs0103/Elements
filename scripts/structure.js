@@ -59,6 +59,12 @@ class Coordinate {
 //#endregion
 //#region Color
 class Color {
+	static viaHSV(/** @type {Number} */ hue, /** @type {Number} */ saturation, /** @type {Number} */ value) {
+		function f(/** @type {Number} */ n, /** @type {Number} */ k = (n + hue / 60) % 6) {
+			return (value / 100) - (value / 100) * (saturation / 100) * Math.max(Math.min(k, 4 - k, 1), 0);
+		};
+		return new Color(f(5) * 255, f(3) * 255, f(1) * 255);
+	}
 	/** @readonly */ static get white() {
 		return new Color(255, 255, 255);
 	}
@@ -94,15 +100,15 @@ class Color {
 //#endregion
 //#region Ability
 class Ability {
-	constructor(/** @type {String} */ name, /** @type {() => Boolean} */ action, /** @type {Number} */ countdown, /** @type {Number} */ progress = 0) {
-		this.#name = name;
+	constructor(/** @type {String} */ title, /** @type {() => Boolean} */ action, /** @type {Number} */ countdown, /** @type {Number} */ progress = 0) {
+		this.#title = title;
 		this.#action = action;
 		this.#countdown = countdown;
 		this.progress = progress;
 	}
-	/** @type {String} */ #name;
-	/** @readonly */ get name() {
-		return this.#name;
+	/** @type {String} */ #title;
+	/** @readonly */ get title() {
+		return this.#title;
 	}
 	/** @type {() => Boolean} */ #action;
 	/** @readonly */ get action() {
@@ -118,10 +124,16 @@ class Ability {
 //#region Elemental
 class Elemental {
 	static color = new Color(0, 0, 0);
+	static title = `Element`;
 	constructor(/** @type {Coordinate} */ position) {
+		this._title = Elemental.title;
 		this.#position = position;
 		this._color = Elemental.color;
 		this.#abilities = [];
+	}
+	/** @protected @type {String} */ _title;
+	/** @readonly */ get title() {
+		return this._title;
 	}
 	/** @type {Coordinate} */ #position;
 	/** @readonly */ get position() {
@@ -139,7 +151,7 @@ class Elemental {
 		let moves = false;
 		for (const ability of this.abilities) {
 			if (ability.progress > ability.countdown) {
-				throw new RangeError(`Invalid progress value - ${ability.progress}, at ability - ${ability.name}, at element ${Object.getPrototypeOf(this)}, in position - ${this.#position.toString()}`);
+				throw new RangeError(`Invalid progress value - ${ability.progress}, at ability - ${ability.title}, at element ${Object.getPrototypeOf(this)}, in position - ${this.#position.toString()}`);
 			} else if (ability.progress == ability.countdown) {
 				const reset = ability.action();
 				if (reset) {
@@ -197,25 +209,17 @@ class Elemental {
 			throw new ReferenceError(`Can't select random element. Maybe stack is empty.`);
 		}
 	}
-	// /** @protected */ _generateValueCollection(/** @type {Array<Coordinate>} */ list) {
-	// 	const array = [];
-	// 	for (let index = 0; index < list.length; index++) {
-	// 		const position = list[index];
-	// 		array[index] = this._generateValue(position);
-	// 	}
-	// 	return array;
-	// }
 }
 //#endregion
 //#region Engine
 class Engine extends _Generator {
 	constructor(/** @type {Coordinate} */ size) {
 		super(size);
-		console.log(`Standart FPS rate setted to: ${this.#framesCount}.`);
+		console.log(`Standart FPS rate setted to: ${this.#MFC}.`);
 		let previousFrame = Date.now();
 		setInterval(() => {
 			let currentFrame = Date.now();
-			this.FPS = (() => {
+			this.#FPS = (() => {
 				return 1000 / (currentFrame - previousFrame);
 			})();
 			previousFrame = currentFrame;
@@ -223,9 +227,12 @@ class Engine extends _Generator {
 			if (this.#execute) {
 				this._updateFrame();
 			}
-		}, 1000 / this.#framesCount);
+		}, 1000 / this.#MFC);
 	}
-	/** @type {Number} */ #framesCount = 60;
+	/** @type {Number} */ #MFC = 60;
+	/** @readonly */ get MFC() {
+		return this.#MFC;
+	}
 	/** @type {Boolean} */ #execute = false;
 	get execute() {
 		return this.#execute;
@@ -234,7 +241,10 @@ class Engine extends _Generator {
 		this.#execute = value;
 	}
 	/** @protected @type {() => void} */ _updateFrame;
-	/** @type {Number} */ FPS;
+	/** @type {Number} */ #FPS;
+	/** @readonly */ get FPS() {
+		return this.#FPS;
+	}
 }
 //#endregion
 //#region Board
@@ -243,7 +253,7 @@ class Board extends Engine {
 		super(size);
 		if (context) {
 			this.#context = context;
-			// this.#drawFrame();
+			this.#drawFrame();
 		} else {
 			throw new ReferenceError(`Can't reach the texture.`);
 		}
@@ -265,15 +275,41 @@ class Board extends Engine {
 		}
 		return result;
 	}
+	/** @type {Map<typeof Elemental, Number>} */ #information;
+	/** @readonly */ get information() {
+		return this.#information;
+	}
 	#drawFrame() {
+		this.#information = new Map();
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Coordinate(x, y);
 				const element = this.get(position);
+				const key = element.constructor;
+				// @ts-ignore
+				this.#information.set(key, (this.#information.get(key) ?? 0) + 1);
 				this.#context.fillStyle = element.color.toString();
 				const cellSize = new Coordinate(this.#context.canvas.width / this.size.x, this.#context.canvas.height / this.size.y);
 				this.#context.fillRect(position.x * cellSize.x, position.y * cellSize.y, cellSize.x, cellSize.y);
 			}
+		}
+		const tableElementsCounter = /** @type {HTMLTableElement} */ (document.querySelector(`table#elements-counter`));
+		const tbodyInformation = tableElementsCounter.tBodies[0];
+		tbodyInformation.innerHTML = ``;
+		// for (const row of tbodyInformation.rows) {
+		// 	tbodyInformation.removeChild(row);
+		// }
+		for (const data of this.#information) {
+			const element = data[0];
+			const count = data[1];
+			const row = tbodyInformation.insertRow();
+			row.insertCell().appendChild(document.createElement(`div`)).setAttribute(`style`, `
+				aspect-ratio: 1 / 1;
+				width: calc(var(--size-standart-2) / 2);
+				background-color: ${element.color.toString()};
+			`);
+			row.insertCell().innerText = element.title;
+			row.insertCell().innerText = `${count}`;
 		}
 	}
 	#executeFrame() {
@@ -289,10 +325,12 @@ class Board extends Engine {
 		}
 		if (!moves) {
 			this.execute = false;
+			const inputTogglePlay = /** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`));
 			if (window.confirm(`Elementals have no more moves. Do you want to reload the board?`)) {
 				this.fill();
 				this.execute = true;
 			}
+			inputTogglePlay.checked = this.execute;
 		}
 	}
 	fill(from = new Coordinate(0, 0), to = new Coordinate(this.size.x, this.size.y)) {
@@ -315,7 +353,7 @@ canvasView.height = canvasView.getBoundingClientRect().height;
 const contextView = canvasView.getContext(`2d`);
 ///
 // const input = window.prompt(`Input board size`, `100`);
-const size = 50; /* (() => {
+const size = 150; /* (() => {
 	if (input == null) {
 		throw new TypeError(`Input mustn't be empty.`);
 	}
@@ -331,5 +369,6 @@ const board = new Board(new Coordinate(size, size), contextView);
 const bCounterFPS = /** @type {HTMLElement} */ (document.querySelector(`b#counter-fps`));
 setInterval(() => {
 	bCounterFPS.innerText = board.FPS.toFixed(0);
+	bCounterFPS.style.backgroundColor = Color.viaHSV(120 * (Math.min(Math.max(0, board.FPS / board.MFC), 1)), 100, 100).toString();
 }, 1000 / 4);
 //#endregion

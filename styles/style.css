@@ -74,6 +74,15 @@ img {
 	height: 100%;
 }
 
+table {
+	padding: var(--size-gap);
+}
+
+table th,
+table td {
+	padding: calc(var(--size-gap) / 2) var(--size-gap);
+}
+
 hr {
 	height: var(--size-serpator);
 	background-color: black;

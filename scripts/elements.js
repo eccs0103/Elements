@@ -1,9 +1,11 @@
 //#region Initial Elementals
 //#region Void
 class Void extends Elemental {
+	static title = `Void`
 	static color = new Color(225, 225, 225);
 	constructor(/** @type {Coordinate} */ position) {
 		super(position);
+		this._title = Void.title;
 		this._color = Void.color;
 	}
 }
@@ -11,10 +13,12 @@ board.setCase(Void, 90);
 //#endregion
 //#region Grass
 class Grass extends Elemental {
+	static title = `Grass`
 	static color = new Color(0, 128, 0);
 	static durationGrow = 10;
 	constructor(/** @type {Coordinate} */ position) {
 		super(position);
+		this._title = Grass.title;
 		this._color = Grass.color;
 		this.abilities.push(this.#grow);
 	}
@@ -43,11 +47,13 @@ board.setCase(Grass, 4);
 //#endregion
 //#region Fire
 class Fire extends Elemental {
+	static title = `Fire`
 	static color = new Color(255, 150, 0);
 	static durationBurn = 4;
 	static durationFade = 16;
 	constructor(/** @type {Coordinate} */ position) {
 		super(position);
+		this._title = Fire.title;
 		this._color = Fire.color;
 		this.abilities.push(this.#burn, this.#fade);
 	}
@@ -77,11 +83,13 @@ board.setCase(Fire, 2);
 //#endregion
 //#region Water
 class Water extends Elemental {
+	static title = `Water`;
 	static color = new Color(0, 50, 255);
 	static durationFlow = 8;
 	static durationEvaporate = 8;
 	constructor(/** @type {Coordinate} */ position) {
 		super(position);
+		this._title = Water.title;
 		this._color = Water.color;
 		this.abilities.push(this.#flow, this.#evaporate);
 	}
@@ -128,6 +136,7 @@ board.setCase(Water, 2);
 //#endregion
 //#region Lava
 class Lava extends Elemental {
+	static title = `Lava`;
 	static color = new Color(255, 0, 0);
 	static maxDensity = 3;
 	static durationFlow = 15;
@@ -135,6 +144,7 @@ class Lava extends Elemental {
 	static durationFade = 4;
 	constructor(/** @type {Coordinate} */ position, /** @type {Number} */ density = Lava.maxDensity) {
 		super(position);
+		this._title = Lava.title;
 		this.#density = density;
 		this._color = new Color(
 			((Lava.color.red - Fire.color.red) * this.#density / Lava.maxDensity) + Fire.color.red,
@@ -210,6 +220,7 @@ board.setCase(Lava, 1);
 //#endregion
 //#region Ice
 class Ice extends Elemental {
+	static title = `Ice`;
 	static color = new Color(0, 200, 255);
 	static maxDensity = 3;
 	static durationFlow = 12;
@@ -217,6 +228,7 @@ class Ice extends Elemental {
 	static durationEvaporate = 4;
 	constructor(/** @type {Coordinate} */ position, /** @type {Number} */ density = Ice.maxDensity) {
 		super(position);
+		this._title = Ice.title;
 		this.#density = density;
 		this._color = new Color(
 			((Ice.color.red - Water.color.red) * this.#density / Ice.maxDensity) + Water.color.red,
@@ -295,10 +307,12 @@ board.setCase(Ice, 1);
 //#region Custom Elementals
 //#region NewElemental
 class NewElemental extends Elemental {
+	static title = `New Elemental`; // Название элемента
 	static color = new Color(0, 0, 0); // Цвет элемента
 	static durationAbilityName = 1; // Длительность перезарядки способности
 	constructor(/** @type {Coordinate} */ position) {
 		super(position);
+		this._title = NewElemental.title;
 		this._color = NewElemental.color; // Присваивание цвета элемента
 		this.abilities.push(this.#abilityName); // Подключение способностей
 	}
