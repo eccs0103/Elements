@@ -1,16 +1,36 @@
 //#region Random
 class Random {
-	static number(/** @type {Number} */ min, /** @type {Number} */ max) {
+	/**
+	 * 
+	 * @param {Number} min 
+	 * @param {Number} max 
+	 * @returns 
+	 */
+	static number(min, max) {
 		return Math.random() * (max - min) + min;
 	}
-	/** @template Type */ static element(/** @type {Array<Type>} */ array) {
+	/**
+	 * 
+	 * @template Type
+	 * @param {Array<Type>} array 
+	 * @returns 
+	 */
+	static element(array) {
 		return array[Math.floor(Random.number(0, array.length))];
 	}
 }
 //#endregion
 //#region Archive
-/** @template Notation */ class Archive {
-	constructor(/** @type {String} */ path, /** @type {Notation | undefined} */ initial = undefined) {
+/** 
+ * @template Notation
+ */
+class Archive {
+	/**
+	 * 
+	 * @param {String} path 
+	 * @param {Notation | undefined} initial 
+	 */
+	constructor(path, initial = undefined) {
 		this.#path = path;
 		if (!localStorage.getItem(path) && initial) {
 			localStorage.setItem(path, JSON.stringify(initial));
@@ -19,9 +39,13 @@ class Random {
 	/** @type {String} */ #path;
 	read() {
 		const item = localStorage.getItem(this.#path);
-		return item ? /** @type {Notation} */ (JSON.parse(item)) : null;
+		return item ? (/** @type {Notation} */ (JSON.parse(item))) : null;
 	}
-	write(/** @type {Notation} */ value) {
+	/**
+	 * 
+	 * @param {Notation} value 
+	 */
+	write(value) {
 		localStorage.setItem(this.#path, JSON.stringify(value));
 	}
 }
