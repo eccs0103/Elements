@@ -4,15 +4,15 @@
 	--size-shadow: 0;
 	/* 0.15vmin; */
 	--value-transparence: 50%;
-	--color-foreground: rgb(255, 255, 255);
-	--color-background: rgb(225, 225, 225);
-	--color-modal: rgba(0, 0, 0, var(--value-transparence));
+	--color-foreground: rgb(50, 50, 50);
+	--color-background: rgb(25, 25, 25);
+	--color-modal: rgba(225, 225, 225, var(--value-transparence));
 	--color-highlight: hsl(210, 100%, 50%);
 	--color-highlight-negative: hsl(0, 100%, 75%);
-	--color-text: rgb(50, 50, 50);
+	--color-text: rgb(255, 255, 255);
 	--color-text-negative: hsl(0, 100%, 25%);
-	--color-text-reverse: rgb(255, 255, 255);
-	--color-shadow: rgba(0, 0, 0, var(--value-transparence));
+	--color-text-reverse: rgb(50, 50, 50);
+	--color-shadow: rgba(225, 225, 225, var(--value-transparence));
 	--time-duration: 85ms;
 }
 
@@ -154,7 +154,7 @@ img {
 }
 
 img.icon {
-	filter: invert(0);
+	filter: invert(1);
 }
 
 input[type="checkbox"]#toggle-play:checked+label[role="checkbox"] {

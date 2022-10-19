@@ -232,7 +232,11 @@ class Factory extends Matrix {
 	constructor(size, initial) {
 		super(size, new initial());
 	}
-	/** @type {Array<{ value: typeof Elemental, coefficient: Number }>} */ #cases = [];
+	/** @typedef {{ value: typeof Elemental, coefficient: Number }} Case */
+	/** @type {Array<Case>} */ #cases = [];
+	/** @readonly */ get cases() {
+		return Object.freeze(this.#cases);
+	}
 	/**
 	 * 
 	 * @param {typeof Elemental} value 
@@ -401,13 +405,13 @@ class Board extends Engine {
 			const element = data[0];
 			const count = data[1];
 			const row = tbodyInformation.insertRow();
+			// row.insertCell().innerText = `${this.getCase(element)}%`;
 			row.insertCell().appendChild(document.createElement(`div`)).setAttribute(`style`, `
 				aspect-ratio: 1 / 1;
 				width: calc(var(--size-standart-2) / 2);
 				background-color: ${element.color.toString()};
 			`);
 			row.insertCell().innerText = element.title;
-			row.insertCell().innerText = `${this.getCase(element)}%`;
 			row.insertCell().innerText = `${count}`;
 		}
 	}
