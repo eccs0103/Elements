@@ -19,6 +19,7 @@
 	resize: none;
 	overflow: hidden;
 	border-style: none;
+	border-width: var(--size-serpator);
 	outline-style: none;
 	outline-width: var(--size-serpator);
 	outline-offset: calc(-1 * var(--size-serpator));

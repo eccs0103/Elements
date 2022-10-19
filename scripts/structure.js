@@ -482,6 +482,6 @@ const board = new Board(new Vector(size, size), contextView);
 const bCounterFPS = /** @type {HTMLElement} */ (document.querySelector(`b#counter-fps`));
 setInterval(() => {
 	bCounterFPS.innerText = board.FPS.toFixed(0);
-	bCounterFPS.style.backgroundColor = Color.viaHSV(120 * (Math.min(Math.max(0, board.FPS / board.MFC), 1)), 100, 100).toString();
+	bCounterFPS.style.borderColor = Color.viaHSV(120 * (Math.min(Math.max(0, board.FPS / board.MFC), 1)), 100, 100).toString();
 }, 1000 / 4);
 //#endregion
