@@ -1,15 +1,15 @@
 //#region Initial Elementals
-//#region Void
-class Void extends Elemental {
-	static title = `Void`;
-	static color = new Color(225, 225, 225);
+//#region Dirt
+class Dirt extends Elemental {
+	static title = `Dirt`;
+	static color = new Color(150, 100, 80);
 	constructor() {
 		super();
-		this._title = Void.title;
-		this._color = Void.color;
+		this._title = Dirt.title;
+		this._color = Dirt.color;
 	}
 }
-board.setCase(Void, 90);
+board.setCase(Dirt, 90);
 //#endregion
 //#region Grass
 class Grass extends Elemental {
@@ -33,7 +33,7 @@ class Grass extends Elemental {
 			new Vector(this.position.x, this.position.y + 1),
 			new Vector(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = board.getElementalsOfType(positions, Void);
+		const targets = board.getElementalsOfType(positions, Dirt);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			board.set(target.position, new Grass());
@@ -75,7 +75,7 @@ class Fire extends Elemental {
 		}
 	}, Fire.durationBurn);
 	#fade = new Ability(`Fade`, () => {
-		board.set(this.position, new Void());
+		board.set(this.position, new Dirt());
 		return false;
 	}, Fire.durationFade);
 }
@@ -104,7 +104,7 @@ class Water extends Elemental {
 			new Vector(this.position.x, this.position.y + 1),
 			new Vector(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = board.getElementalsOfType(positions, Void);
+		const targets = board.getElementalsOfType(positions, Dirt);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			board.set(target.position, new Water());
@@ -124,8 +124,8 @@ class Water extends Elemental {
 		const targets = board.getElementalsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Void());
-			board.set(this.position, new Void());
+			board.set(target.position, new Dirt());
+			board.set(this.position, new Dirt());
 			return true;
 		} else {
 			return false;
@@ -164,7 +164,7 @@ class Lava extends Elemental {
 	set density(value) {
 		this.#density = value;
 		if (this.#density <= 0) {
-			board.set(this.position, new Void());
+			board.set(this.position, new Dirt());
 		}
 	}
 	#flow = new Ability(`Flow`, () => {
@@ -174,13 +174,11 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Void);
-		if (targets.length > 0) {
+		const targets = board.getElementalsOfType(positions, Dirt);
+		const lifespan = this.#density - 1;
+		if (targets.length > 0 && lifespan > 0) {
 			const target = Random.element(targets);
-			const lifespan = this.#density - 1;
-			if (lifespan > 0) {
-				board.set(target.position, new Lava(lifespan));
-			}
+			board.set(target.position, new Lava(lifespan));
 			return true;
 		} else {
 			return false;
@@ -212,7 +210,7 @@ class Lava extends Elemental {
 		const targets = board.getElementalsOfType(positions, Water);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Void());
+			board.set(target.position, new Dirt());
 			this.density--;
 			return true;
 		} else {
@@ -262,13 +260,11 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Void);
-		if (targets.length > 0) {
+		const targets = board.getElementalsOfType(positions, Dirt);
+		const lifespan = this.#density - 1;
+		if (targets.length > 0 && lifespan > 0) {
 			const target = Random.element(targets);
-			const lifespan = this.#density - 1;
-			if (lifespan > 0) {
-				board.set(target.position, new Ice(lifespan));
-			}
+			board.set(target.position, new Ice(lifespan));
 			return true;
 		} else {
 			return false;
@@ -301,8 +297,8 @@ class Ice extends Elemental {
 		const targets = board.getElementalsOfType(positions, Lava);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Void());
-			board.set(this.position, new Void());
+			board.set(target.position, new Dirt());
+			board.set(this.position, new Dirt());
 			return true;
 		} else {
 			return false;

@@ -235,7 +235,7 @@ class Factory extends Matrix {
 	/** @typedef {{ value: typeof Elemental, coefficient: Number }} Case */
 	/** @type {Array<Case>} */ #cases = [];
 	/** @readonly */ get cases() {
-		return Object.freeze(this.#cases);
+		return Object.freeze(Array.from(this.#cases));
 	}
 	/**
 	 * 
@@ -346,8 +346,17 @@ class Board extends Engine {
 		this.#context.canvas.height = this.#context.canvas.getBoundingClientRect().height - (this.#context.canvas.getBoundingClientRect().height % this.size.y);
 		this.#drawFrame();
 		this._update = () => {
-			this.#executeFrame();
+			const moves = this.#executeFrame();
 			this.#drawFrame();
+			if (!moves) {
+				this.execute = false;
+				const inputTogglePlay = /** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`));
+				if (window.confirm(`Elementals have no more moves. Do you want to reload the board?`)) {
+					this.fill();
+					this.execute = true;
+				}
+				inputTogglePlay.checked = this.execute;
+			}
 		};
 	}
 	/** @type {CanvasRenderingContext2D} */ #context;
@@ -381,14 +390,14 @@ class Board extends Engine {
 	/** @readonly */ get information() {
 		return this.#information;
 	}
+	/** @type {Boolean} */ #emptyTypes = false;
 	#drawFrame() {
-		this.#information = new Map();
+		this.#information = new Map(this.cases.map((_case) => [_case.value, 0]));
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Vector(x, y);
 				const element = this.get(position);
-				const key = element.constructor;
-				// @ts-ignore
+				const key = (/** @type {typeof Elemental} */ (element.constructor));
 				this.#information.set(key, (this.#information.get(key) ?? 0) + 1);
 				this.#context.fillStyle = element.color.toString();
 				const cellSize = new Vector(this.#context.canvas.width / this.size.x, this.#context.canvas.height / this.size.y);
@@ -397,22 +406,23 @@ class Board extends Engine {
 		}
 		const tableElementsCounter = /** @type {HTMLTableElement} */ (document.querySelector(`table#elements-counter`));
 		const tbodyInformation = tableElementsCounter.tBodies[0];
-		tbodyInformation.innerHTML = ``;
-		// for (const row of tbodyInformation.rows) {
-		// 	tbodyInformation.removeChild(row);
-		// }
+		for (const row of Array.from(tbodyInformation.rows)) {
+			tbodyInformation.removeChild(row);
+		}
 		for (const data of this.#information) {
 			const element = data[0];
 			const count = data[1];
-			const row = tbodyInformation.insertRow();
-			// row.insertCell().innerText = `${this.getCase(element)}%`;
-			row.insertCell().appendChild(document.createElement(`div`)).setAttribute(`style`, `
-				aspect-ratio: 1 / 1;
-				width: calc(var(--size-standart-2) / 2);
-				background-color: ${element.color.toString()};
-			`);
-			row.insertCell().innerText = element.title;
-			row.insertCell().innerText = `${count}`;
+			if ((count == 0 && this.#emptyTypes) || count > 0) {
+				const row = tbodyInformation.insertRow();
+				// row.insertCell().innerText = `${this.getCase(element)}%`;
+				row.insertCell().appendChild(document.createElement(`div`)).setAttribute(`style`, `
+					aspect-ratio: 1 / 1;
+					width: calc(var(--size-standart-2) / 2);
+					background-color: ${element.color.toString()};
+				`);
+				row.insertCell().innerText = element.title;
+				row.insertCell().innerText = `${count}`;
+			}
 		}
 	}
 	#executeFrame() {
@@ -426,15 +436,7 @@ class Board extends Engine {
 				}
 			}
 		}
-		if (!moves) {
-			this.execute = false;
-			const inputTogglePlay = /** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`));
-			if (window.confirm(`Elementals have no more moves. Do you want to reload the board?`)) {
-				this.fill();
-				this.execute = true;
-			}
-			inputTogglePlay.checked = this.execute;
-		}
+		return moves;
 	}
 	/**
 	 * 
@@ -455,7 +457,7 @@ class Board extends Engine {
 }
 //#endregion
 //#region Initialize
-const canvasView = /** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`));
+const canvasView = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
 const contextView = (() => {
 	const context = canvasView.getContext(`2d`);
 	if (context) {
@@ -466,7 +468,7 @@ const contextView = (() => {
 })();
 ///
 // const input = window.prompt(`Input board size`, `100`);
-const size = 50; /* (() => {
+const size = 100; /* (() => {
 	if (input == null) {
 		throw new TypeError(`Input mustn't be empty.`);
 	}
@@ -479,9 +481,9 @@ const size = 50; /* (() => {
 })(); */
 const board = new Board(new Vector(size, size), contextView);
 ///
-const bCounterFPS = /** @type {HTMLElement} */ (document.querySelector(`b#counter-fps`));
+const divCounterFPS = (/** @type {HTMLDivElement} */ (document.querySelector(`div#counter-fps`)));
 setInterval(() => {
-	bCounterFPS.innerText = board.FPS.toFixed(0);
-	bCounterFPS.style.borderColor = Color.viaHSV(120 * (Math.min(Math.max(0, board.FPS / board.MFC), 1)), 100, 100).toString();
+	divCounterFPS.innerText = board.FPS.toFixed(0);
+	divCounterFPS.style.borderColor = Color.viaHSV(120 * (Math.min(Math.max(0, board.FPS / board.MFC), 1)), 100, 100).toString();
 }, 1000 / 4);
 //#endregion

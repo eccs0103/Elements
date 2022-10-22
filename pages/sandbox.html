@@ -13,7 +13,7 @@
 	<script src="../scripts/launch.js" defer></script>
 </head>
 
-<body spellcheck="false" translate="no"
+<body spellcheck="false"
 	style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
 	<menu class="layer in-left"
 		style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap); padding: var(--size-gap);">
@@ -54,10 +54,8 @@
 	</div>
 	<div
 		style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; justify-content: start; align-items: center; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-		<div class="layer in-right"
-			style="aspect-ratio: 1 / 1; min-width: var(--size-standart-2); width: fit-content; align-self: end;  display: flex; padding: var(--size-gap);">
-			<b id="counter-fps" class="depth"
-				style="aspect-ratio: 1 / 1; width: 100%; display: flex; justify-content: center; align-items: center; border-style: solid;"></b>
+		<div id="counter-fps" class="layer in-right"
+			style="aspect-ratio: 1 / 1; min-width: var(--size-standart-2); width: fit-content; align-self: end;  display: flex; justify-content: center; align-items: center; padding: var(--size-gap); border-style: solid;">
 		</div>
 		<table id="elements-counter" class="layer in-right">
 			<thead>
@@ -65,7 +63,7 @@
 					<!-- <th>Coefficent</th> -->
 					<th>View</th>
 					<th>Element</th>
-					<th>Count</th>
+					<th>Amount</th>
 				</tr>
 			</thead>
 			<tbody>
