@@ -3,7 +3,7 @@
 © Adaptive Core 2022  
 Последное обновление информации: 18.10.2022.  
 
-![Imgur](https://imgur.com/jDAI18h.png) 
+![Imgur](https://imgur.com/z3y08Bs.png) 
 
 - - -
 
