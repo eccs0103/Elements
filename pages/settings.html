@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Settings - Elements</title>
+	<link rel="stylesheet" type="text/css" href="../styles/style.css" />
+	<link id="theme" rel="stylesheet" type="text/css" />
+	<script src="../scripts/modules.js" type="text/javascript" defer></script>
+	<script src="../scripts/structure.js" type="text/javascript" defer></script>
+	<script src="../scripts/settings.js" type="text/javascript" defer></script>
+</head>
+
+<body spellcheck="false"
+	style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+	<menu class="layer in-left"
+		style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap); padding: var(--size-gap);">
+		<button role="combobox" title="Home" onclick="location.href=`./sandbox.html`"
+			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+			<img src="../resources/home.png" class="icon" alt="">
+		</button>
+		<button role="combobox" title="Settings" onclick="location.href=`./settings.html`" class="checked"
+			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+			<img src="../resources/settings.png" class="icon" alt="">
+		</button>
+		<button role="combobox" title="Information" disabled
+			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+			<img src="../resources/info.png" class="icon" alt="">
+		</button>
+	</menu>
+	<div
+		style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
+		<div class="layer"
+			style="align-self: flex-start; width: 40%; height: fit-content; display: grid; grid-template-columns: 1fr auto; justify-items: stretch; align-items: center; gap: var(--size-gap); padding: calc(var(--size-gap) * 2);">
+			<h1 style="grid-column: auto / span 2;">Settings</h1>
+			<article style="display: contents;">
+				<h3 style="grid-column: 1 / span 1;">Theme</h3>
+				<select id="dropdown-theme" style="grid-row: auto / span 2;" required></select>
+				<dfn style="grid-column: 1 / span 1;">External design of the page: color scheme, background and
+					foreground, font.</dfn>
+			</article>
+			<article style="display: contents;">
+				<h3 style="grid-column: 1 / span 1;">Counter FPS</h3>
+				<input id="toggle-counter-fps" type="checkbox" hidden>
+				<label for="toggle-counter-fps" role="checkbox" class="depth toggle" style="grid-row: auto / span 2;">
+					<span class="layer knob"></span>
+				</label>
+				<dfn style="grid-column: 1 / span 1;">Show or hide FPS counter with load indicator.</dfn>
+			</article>
+			<article style="display: contents;">
+				<h3 style="grid-column: 1 / span 1;">Elements counter</h3>
+				<input id="toggle-elements-counter" type="checkbox" hidden>
+				<label for="toggle-elements-counter" role="checkbox" class="depth toggle"
+					style="grid-row: auto / span 2;">
+					<span class="layer knob"></span>
+				</label>
+				<dfn style="grid-column: 1 / span 1;">Show or hide the table of elements, which displays the icons of
+					the elements, their names and quantities.</dfn>
+			</article>
+			<article style="display: contents;">
+				<h3 style="grid-column: 1 / span 1;">Board size</h3>
+				<input id="board-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]"
+					required style="grid-row: auto / span 2;" />
+				<dfn style="grid-column: 1 / span 1;">Board generated size. The size can be from 20 to 200 inclusive.
+					Resizing the board will generate it anew with the given coefficients.</dfn>
+			</article>
+		</div>
+	</div>
+</body>
+
+</html>

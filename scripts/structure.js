@@ -186,6 +186,7 @@ class Elemental {
 		this._color = Elemental.color;
 		this.#abilities = [];
 	}
+	/** @type {Board} */ board;
 	/** @protected @type {String} */ _title;
 	/** @readonly */ get title() {
 		return this._title;
@@ -320,6 +321,13 @@ class Engine extends Factory {
 	}
 	set execute(value) {
 		this.#execute = value;
+		if (!this._wasExecuted && this.#execute) {
+			this._wasExecuted = true;
+		}
+	}
+	/** @protected @type {Boolean} */ _wasExecuted = false;
+	/** @readonly */ get wasExecuted() {
+		return this._wasExecuted;
 	}
 	/** 
 	 * @protected
@@ -366,6 +374,7 @@ class Board extends Engine {
 	 * @param {Elemental} value 
 	 */
 	set(position, value) {
+		value.board = this;
 		value.position = position;
 		super.set(position, value);
 	}
@@ -453,37 +462,75 @@ class Board extends Engine {
 			}
 		}
 		this.#drawFrame();
+		this._wasExecuted = false;
 	}
 }
 //#endregion
-//#region Initialize
-const canvasView = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
-const contextView = (() => {
-	const context = canvasView.getContext(`2d`);
-	if (context) {
-		return context;
-	} else {
-		throw new ReferenceError(`Can't reach the texture.`);
+//#region Settings
+/** @typedef {{ theme: String, counterFPS: Boolean, elementsCounter: Boolean, boardSize: Number }} SettingsNotation */
+class Settings {
+	static import(/** @type {SettingsNotation} */ object) {
+		const value = new Settings();
+		value.#theme = object.theme;
+		value.counterFPS = object.counterFPS;
+		value.elementsCounter = object.elementsCounter;
+		value.#boardSize = object.boardSize;
+		return value;
 	}
-})();
-///
-// const input = window.prompt(`Input board size`, `100`);
-const size = 100; /* (() => {
-	if (input == null) {
-		throw new TypeError(`Input mustn't be empty.`);
+	static export(/** @type {Settings} */ object) {
+		const value = (/** @type {SettingsNotation} */ ({}));
+		value.theme = object.#theme;
+		value.counterFPS = object.counterFPS;
+		value.elementsCounter = object.elementsCounter;
+		value.boardSize = object.#boardSize;
+		return value;
 	}
-	const result = Number.parseInt(input);
-	if (Number.isNaN(result)) {
-		throw new TypeError(`Input must be converted to a number.`);
-	} else {
-		return result;
+	/** @type {Array<String>} */ static #groups = [`light`, `dark`];
+	/** @readonly */ static get groups() {
+		return Settings.#groups;
 	}
-})(); */
-const board = new Board(new Vector(size, size), contextView);
-///
-const divCounterFPS = (/** @type {HTMLDivElement} */ (document.querySelector(`div#counter-fps`)));
-setInterval(() => {
-	divCounterFPS.innerText = board.FPS.toFixed(0);
-	divCounterFPS.style.borderColor = Color.viaHSV(120 * (Math.min(Math.max(0, board.FPS / board.MFC), 1)), 100, 100).toString();
-}, 1000 / 4);
+	/** @type {Array<String>} */ static #themes = [`standart-light`, `standart-dark`];
+	/** @readonly */ static get themes() {
+		return Settings.#themes;
+	}
+	/** @type {Number} */ static #minBoardSize = 20;
+	/** @readonly */ static get minBoardSize() {
+		return this.#minBoardSize;
+	}
+	/** @type {Number} */ static #maxBoardSize = 200;
+	/** @readonly */ static get maxBoardSize() {
+		return this.#maxBoardSize;
+	}
+	constructor() {
+		this.theme = Settings.#themes[0];
+		this.counterFPS = false;
+		this.elementsCounter = false;
+		this.boardSize = 50;
+	}
+	/** @type {String} */ #theme;
+	get theme() {
+		return this.#theme;
+	}
+	set theme(value) {
+		if (Settings.#themes.includes(value)) {
+			this.#theme = value;
+		} else {
+			throw new Error(`Can't reach ${value} theme in themes list.`);
+		}
+	}
+	/** @type {Boolean} */ counterFPS;
+	/** @type {Boolean} */ elementsCounter;
+	/** @type {Number} */ #boardSize;
+	get boardSize() {
+		return this.#boardSize;
+	}
+	set boardSize(value) {
+		if (Settings.#minBoardSize <= value && value <= Settings.#maxBoardSize) {
+			this.#boardSize = value;
+		} else {
+			throw new RangeError(`Value ${value} is out of range. It must be from ${Settings.#minBoardSize} to ${Settings.#maxBoardSize} inclusive.`);
+		}
+	}
+}
+const archiveSettings = new Archive(``, Settings.export(new Settings()));
 //#endregion

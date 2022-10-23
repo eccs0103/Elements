@@ -7,12 +7,16 @@
 	--size-serpator: 0.3vmin;
 }
 
+@supports(user-select: none) {
+	* {
+		user-select: none;
+		-webkit-user-drag: none;
+	}
+}
+
 * {
 	font-family: system-ui, sans-serif;
 	text-align: start;
-	line-height: 100%;
-	user-select: none;
-	-webkit-user-drag: none;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -36,11 +40,13 @@ body {
 
 /* Global */
 button,
+input,
 input[type="text"],
 textarea,
 input[type="datetime"],
 input[type="checkbox"]+label[role="checkbox"],
-input[type="radio"]+label[role="combobox"] {
+input[type="radio"]+label[role="combobox"],
+select {
 	font-weight: bold;
 }
 
@@ -48,12 +54,16 @@ input[type="radio"]+label[role="combobox"] {
 	font-weight: normal;
 }
 
+input,
 input[type="text"],
 textarea,
-input[type="datetime"] {
-	padding: var(--size-gap);
+input[type="datetime"],
+select {
+	height: fit-content;
+	padding: calc(var(--size-gap) / 1.5) var(--size-gap);
 }
 
+input:enabled,
 input[type="text"]:enabled,
 textarea:enabled,
 input[type="datetime"]:enabled {
@@ -61,12 +71,35 @@ input[type="datetime"]:enabled {
 }
 
 button:enabled,
+input:enabled:read-only,
 input[type="text"]:enabled:read-only,
 textarea:enabled:read-only,
 input[type="datetime"]:enabled:read-only,
 input[type="checkbox"]:enabled+label[role="checkbox"],
-input[type="radio"]:enabled:not(:checked)+label[role="combobox"] {
+input[type="radio"]:enabled:not(:checked)+label[role="combobox"],
+select:enabled {
 	cursor: pointer;
+}
+
+input[type="checkbox"]+label[role="checkbox"].toggle {
+	aspect-ratio: 2;
+	width: var(--size-standart-2);
+	display: flex;
+	border-radius: 50vmin;
+	padding: var(--size-serpator);
+}
+
+input[type="checkbox"]+label[role="checkbox"].toggle>span.knob {
+	aspect-ratio: 1;
+	height: 100%;
+	border-radius: inherit;
+	margin-left: 0;
+	margin-right: auto;
+}
+
+input[type="checkbox"]:checked+label[role="checkbox"].toggle>span.knob {
+	margin-left: auto;
+	margin-right: 0;
 }
 
 img {
@@ -96,16 +129,6 @@ kbd {
 }
 
 /* Local */
-header>input[type="checkbox"]:checked~div.layer {
-	transform: translateY(-100%);
-	transition: 0.5s ease-in-out;
-}
-
-header>input[type="checkbox"]:not(:checked)~div.layer {
-	transform: translateY(0);
-	transition: 0.5s ease-in-out;
-}
-
 input[type="checkbox"]#toggle-play:checked+label[role="checkbox"]>img.icon {
 	content: url(../resources/pause.png);
 }

@@ -9,7 +9,6 @@ class Dirt extends Elemental {
 		this._color = Dirt.color;
 	}
 }
-board.setCase(Dirt, 90);
 //#endregion
 //#region Grass
 class Grass extends Elemental {
@@ -33,17 +32,16 @@ class Grass extends Elemental {
 			new Vector(this.position.x, this.position.y + 1),
 			new Vector(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementalsOfType(positions, Dirt);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Grass());
+			this.board.set(target.position, new Grass());
 			return true;
 		} else {
 			return false;
 		}
 	}, Grass.durationGrow);
 }
-board.setCase(Grass, 4);
 //#endregion
 //#region Fire
 class Fire extends Elemental {
@@ -64,10 +62,10 @@ class Fire extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Grass);
+		const targets = this.board.getElementalsOfType(positions, Grass);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Fire());
+			this.board.set(target.position, new Fire());
 			this.#fade.progress = 0;
 			return true;
 		} else {
@@ -75,11 +73,10 @@ class Fire extends Elemental {
 		}
 	}, Fire.durationBurn);
 	#fade = new Ability(`Fade`, () => {
-		board.set(this.position, new Dirt());
+		this.board.set(this.position, new Dirt());
 		return false;
 	}, Fire.durationFade);
 }
-board.setCase(Fire, 2);
 //#endregion
 //#region Water
 class Water extends Elemental {
@@ -104,10 +101,10 @@ class Water extends Elemental {
 			new Vector(this.position.x, this.position.y + 1),
 			new Vector(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementalsOfType(positions, Dirt);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Water());
+			this.board.set(target.position, new Water());
 			return true;
 		} else {
 			return false;
@@ -121,18 +118,17 @@ class Water extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Fire);
+		const targets = this.board.getElementalsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Dirt());
-			board.set(this.position, new Dirt());
+			this.board.set(target.position, new Dirt());
+			this.board.set(this.position, new Dirt());
 			return true;
 		} else {
 			return false;
 		}
 	}, Water.durationEvaporate);
 }
-board.setCase(Water, 2);
 //#endregion
 //#region Lava
 class Lava extends Elemental {
@@ -164,7 +160,7 @@ class Lava extends Elemental {
 	set density(value) {
 		this.#density = value;
 		if (this.#density <= 0) {
-			board.set(this.position, new Dirt());
+			this.board.set(this.position, new Dirt());
 		}
 	}
 	#flow = new Ability(`Flow`, () => {
@@ -174,11 +170,11 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementalsOfType(positions, Dirt);
 		const lifespan = this.#density - 1;
 		if (targets.length > 0 && lifespan > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Lava(lifespan));
+			this.board.set(target.position, new Lava(lifespan));
 			return true;
 		} else {
 			return false;
@@ -191,10 +187,10 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Grass);
+		const targets = this.board.getElementalsOfType(positions, Grass);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Fire());
+			this.board.set(target.position, new Fire());
 			return true;
 		} else {
 			return false;
@@ -207,10 +203,10 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Water);
+		const targets = this.board.getElementalsOfType(positions, Water);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Dirt());
+			this.board.set(target.position, new Dirt());
 			this.density--;
 			return true;
 		} else {
@@ -218,7 +214,6 @@ class Lava extends Elemental {
 		}
 	}, Lava.durationFade);
 }
-board.setCase(Lava, 1);
 //#endregion
 //#region Ice
 class Ice extends Elemental {
@@ -250,7 +245,7 @@ class Ice extends Elemental {
 	set density(value) {
 		this.#density = value;
 		if (this.#density <= 0) {
-			board.set(this.position, new Water());
+			this.board.set(this.position, new Water());
 		}
 	}
 	#flow = new Ability(`Flow`, () => {
@@ -260,11 +255,11 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementalsOfType(positions, Dirt);
 		const lifespan = this.#density - 1;
 		if (targets.length > 0 && lifespan > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Ice(lifespan));
+			this.board.set(target.position, new Ice(lifespan));
 			return true;
 		} else {
 			return false;
@@ -277,10 +272,10 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Fire);
+		const targets = this.board.getElementalsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Lava());
+			this.board.set(target.position, new Lava());
 			this.density--;
 			return true;
 		} else {
@@ -294,18 +289,17 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = board.getElementalsOfType(positions, Lava);
+		const targets = this.board.getElementalsOfType(positions, Lava);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
-			board.set(target.position, new Dirt());
-			board.set(this.position, new Dirt());
+			this.board.set(target.position, new Dirt());
+			this.board.set(this.position, new Dirt());
 			return true;
 		} else {
 			return false;
 		}
 	}, Ice.durationEvaporate);
 }
-board.setCase(Ice, 1);
 //#endregion
 //#endregion
 //#region Custom Elementals

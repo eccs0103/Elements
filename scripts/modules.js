@@ -39,7 +39,11 @@ class Archive {
 	/** @type {String} */ #path;
 	read() {
 		const item = localStorage.getItem(this.#path);
-		return item ? (/** @type {Notation} */ (JSON.parse(item))) : null;
+		if (item) {
+			return (/** @type {Notation} */ (JSON.parse(item)));
+		} else {
+			throw new ReferenceError(`Key '${this.#path}' is undefined.`);
+		}
 	}
 	/**
 	 * 
