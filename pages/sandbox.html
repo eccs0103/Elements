@@ -7,52 +7,40 @@
 	<title>Sandbox - Elements</title>
 	<link rel="stylesheet" type="text/css" href="../styles/style.css" />
 	<link id="theme" rel="stylesheet" type="text/css" />
-	<script src="../scripts/modules.js" type="text/javascript" defer></script>
-	<script src="../scripts/structure.js" type="text/javascript" defer></script>
-	<script src="../scripts/elements.js" type="text/javascript" defer></script>
-	<script src="../scripts/sandbox.js" type="text/javascript" defer></script>
+	<script type="text/javascript" src="../scripts/modules.js" defer></script>
+	<script type="text/javascript" src="../scripts/structure.js" defer></script>
+	<script type="text/javascript" src="../scripts/elements.js" defer></script>
+	<script type="text/javascript" src="../scripts/initialize.js" defer></script>
+	<script type="text/javascript" src="../scripts/sandbox.js" defer></script>
 </head>
 
-<body spellcheck="false"
-	style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-	<menu class="layer in-left"
-		style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap); padding: var(--size-gap);">
-		<button role="combobox" title="Home" onclick="location.href=`./sandbox.html`" class="checked"
-			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+<body spellcheck="false" style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap); padding: var(--size-gap);">
+		<button role="combobox" title="Home" onclick="location.href=`./sandbox.html`" class="checked" style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 			<img src="../resources/home.png" class="icon" alt="">
 		</button>
-		<button role="combobox" title="Settings" onclick="location.href=`./settings.html`"
-			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+		<button role="combobox" title="Settings" onclick="location.href=`./settings.html`" style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 			<img src="../resources/settings.png" class="icon" alt="">
 		</button>
-		<button role="combobox" title="Information" disabled
-			style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+		<button role="combobox" title="Information" disabled style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 			<img src="../resources/info.png" class="icon" alt="">
 		</button>
 	</menu>
-	<div
-		style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
-		<div class="layer"
-			style="width: fit-content; height: 100%; aspect-ratio: 1 / 1; display: grid; gap: var(--size-gap); padding: var(--size-gap);">
-			<canvas id="view" class="depth"
-				style="aspect-ratio: 1 / 1; display: flex; width: 100%; height: 100%; padding: var(--size-shadow);"></canvas>
+	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
+		<div class="layer" style="width: fit-content; height: 100%; aspect-ratio: 1 / 1; display: grid; gap: var(--size-gap); padding: var(--size-gap);">
+			<canvas id="view" class="depth" style="aspect-ratio: 1 / 1; display: flex; width: 100%; height: 100%; padding: var(--size-shadow);"></canvas>
 			<div style="width: fit-content; justify-content: center; display: flex; flex-direction: row;">
 				<input id="toggle-play" type="checkbox" hidden>
-				<label for="toggle-play" role="checkbox" title="Launch"
-					style="display: flex; width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+				<label for="toggle-play" role="checkbox" title="Launch" style="display: flex; width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 					<img src="../resources/play-arrow.png" class="icon" alt="">
 				</label>
-				<button id="reload-board" title="Rekoad"
-					style="display: flex; width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+				<button id="reload-board" title="Rekoad" style="display: flex; width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
 					<img src="../resources/refresh.png" class="icon" alt="">
 				</button>
 			</div>
 		</div>
-		<div
-			style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; justify-content: start; align-items: center; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-			<div id="counter-fps" class="layer in-right"
-				style="aspect-ratio: 1 / 1; min-width: var(--size-standart-2); width: fit-content; align-self: end;  display: flex; justify-content: center; align-items: center; padding: var(--size-gap); border-style: solid;"
-				hidden>
+		<div class="transparent" style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; justify-content: start; align-items: center; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+			<div id="counter-fps" class="layer in-right" style="aspect-ratio: 1 / 1; min-width: var(--size-standart-2); width: fit-content; align-self: end;  display: flex; justify-content: center; align-items: center; padding: var(--size-gap); border-style: solid;" hidden>
 			</div>
 			<table id="elements-counter" class="layer in-right" hidden>
 				<thead>

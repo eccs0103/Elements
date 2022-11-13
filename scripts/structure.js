@@ -297,7 +297,7 @@ class Engine extends Factory {
 	 */
 	constructor(size) {
 		super(size, Elemental);
-		console.log(`Standart FPS rate setted to: ${this.#MFC}.`);
+		console.log(`Standart FPS rate setted to: ${this.#AFPS}.`);
 		let previousFrame = Date.now();
 		setInterval(() => {
 			let currentFrame = Date.now();
@@ -309,11 +309,11 @@ class Engine extends Factory {
 			if (this.#execute) {
 				this._update();
 			}
-		}, 1000 / this.#MFC);
+		}, 1000 / this.#AFPS);
 	}
-	/** @type {Number} */ #MFC = 60;
-	/** @readonly */ get MFC() {
-		return this.#MFC;
+	/** @type {Number} */ #AFPS = 60;
+	/** @readonly */ get AFPS() {
+		return this.#AFPS;
 	}
 	/** @type {Boolean} */ #execute = false;
 	get execute() {
@@ -359,7 +359,7 @@ class Board extends Engine {
 			if (!moves) {
 				this.execute = false;
 				const inputTogglePlay = /** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`));
-				if (window.confirm(`Elementals have no more moves. Do you want to reload the board?`)) {
+				if (window.confirm(`Elements have no more moves. Do you want to reload the board?`)) {
 					this.fill();
 					this.execute = true;
 				}
@@ -399,7 +399,7 @@ class Board extends Engine {
 	/** @readonly */ get information() {
 		return this.#information;
 	}
-	/** @type {Boolean} */ #emptyTypes = false;
+	/** @type {Boolean} */ hideNullables = true;
 	#drawFrame() {
 		this.#information = new Map(this.cases.map((_case) => [_case.value, 0]));
 		for (let y = 0; y < this.size.y; y++) {
@@ -421,7 +421,7 @@ class Board extends Engine {
 		for (const data of this.#information) {
 			const element = data[0];
 			const count = data[1];
-			if ((count == 0 && this.#emptyTypes) || count > 0) {
+			if ((count == 0 && !this.hideNullables) || count > 0) {
 				const row = tbodyInformation.insertRow();
 				// row.insertCell().innerText = `${this.getCase(element)}%`;
 				row.insertCell().appendChild(document.createElement(`div`)).setAttribute(`style`, `
@@ -465,72 +465,4 @@ class Board extends Engine {
 		this._wasExecuted = false;
 	}
 }
-//#endregion
-//#region Settings
-/** @typedef {{ theme: String, counterFPS: Boolean, elementsCounter: Boolean, boardSize: Number }} SettingsNotation */
-class Settings {
-	static import(/** @type {SettingsNotation} */ object) {
-		const value = new Settings();
-		value.#theme = object.theme;
-		value.counterFPS = object.counterFPS;
-		value.elementsCounter = object.elementsCounter;
-		value.#boardSize = object.boardSize;
-		return value;
-	}
-	static export(/** @type {Settings} */ object) {
-		const value = (/** @type {SettingsNotation} */ ({}));
-		value.theme = object.#theme;
-		value.counterFPS = object.counterFPS;
-		value.elementsCounter = object.elementsCounter;
-		value.boardSize = object.#boardSize;
-		return value;
-	}
-	/** @type {Array<String>} */ static #groups = [`light`, `dark`];
-	/** @readonly */ static get groups() {
-		return Settings.#groups;
-	}
-	/** @type {Array<String>} */ static #themes = [`standart-light`, `standart-dark`];
-	/** @readonly */ static get themes() {
-		return Settings.#themes;
-	}
-	/** @type {Number} */ static #minBoardSize = 20;
-	/** @readonly */ static get minBoardSize() {
-		return this.#minBoardSize;
-	}
-	/** @type {Number} */ static #maxBoardSize = 200;
-	/** @readonly */ static get maxBoardSize() {
-		return this.#maxBoardSize;
-	}
-	constructor() {
-		this.theme = Settings.#themes[0];
-		this.counterFPS = false;
-		this.elementsCounter = false;
-		this.boardSize = 50;
-	}
-	/** @type {String} */ #theme;
-	get theme() {
-		return this.#theme;
-	}
-	set theme(value) {
-		if (Settings.#themes.includes(value)) {
-			this.#theme = value;
-		} else {
-			throw new Error(`Can't reach ${value} theme in themes list.`);
-		}
-	}
-	/** @type {Boolean} */ counterFPS;
-	/** @type {Boolean} */ elementsCounter;
-	/** @type {Number} */ #boardSize;
-	get boardSize() {
-		return this.#boardSize;
-	}
-	set boardSize(value) {
-		if (Settings.#minBoardSize <= value && value <= Settings.#maxBoardSize) {
-			this.#boardSize = value;
-		} else {
-			throw new RangeError(`Value ${value} is out of range. It must be from ${Settings.#minBoardSize} to ${Settings.#maxBoardSize} inclusive.`);
-		}
-	}
-}
-const archiveSettings = new Archive(``, Settings.export(new Settings()));
 //#endregion

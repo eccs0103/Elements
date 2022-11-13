@@ -13,7 +13,7 @@
 	--color-text-negative: hsl(0, 100%, 75%);
 	--color-text-reverse: rgb(255, 255, 255);
 	--color-shadow: rgba(0, 0, 0, var(--value-transparence));
-	--time-duration: 85ms;
+	--time-duration: 0.085s;
 }
 
 body {

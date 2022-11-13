@@ -34,11 +34,34 @@
 }
 
 body {
-	font-size: smaller;
+	font-size: 14px;
 	font-weight: normal;
 }
 
-/* Global */
+section.option {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-areas:
+		'title			value'
+		'definition		value';
+	align-items: center;
+	column-gap: var(--size-gap);
+	padding-top: var(--size-gap);
+}
+
+section.option>section.option {
+	padding-left: calc(var(--size-gap) * 2);
+	grid-column: auto / span 2;
+}
+
+/* section.option>section.option > h3::before {
+	content: "└ ";
+} */
+
+section.option>input:not(:checked)~section.option {
+	display: none !important;
+}
+
 button,
 input,
 input[type="text"],
@@ -47,6 +70,7 @@ input[type="datetime"],
 input[type="checkbox"]+label[role="checkbox"],
 input[type="radio"]+label[role="combobox"],
 select {
+	font-size: inherit;
 	font-weight: bold;
 }
 
@@ -54,13 +78,14 @@ select {
 	font-weight: normal;
 }
 
+button,
 input,
 input[type="text"],
 textarea,
 input[type="datetime"],
 select {
 	height: fit-content;
-	padding: calc(var(--size-gap) / 1.5) var(--size-gap);
+	padding: calc(var(--size-gap) / 1.25) var(--size-gap);
 }
 
 input:enabled,
@@ -119,6 +144,11 @@ table td {
 hr {
 	height: var(--size-serpator);
 	background-color: black;
+}
+
+dfn {
+	font-size: 0.85em;
+	font-weight: 300;
 }
 
 kbd {

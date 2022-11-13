@@ -33,11 +33,11 @@ class Archive {
 	constructor(path, initial = undefined) {
 		this.#path = path;
 		if (!localStorage.getItem(path) && initial) {
-			localStorage.setItem(path, JSON.stringify(initial));
+			localStorage.setItem(path, JSON.stringify(initial, undefined, " "));
 		}
 	}
 	/** @type {String} */ #path;
-	read() {
+	get data() {
 		const item = localStorage.getItem(this.#path);
 		if (item) {
 			return (/** @type {Notation} */ (JSON.parse(item)));
@@ -49,8 +49,8 @@ class Archive {
 	 * 
 	 * @param {Notation} value 
 	 */
-	write(value) {
-		localStorage.setItem(this.#path, JSON.stringify(value));
+	set data(value) {
+		localStorage.setItem(this.#path, JSON.stringify(value, undefined, " "));
 	}
 }
 //#endregion

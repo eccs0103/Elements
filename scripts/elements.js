@@ -304,20 +304,20 @@ class Ice extends Elemental {
 //#endregion
 //#region Custom Elementals
 //#region NewElemental
-class NewElemental extends Elemental {
-	static title = `New Elemental`; // Название элемента
-	static color = new Color(0, 0, 0); // Цвет элемента
-	static durationAbilityName = 1; // Длительность перезарядки способности
+class NewElement extends Elemental {
+	static title = `New Element`; // Element's title
+	static color = new Color(0, 0, 0); // Element's color
+	static durationAbility = 1; // Ability reload duration
 	constructor() {
 		super();
-		this._title = NewElemental.title;
-		this._color = NewElemental.color; // Присваивание цвета элемента
-		this.abilities.push(this.#abilityName); // Подключение способностей
+		this._title = NewElement.title;
+		this._color = NewElement.color; // Setting element's color
+		this.abilities.push(this.#abilityName); // Connecting abilities
 	}
-	#abilityName = new Ability(`Ability Name`, () => {
-		// Действия при активации
-		return true; // Сбросить прогресс при активации?
-	}, NewElemental.durationAbilityName); // Способность
+	#abilityName = new Ability(`Ability Name`, () => { // Ability
+		// Actions on invoke
+		return true; // Reset progress on invoke?
+	}, NewElement.durationAbility);
 }
 //#endregion
 //#endregion
