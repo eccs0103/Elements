@@ -1,4 +1,4 @@
-//#region Initial Elementals
+//#region Initial Elements
 //#region Dirt
 class Dirt extends Elemental {
 	static title = `Dirt`;
@@ -32,7 +32,7 @@ class Grass extends Elemental {
 			new Vector(this.position.x, this.position.y + 1),
 			new Vector(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = this.board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementsOfType(positions, Dirt);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Grass());
@@ -62,7 +62,7 @@ class Fire extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Grass);
+		const targets = this.board.getElementsOfType(positions, Grass);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Fire());
@@ -101,7 +101,7 @@ class Water extends Elemental {
 			new Vector(this.position.x, this.position.y + 1),
 			new Vector(this.position.x + 1, this.position.y + 1)
 		];
-		const targets = this.board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementsOfType(positions, Dirt);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Water());
@@ -118,7 +118,7 @@ class Water extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Fire);
+		const targets = this.board.getElementsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Dirt());
@@ -170,7 +170,7 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementsOfType(positions, Dirt);
 		const lifespan = this.#density - 1;
 		if (targets.length > 0 && lifespan > 0) {
 			const target = Random.element(targets);
@@ -187,7 +187,7 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Grass);
+		const targets = this.board.getElementsOfType(positions, Grass);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Fire());
@@ -203,7 +203,7 @@ class Lava extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Water);
+		const targets = this.board.getElementsOfType(positions, Water);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Dirt());
@@ -255,7 +255,7 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Dirt);
+		const targets = this.board.getElementsOfType(positions, Dirt);
 		const lifespan = this.#density - 1;
 		if (targets.length > 0 && lifespan > 0) {
 			const target = Random.element(targets);
@@ -272,7 +272,7 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Fire);
+		const targets = this.board.getElementsOfType(positions, Fire);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Lava());
@@ -289,7 +289,7 @@ class Ice extends Elemental {
 			new Vector(this.position.x + 1, this.position.y),
 			new Vector(this.position.x, this.position.y + 1),
 		];
-		const targets = this.board.getElementalsOfType(positions, Lava);
+		const targets = this.board.getElementsOfType(positions, Lava);
 		if (targets.length > 0) {
 			const target = Random.element(targets);
 			this.board.set(target.position, new Dirt());
@@ -302,8 +302,8 @@ class Ice extends Elemental {
 }
 //#endregion
 //#endregion
-//#region Custom Elementals
-//#region NewElemental
+//#region Custom Elements
+//#region NewElement
 class NewElement extends Elemental {
 	static title = `New Element`; // Element's title
 	static color = new Color(0, 0, 0); // Element's color
