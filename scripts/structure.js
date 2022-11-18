@@ -226,6 +226,19 @@ class Elemental {
  */
 class Factory extends Matrix {
 	/**
+	* 
+	* @param {Vector} size 
+	* @param {typeof Elemental} initial
+	*/
+	constructor(size, initial) {
+		super(size, new initial());
+	}
+	/** @typedef {{ value: typeof Elemental, coefficient: Number }} Case */
+	/** @type {Array<Case>} */ #cases = [];
+	/** @readonly */ get cases() {
+		return Object.freeze(Array.from(this.#cases));
+	}
+	/**
 	 * 
 	 * @param {typeof Elemental} value 
 	 * @returns 
@@ -240,19 +253,6 @@ class Factory extends Matrix {
 	 * @param {Number | undefined} coefficient 
 	 * @returns 
 	 */
-		/**
-	 * 
-	 * @param {Vector} size 
-	 * @param {typeof Elemental} initial
-	 */
-		 constructor(size, initial) {
-			super(size, new initial());
-		}
-		/** @typedef {{ value: typeof Elemental, coefficient: Number }} Case */
-		/** @type {Array<Case>} */ #cases = [];
-		/** @readonly */ get cases() {
-			return Object.freeze(Array.from(this.#cases));
-		}
 	setCase(value, coefficient = undefined) {
 		const index = this.#cases.findIndex((_case) => _case.value == value);
 		if (index != -1) {
