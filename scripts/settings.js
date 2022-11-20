@@ -119,15 +119,9 @@ try {
 	const link = `https://raw.githubusercontent.com/eccs0103/Elements/master/scripts/initialize.js`;
 	Manager.queryText(link).then((text) => {
 		const availableVersionProject = (() => {
-			const match = /\bversionProject\b = /.exec(text);
+			const match = /{ "global": \d+, "partial": \d+, "local": \d+ }/.exec(text);
 			if (match) {
-				const start = match.index + match[0].length;
-				const end = text.indexOf(`;`, start);
-				if (end != -1) {
-					return (/** @type {VersionNotation} */ (JSON.parse(text.substring(start, end))));
-				} else {
-					throw new TypeError(`Invalid version structure.`);
-				}
+				return (/** @type {VersionNotation} */ (JSON.parse(match[0])));
 			} else {
 				return null;
 			}
