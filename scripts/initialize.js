@@ -1,5 +1,5 @@
 //#region Settings
-/** @typedef {{ theme: String, counterFPS: Boolean, elementsCounter: Boolean, hideNullables: Boolean, boardSize: Number, cases: Array<Case> }} SettingsNotation */
+/** @typedef {{ theme: String, counterFPS: Boolean, elementsCounter: Boolean, hideNullables: Boolean, AFPS: Number, boardSize: Number, cases: Array<Case> }} SettingsNotation */
 class Settings {
 	static import(/** @type {SettingsNotation} */ object) {
 		const value = new Settings();
@@ -7,6 +7,7 @@ class Settings {
 		value.counterFPS = object.counterFPS;
 		value.elementsCounter = object.elementsCounter;
 		value.hideNullables = object.hideNullables;
+		value.#AFPS = object.AFPS;
 		value.#boardSize = object.boardSize;
 		// value.#cases = object.cases;
 		return value;
@@ -17,6 +18,7 @@ class Settings {
 		value.counterFPS = object.counterFPS;
 		value.elementsCounter = object.elementsCounter;
 		value.hideNullables = object.hideNullables;
+		value.AFPS = object.#AFPS;
 		value.boardSize = object.#boardSize;
 		// value.cases = object.#cases;
 		return value;
@@ -25,9 +27,17 @@ class Settings {
 	/** @readonly */ static get groups() {
 		return Settings.#groups;
 	}
-	/** @type {Array<String>} */ static #themes = [`standart-light`, `standart-dark`];
+	/** @type {Array<String>} */ static #themes = [`material-light`, `material-dark`];
 	/** @readonly */ static get themes() {
 		return Settings.#themes;
+	}
+	/** @type {Number} */ static #minAFPS = 1;
+	/** @readonly */ static get minAFPS() {
+		return this.#minAFPS;
+	}
+	/** @type {Number} */ static #maxAFPS = 240;
+	/** @readonly */ static get maxAFPS() {
+		return this.#maxAFPS;
 	}
 	/** @type {Number} */ static #minBoardSize = 20;
 	/** @readonly */ static get minBoardSize() {
@@ -42,6 +52,7 @@ class Settings {
 		this.counterFPS = false;
 		this.elementsCounter = false;
 		this.hideNullables = false;
+		this.AFPS = 60;
 		this.boardSize = 50;
 		// this.#cases = [
 		// 	{ value: Dirt, coefficient: 90 },
@@ -66,6 +77,17 @@ class Settings {
 	/** @type {Boolean} */ counterFPS;
 	/** @type {Boolean} */ elementsCounter;
 	/** @type {Boolean} */ hideNullables;
+	/** @type {Number} */ #AFPS;
+	get AFPS() {
+		return this.#AFPS;
+	}
+	set AFPS(value) {
+		if (Settings.#minAFPS <= value && value <= Settings.#maxAFPS) {
+			this.#AFPS = value;
+		} else {
+			throw new RangeError(`Value ${value} is out of range. It must be from ${Settings.#minAFPS} to ${Settings.#maxAFPS} inclusive.`);
+		}
+	}
 	/** @type {Number} */ #boardSize;
 	get boardSize() {
 		return this.#boardSize;
@@ -86,5 +108,8 @@ class Settings {
 //#region Metadata
 const nameDeveloper = `Adaptive Core`;
 const nameProject = `Elements`;
+/** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
+/** @type {VersionNotation} */ const versionProject = { global: 2, partial: 1, local: 3 };
 const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}`, Settings.export(new Settings()));
+const safeMode = true;
 //#endregion

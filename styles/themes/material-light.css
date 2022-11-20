@@ -3,16 +3,16 @@
 	--size-radius: var(--size-gap);
 	--size-shadow: 0;
 	--value-transparence: 50%;
-	--color-foreground: rgb(50, 50, 50);
-	--color-background: rgb(25, 25, 25);
-	--color-modal: rgba(225, 225, 225, var(--value-transparence));
+	--color-foreground: rgb(255, 255, 255);
+	--color-background: rgb(225, 225, 225);
+	--color-modal: rgba(0, 0, 0, var(--value-transparence));
 	--color-highlight: hsl(210, 100%, 50%);
 	--color-highlight-negative: hsl(0, 100%, 75%);
-	--color-text: rgb(255, 255, 255);
-	--color-placeholder: rgb(200, 200, 200);
+	--color-text: rgb(50, 50, 50);
+	--color-placeholder: rgb(0, 0, 0);
 	--color-text-negative: hsl(0, 100%, 75%);
-	--color-text-reverse: rgb(50, 50, 50);
-	--color-shadow: rgba(225, 225, 225, var(--value-transparence));
+	--color-text-reverse: rgb(255, 255, 255);
+	--color-shadow: rgba(0, 0, 0, var(--value-transparence));
 	--time-duration: 0.085s;
 }
 
@@ -140,6 +140,11 @@ hr {
 	background-color: var(--color-background);
 }
 
+a {
+	text-decoration: none;
+	color: var(--color-highlight);
+}
+
 dfn {
 	color: var(--color-placeholder);
 }
@@ -178,7 +183,7 @@ img {
 }
 
 img.icon {
-	filter: invert(1);
+	filter: invert(0);
 }
 
 input[type="checkbox"]#toggle-play:checked+label[role="checkbox"] {

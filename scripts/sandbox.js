@@ -1,8 +1,8 @@
-const safeMode = false;
 try {
+	//#region Initialize
 	const linkTheme = (/** @type {HTMLLinkElement} */ (document.head.querySelector(`link#theme`)));
 	linkTheme.href = `../styles/themes/${archiveSettings.data.theme}.css`;
-	///
+	const settings = Settings.import(archiveSettings.data);
 	const canvasView = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
 	const contextView = (() => {
 		const context = canvasView.getContext(`2d`);
@@ -12,10 +12,14 @@ try {
 			throw new ReferenceError(`Can't reach the texture.`);
 		}
 	})();
-	///
-	const settings = Settings.import(archiveSettings.data);
 	const board = new Board(new Vector(settings.boardSize, settings.boardSize), contextView);
-	///
+	window.addEventListener(`beforeunload`, (event) => {
+		if (board.wasExecuted) {
+			event.returnValue = `Board will be reseted.`;
+		}
+	});
+	//#endregion
+	//#region Applying Preferences
 	board.setCase(Dirt, 90);
 	board.setCase(Grass, 4);
 	board.setCase(Fire, 2);
@@ -23,17 +27,14 @@ try {
 	board.setCase(Lava, 1);
 	board.setCase(Ice, 1);
 	board.fill();
+	///
 	board.hideNullables = archiveSettings.data.hideNullables;
+	board.AFPS = settings.AFPS;
 	///
 	const inputTogglePlay = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`)));
 	board.execute = inputTogglePlay.checked;
 	inputTogglePlay.addEventListener(`change`, (event) => {
 		board.execute = inputTogglePlay.checked;
-	});
-	window.addEventListener(`beforeunload`, (event) => {
-		if (board.wasExecuted) {
-			event.returnValue = `Board will be reseted.`;
-		}
 	});
 	const buttonReloadBoard = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reload-board`)));
 	buttonReloadBoard.addEventListener(`click`, (event) => {
@@ -50,10 +51,11 @@ try {
 	///
 	const tableElementsCounter = (/** @type {HTMLDivElement} */ (document.querySelector(`table#elements-counter`)));
 	tableElementsCounter.hidden = !settings.elementsCounter;
+	//#endregion
 } catch (error) {
 	if (safeMode) {
 		if (error instanceof Error) {
-			window.alert(`${error.name} detected!\n${error.message}`);
+			window.alert(`'${error.name}' detected - ${error.message}\n${error.stack ?? ``}`);
 		} else {
 			window.alert(`Invalid exception type.`);
 		}

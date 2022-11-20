@@ -297,23 +297,39 @@ class Engine extends Factory {
 	 */
 	constructor(size) {
 		super(size, Elemental);
-		console.log(`Standart FPS rate setted to: ${this.#AFPS}.`);
+		this.#handlerIndex = this.#setHandler(this.#AFPS);
+	}
+	/** 
+	 * @protected
+	 * @type {() => void}
+	 */
+	_update;
+	/** @type {Number} */ #FPS;
+	/** @readonly */ get FPS() {
+		return this.#FPS;
+	}
+	#setHandler(/** @type {Number} */ AFPS) {
 		let previousFrame = Date.now();
-		setInterval(() => {
+		const handler = () => {
 			let currentFrame = Date.now();
-			this.#FPS = (() => {
-				return 1000 / (currentFrame - previousFrame);
-			})();
+			this.#FPS = (1000 / (currentFrame - previousFrame));
 			previousFrame = currentFrame;
-			///
 			if (this.#execute) {
 				this._update();
 			}
-		}, 1000 / this.#AFPS);
+		};
+		return setInterval(handler, 1000 / AFPS);
 	}
+	/** @type {Number} */ #handlerIndex;
 	/** @type {Number} */ #AFPS = 60;
-	/** @readonly */ get AFPS() {
+	get AFPS() {
 		return this.#AFPS;
+	}
+	set AFPS(value) {
+		this.#AFPS = value; 
+		console.log(`Standart FPS rate setted to ${this.#AFPS}.`);
+		clearInterval(this.#handlerIndex);
+		this.#handlerIndex = this.#setHandler(this.#AFPS);
 	}
 	/** @type {Boolean} */ #execute = false;
 	get execute() {
@@ -328,15 +344,6 @@ class Engine extends Factory {
 	/** @protected @type {Boolean} */ _wasExecuted = false;
 	/** @readonly */ get wasExecuted() {
 		return this._wasExecuted;
-	}
-	/** 
-	 * @protected
-	 * @type {() => void}
-	 */
-	_update;
-	/** @type {Number} */ #FPS;
-	/** @readonly */ get FPS() {
-		return this.#FPS;
 	}
 }
 //#endregion
