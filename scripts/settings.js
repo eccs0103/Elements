@@ -133,7 +133,7 @@ try {
 			(availableVersionProject.global == versionProject.global && availableVersionProject.partial == versionProject.partial && availableVersionProject.local > versionProject.local)
 		))) {
 			sectionNewVersion.hidden = false;
-			console.warn(`The new version is available.`);
+			console.log(`The new version is available.`);
 		} else {
 			sectionNewVersion.hidden = true;
 			console.log(`Last update is already installed.`);
