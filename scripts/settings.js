@@ -130,7 +130,7 @@ try {
 			(versionProject == null) ||
 			(availableVersionProject.global > versionProject.global) ||
 			(availableVersionProject.global == versionProject.global && availableVersionProject.partial > versionProject.partial) ||
-			(availableVersionProject.global == versionProject.global && availableVersionProject.partial == versionProject.partial || availableVersionProject.local == versionProject.local)
+			(availableVersionProject.global == versionProject.global && availableVersionProject.partial == versionProject.partial && availableVersionProject.local > versionProject.local)
 		))) {
 			sectionNewVersion.hidden = false;
 			console.warn(`The new version is available.`);
