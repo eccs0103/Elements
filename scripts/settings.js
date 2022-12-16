@@ -138,7 +138,7 @@ try {
 			sectionNewVersion.hidden = true;
 			console.log(`Last update is already installed.`);
 		}
-	}, (reason) => {
+	}).catch((reason) => {
 		console.log(reason);
 	});
 	//#endregion
