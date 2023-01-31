@@ -37,10 +37,10 @@ body {
 }
 
 button,
-*.button,
+*[role="button"],
 input,
 input[type="checkbox"]+label[role="checkbox"],
-*.combobox:not(.checked),
+*[role="combobox"]:not([aria-checked="true"]),
 select {
 	cursor: pointer;
 	font-family: inherit;

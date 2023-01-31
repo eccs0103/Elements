@@ -5,23 +5,23 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings - Elements</title>
-	<link rel="shortcut icon" type="image/x-icon" href="../resources/settings.png">
-	<link rel="stylesheet" type="text/css" href="../styles/style.css">
-	<link id="theme" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="../scripts/modules.js" defer></script>
-	<script type="text/javascript" src="../scripts/structure.js" defer></script>
-	<script type="text/javascript" src="../scripts/settings.js" defer></script>
+	<link rel="shortcut icon" href="../resources/settings.png">
+	<link rel="stylesheet" href="../styles/style.css">
+	<link id="theme" rel="stylesheet">
+	<script src="../scripts/modules.js" defer></script>
+	<script src="../scripts/structure.js" defer></script>
+	<script src="../scripts/settings.js" defer></script>
 </head>
 
-<body spellcheck="false" style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap);">
-		<a href="./sandbox.html" role="combobox" title="Sandbox" class="flex rounded combobox" style="padding: var(--size-gap);">
+<body class="flex" style="position: fixed; inset: 0;">
+	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; align-content: center; gap: var(--size-gap);">
+		<a href="./sandbox.html" role="combobox" title="Sandbox" class="flex rounded" style="padding: var(--size-gap);">
 			<img src="../resources/grid.png" class="icon" alt="">
 		</a>
-		<a role="combobox" title="Settings" class="flex rounded combobox checked" style="padding: var(--size-gap);">
+		<a role="combobox" aria-checked="true" title="Settings" class="flex rounded" style="padding: var(--size-gap);">
 			<img src="../resources/settings.png" class="icon" alt="">
 		</a>
-		<a role="combobox" title="Information" class="flex rounded combobox disabled" style="padding: var(--size-gap);">
+		<a role="combobox" aria-disabled="true" title="Information" class="flex rounded" style="padding: var(--size-gap);">
 			<img src="../resources/info.png" class="icon" alt="">
 		</a>
 	</menu>

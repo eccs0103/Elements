@@ -5,24 +5,24 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sandbox - Elements</title>
-	<link rel="shortcut icon" type="image/x-icon" href="../resources/grid.png">
-	<link rel="stylesheet" type="text/css" href="../styles/style.css">
-	<link id="theme" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="../scripts/modules.js" defer></script>
-	<script type="text/javascript" src="../scripts/structure.js" defer></script>
-	<script type="text/javascript" src="../scripts/sandbox.js" defer></script>
+	<link rel="shortcut icon" href="../resources/grid.png">
+	<link rel="stylesheet" href="../styles/style.css">
+	<link id="theme" rel="stylesheet">
+	<script src="../scripts/modules.js" defer></script>
+	<script src="../scripts/structure.js" defer></script>
+	<script src="../scripts/sandbox.js" defer></script>
 </head>
 
-<body spellcheck="false" style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap);">
-		<a role="combobox" title="Sandbox" class="flex rounded combobox checked" style="padding: var(--size-gap);">
-			<img src="../resources/grid.png" class="icon" alt="">
+<body class="flex" style="position: fixed; inset: 0;">
+	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; align-content: center; gap: var(--size-gap);">
+		<a role="combobox" aria-checked="true" title="Sandbox" class="flex rounded" style="padding: var(--size-gap);">
+			<img src="../resources/grid.png" class="icon" alt="Sandbox">
 		</a>
-		<a href="./settings.html" role="combobox" title="Settings" class="flex rounded combobox" style="padding: var(--size-gap);">
-			<img src="../resources/settings.png" class="icon" alt="">
+		<a href="./settings.html" role="combobox" title="Settings" class="flex rounded" style="padding: var(--size-gap);">
+			<img src="../resources/settings.png" class="icon" alt="Settings">
 		</a>
-		<a role="combobox" title="Information" class="flex rounded combobox disabled" style="padding: var(--size-gap);">
-			<img src="../resources/info.png" class="icon" alt="">
+		<a role="combobox" aria-disabled="true" title="Information" class="flex rounded" style="padding: var(--size-gap);">
+			<img src="../resources/info.png" class="icon" alt="Information">
 		</a>
 	</menu>
 	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
@@ -32,17 +32,16 @@
 				<div class="depth in-top -toolkit" style="position: absolute; bottom: 0; width: 100%; display: flex;">
 					<input id="toggle-play" type="checkbox" hidden>
 					<label for="toggle-play" role="checkbox" title="Launch" class="flex" style="padding: var(--size-gap);">
-						<img src="../resources/play-arrow.png" class="icon" alt="">
+						<img src="../resources/play-arrow.png" class="icon" alt="Launch">
 					</label>
 					<button id="reload-board" title="Reload" class="flex" style="padding: var(--size-gap);">
-						<img src="../resources/refresh.png" class="icon" alt="">
+						<img src="../resources/refresh.png" class="icon" alt="Reload">
 					</button>
 				</div>
 			</div>
 		</div>
-		<div class="transparent" style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; justify-content: start; align-items: flex-end;">
-			<div id="counter-fps" class="layer in-right" style="min-width: 1em; min-height: 1em; border-style: solid;" hidden>
-			</div>
+		<div class="transparent" style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; align-items: flex-end;">
+			<div id="counter-fps" class="layer in-right" style="border-style: solid;" hidden>0</div>
 			<table id="elements-counter" class="layer in-right" hidden>
 				<thead>
 					<tr>
@@ -52,8 +51,7 @@
 						<th>Amount</th>
 					</tr>
 				</thead>
-				<tbody>
-				</tbody>
+				<tbody></tbody>
 			</table>
 		</div>
 	</div>

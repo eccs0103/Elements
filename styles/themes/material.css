@@ -85,37 +85,37 @@ html[data-mode="dark"]:root img.icon {
 }
 
 button,
-*.button {
+*[role="button"] {
 	color: var(--color-highlight);
 }
 
-*.combobox.checked,
+*[role="combobox"][aria-checked="true"],
 input[type="checkbox"]:checked+label[role="checkbox"] {
 	background-color: var(--color-highlight);
 	transition: var(--time-duration);
 }
 
 button:hover,
-*.button:hover,
+*[role="button"]:hover,
 input[type="checkbox"]:hover+label[role="checkbox"],
-*.combobox:not(.checked):hover {
+*[role="combobox"]:not([aria-checked="true"]):hover {
 	filter: invert(0.1);
 	transition: var(--time-duration);
 }
 
 button:active,
-*.button:active,
+*[role="button"]:active,
 input[type="checkbox"]:active+label[role="checkbox"],
-*.combobox:not(.checked):active {
+*[role="combobox"]:not([aria-checked="true"]):active {
 	filter: invert(0.2);
 	transition: var(--time-duration);
 }
 
 button:disabled,
-*.button.disabled,
+*[role="button"][aria-disabled="true"],
 input:disabled,
 input[type="checkbox"]:disabled+label[role="checkbox"],
-*.combobox.disabled,
+*[role="combobox"][aria-disabled="true"],
 select:disabled {
 	pointer-events: none;
 	filter: opacity(0.5);
