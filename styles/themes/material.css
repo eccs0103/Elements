@@ -1,0 +1,168 @@
+/* Main */
+
+html[data-mode="light"]:root {
+	--color-foreground: rgb(255, 255, 255);
+	--color-background: rgb(225, 225, 225);
+	--color-text: rgb(50, 50, 50);
+	--color-text-description: rgb(150, 150, 150);
+}
+
+html[data-mode="dark"]:root {
+	--color-foreground: rgb(50, 50, 50);
+	--color-background: rgb(25, 25, 25);
+	--color-text: rgb(255, 255, 255);
+	--color-text-description: rgb(150, 150, 150);
+}
+
+:root {
+	--color-highlight: hsl(200deg, 100%, 50%);
+	--color-warn: hsl(60deg, 100%, 50%);
+	--color-error: hsl(0deg, 100%, 75%);
+}
+
+/* Global */
+
+body {
+	background-color: var(--color-background);
+	color: var(--color-text);
+}
+
+body * {
+	background-color: initial;
+	color: inherit;
+}
+
+body *::placeholder {
+	color: var(--color-text-description);
+	filter: brightness(0.75);
+}
+
+*.layer {
+	background-color: var(--color-foreground);
+	border-radius: var(--size-gap);
+}
+
+*.depth {
+	background-color: var(--color-background);
+	border-radius: var(--size-gap);
+}
+
+*.rounded {
+	border-radius: var(--size-gap);
+}
+
+*.layer.in-top,
+*.depth.in-top {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+*.layer.in-right,
+*.depth.in-right {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+*.layer.in-bottom,
+*.depth.in-bottom {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+*.layer.in-left,
+*.depth.in-left {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+*.transparent {
+	background-color: transparent;
+}
+
+html[data-mode="dark"]:root img.icon {
+	filter: invert(1);
+}
+
+button,
+*.button {
+	color: var(--color-highlight);
+}
+
+*.combobox.checked,
+input[type="checkbox"]:checked+label[role="checkbox"] {
+	background-color: var(--color-highlight);
+	transition: 85ms;
+}
+
+button:hover,
+*.button:hover,
+input[type="checkbox"]:hover+label[role="checkbox"],
+*.combobox:not(.checked):hover {
+	filter: invert(0.1);
+	transition: 85ms;
+}
+
+button:active,
+*.button:active,
+input[type="checkbox"]:active+label[role="checkbox"],
+*.combobox:not(.checked):active {
+	filter: invert(0.2);
+	transition: 85ms;
+}
+
+button:disabled,
+*.button.disabled,
+input:disabled,
+input[type="checkbox"]:disabled+label[role="checkbox"],
+*.combobox.disabled,
+select:disabled {
+	pointer-events: none;
+	filter: opacity(0.5);
+	transition: 85ms;
+}
+
+input:invalid,
+select:invalid {
+	outline: solid var(--color-error);
+}
+
+input:invalid.layer,
+input:invalid.depth,
+select:invalid.layer,
+select:invalid.depth {
+	background-color: var(--color-error);
+}
+
+*.mark {
+	color: var(--color-warn) !important;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:any-link {
+	color: var(--color-highlight);
+}
+
+hr {
+	border-color: var(--color-background);
+}
+
+dfn,
+time {
+	color: var(--color-text-description);
+}
+
+::-webkit-scrollbar {
+	background-color: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--color-highlight);
+}
+
+/* Local */
+input[type="checkbox"]#toggle-play:checked+label[role="checkbox"] {
+	background-color: unset;
+}

@@ -1,77 +1,49 @@
 try {
 	//#region Initialize
 	const linkTheme = (/** @type {HTMLLinkElement} */ (document.head.querySelector(`link#theme`)));
-	linkTheme.href = `../styles/themes/${archiveSettings.data.theme}.css`;
 	let settings = Settings.import(archiveSettings.data);
+	document.documentElement.dataset[`mode`] = settings.mode;
+	linkTheme.href = `../styles/themes/${settings.theme}.css`;
 	window.addEventListener(`beforeunload`, (event) => {
 		archiveSettings.data = Settings.export(settings);
 	});
 	//#endregion
 	//#region Theme
-	const selectTheme = (/** @type {HTMLSelectElement} */ (document.querySelector(`select#dropdown-theme`)));
-	for (const group of Settings.groups) {
-		const optgroup = selectTheme.appendChild(document.createElement(`optgroup`));
-		optgroup.label = `${group[0].toUpperCase()}${group.substring(1)} themes`;
+	const selectDropdownTheme = (/** @type {HTMLSelectElement} */ (document.querySelector(`select#dropdown-theme`)));
+	for (const mode of Settings.modes) {
+		const optgroup = selectDropdownTheme.appendChild(document.createElement(`optgroup`));
+		optgroup.label = `${mode.replace(/\b\w/, (letter) => letter.toUpperCase())}`;
+		for (const theme of Settings.themes) {
+			const option = optgroup.appendChild(document.createElement(`option`));
+			option.value = `${theme}-${mode}`;
+			option.innerText = `${theme.replace(/\b\w/, (letter) => letter.toUpperCase())}`;
+		}
 	}
-	for (const theme of Settings.themes) {
-		/** @typedef {{ readonly title: String, readonly group: String }} ThemeData */
-		const data = (() => {
-			const matches = new RegExp(`-(${Settings.groups.join(`|`)})`, `g`).exec(theme);
-			if (matches) {
-				const index = matches.index;
-				return (/** @type {ThemeData} */ ({ title: theme.substring(0, index), group: theme.substring(index + 1) }));
-			} else {
-				throw new SyntaxError(`Invalid theme pattern.`);
-			}
-		})();
-		const optgroup = (() => {
-			const result = (/** @type {HTMLOptGroupElement | undefined} */ (selectTheme.querySelector(`optgroup[label ^="${data.group[0].toUpperCase()}${data.group.substring(1)}"]`)));
-			if (Settings.groups.includes(data.group) && result) {
-				return result;
-			} else {
-				throw new ReferenceError(`Can't reach any of the groups.`);
-			}
-		})();
-		const option = optgroup.appendChild(document.createElement(`option`));
-		option.value = theme;
-		option.innerText = /* `${data.title[0].toUpperCase()}${data.title.substring(1)}`; // */`${data.group[0].toUpperCase()}${data.group.substring(1)} - ${data.title[0].toUpperCase()}${data.title.substring(1)}`;
-	}
-	selectTheme.value = archiveSettings.data.theme;
-	selectTheme.addEventListener(`change`, (event) => {
-		settings.theme = selectTheme.value;
+	selectDropdownTheme.value = `${settings.theme}-${settings.mode}`;
+	selectDropdownTheme.addEventListener(`change`, (event) => {
+		const [theme, mode] = selectDropdownTheme.value.split(`-`);
+		settings.mode = mode;
+		settings.theme = theme;
+		document.documentElement.dataset[`mode`] = settings.mode;
 		linkTheme.href = `../styles/themes/${settings.theme}.css`;
 	});
 	//#endregion
 	//#region Counter FPS
-	const inputCounterFPS = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-counter-fps`)));
-	inputCounterFPS.checked = archiveSettings.data.counterFPS;
-	inputCounterFPS.addEventListener(`change`, (event) => {
-		settings.counterFPS = inputCounterFPS.checked;
+	const inputToggleFPS = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-fps`)));
+	inputToggleFPS.checked = settings.FPS;
+	inputToggleFPS.addEventListener(`change`, (event) => {
+		settings.FPS = inputToggleFPS.checked;
 	});
 	//#endregion
-	//#region Elements Counter
-	const inputToggleElementsCounter = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-elements-counter`)));
-	inputToggleElementsCounter.checked = archiveSettings.data.elementsCounter;
-	inputToggleElementsCounter.addEventListener(`change`, (event) => {
-		settings.elementsCounter = inputToggleElementsCounter.checked;
-	});
-	//#region Hide Nullables
-	const inputToggleHideNullables = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-hide-nullables`)));
-	inputToggleHideNullables.checked = archiveSettings.data.hideNullables;
-	inputToggleHideNullables.addEventListener(`change`, (event) => {
-		settings.hideNullables = inputToggleHideNullables.checked;
-	});
-	//#endregion
-	//#endregion
-	//#region Absolute Frames Per Second
-	const inputAFPS = (/** @type {HTMLInputElement} */ (document.querySelector(`input#afps`)));
-	inputAFPS.min = `${Settings.minAFPS}`;
-	inputAFPS.max = `${Settings.maxAFPS}`;
-	inputAFPS.placeholder = `[${Settings.minAFPS} - ${Settings.maxAFPS}]`;
-	inputAFPS.value = `${archiveSettings.data.AFPS}`;
-	inputAFPS.addEventListener(`change`, (event) => {
-		if (inputAFPS.checkValidity()) {
-			const number = Number.parseInt(inputAFPS.value);
+	//#region Absolute frames per second
+	const inputTextboxAFPS = (/** @type {HTMLInputElement} */ (document.querySelector(`input#textbox-afps`)));
+	inputTextboxAFPS.min = `${Settings.minAFPS}`;
+	inputTextboxAFPS.max = `${Settings.maxAFPS}`;
+	inputTextboxAFPS.placeholder = `[${Settings.minAFPS} - ${Settings.maxAFPS}]`;
+	inputTextboxAFPS.value = `${settings.AFPS}`;
+	inputTextboxAFPS.addEventListener(`change`, (event) => {
+		if (inputTextboxAFPS.checkValidity()) {
+			const number = Number.parseInt(inputTextboxAFPS.value);
 			if (!Number.isNaN(number)) {
 				if (Settings.minAFPS <= number && number <= Settings.maxAFPS) {
 					settings.AFPS = number;
@@ -84,20 +56,34 @@ try {
 		}
 	});
 	//#endregion
+	//#region Elements counter
+	const inputToggleCounter = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-counter`)));
+	inputToggleCounter.checked = settings.counter;
+	inputToggleCounter.addEventListener(`change`, (event) => {
+		settings.counter = inputToggleCounter.checked;
+	});
+	//#region Hide Nullables
+	const inputToggleNullables = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-nullables`)));
+	inputToggleNullables.checked = !settings.nullables;
+	inputToggleNullables.addEventListener(`change`, (event) => {
+		settings.nullables = !inputToggleNullables.checked;
+	});
+	//#endregion
+	//#endregion
 	//#region Board Size
-	const inputBoardSize = (/** @type {HTMLInputElement} */ (document.querySelector(`input#board-size`)));
-	inputBoardSize.min = `${Settings.minBoardSize}`;
-	inputBoardSize.max = `${Settings.maxBoardSize}`;
-	inputBoardSize.placeholder = `[${Settings.minBoardSize} - ${Settings.maxBoardSize}]`;
-	inputBoardSize.value = `${archiveSettings.data.boardSize}`;
-	inputBoardSize.addEventListener(`change`, (event) => {
-		if (inputBoardSize.checkValidity()) {
-			const number = Number.parseInt(inputBoardSize.value);
+	const inputTextboxSize = (/** @type {HTMLInputElement} */ (document.querySelector(`input#textbox-size`)));
+	inputTextboxSize.min = `${Settings.minSize}`;
+	inputTextboxSize.max = `${Settings.maxSize}`;
+	inputTextboxSize.placeholder = `[${Settings.minSize} - ${Settings.maxSize}]`;
+	inputTextboxSize.value = `${settings.size}`;
+	inputTextboxSize.addEventListener(`change`, (event) => {
+		if (inputTextboxSize.checkValidity()) {
+			const number = Number.parseInt(inputTextboxSize.value);
 			if (!Number.isNaN(number)) {
-				if (Settings.minBoardSize <= number && number <= Settings.maxBoardSize) {
-					settings.boardSize = number;
+				if (Settings.minSize <= number && number <= Settings.maxSize) {
+					settings.size = number;
 				} else {
-					throw new RangeError(`Input must be from ${Settings.minBoardSize} to ${Settings.maxBoardSize} inclusive.`);
+					throw new RangeError(`Input must be from ${Settings.maxSize} to ${Settings.minSize} inclusive.`);
 				}
 			} else {
 				throw new TypeError(`Can't convert input to a integer number.`);
@@ -114,42 +100,9 @@ try {
 		}
 	});
 	//#endregion
-	//#region New Version
-	const sectionNewVersion = (/** @type {HTMLElement} */ (document.querySelector(`section#new-version`)));
-	const link = `https://raw.githubusercontent.com/eccs0103/Elements/master/scripts/initialize.js`;
-	Manager.queryText(link).then((text) => {
-		const availableVersionProject = (() => {
-			const match = /{ "global": \d+, "partial": \d+, "local": \d+ }/.exec(text);
-			if (match) {
-				return (/** @type {VersionNotation} */ (JSON.parse(match[0])));
-			} else {
-				return null;
-			}
-		})();
-		if ((availableVersionProject != null && (
-			(versionProject == null) ||
-			(availableVersionProject.global > versionProject.global) ||
-			(availableVersionProject.global == versionProject.global && availableVersionProject.partial > versionProject.partial) ||
-			(availableVersionProject.global == versionProject.global && availableVersionProject.partial == versionProject.partial && availableVersionProject.local > versionProject.local)
-		))) {
-			sectionNewVersion.hidden = false;
-			console.log(`The new version is available.`);
-		} else {
-			sectionNewVersion.hidden = true;
-			console.log(`Last update is already installed.`);
-		}
-	}).catch((reason) => {
-		console.log(reason);
-	});
-	//#endregion
 } catch (error) {
-	if (safeMode) {
-		if (error instanceof Error) {
-			window.alert(`'${error.name}' detected - ${error.message}\n${error.stack ?? ``}`);
-		} else {
-			window.alert(`Invalid exception type.`);
-		}
+	if (locked) {
+		window.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`);
 		location.reload();
-	}
-	console.error(error);
+	} else console.error(error);
 }

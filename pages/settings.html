@@ -2,88 +2,73 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Settings - Elements</title>
-	<link rel="shortcut icon" type="image/x-icon" href="../resources/settings.png" />
-	<link rel="stylesheet" type="text/css" href="../styles/style.css" />
-	<link id="theme" rel="stylesheet" type="text/css" />
+	<link rel="shortcut icon" type="image/x-icon" href="../resources/settings.png">
+	<link rel="stylesheet" type="text/css" href="../styles/style.css">
+	<link id="theme" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="../scripts/modules.js" defer></script>
 	<script type="text/javascript" src="../scripts/structure.js" defer></script>
-	<script type="text/javascript" src="../scripts/elements.js" defer></script>
-	<script type="text/javascript" src="../scripts/initialize.js" defer></script>
 	<script type="text/javascript" src="../scripts/settings.js" defer></script>
 </head>
 
 <body spellcheck="false" style="position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap); padding: var(--size-gap);">
-		<button role="combobox" title="Sandbox" onclick="location.href=`./sandbox.html`" style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
-			<img src="../resources/sandbox.png" class="icon" alt="">
-		</button>
-		<button role="combobox" title="Settings" onclick="location.href=`./settings.html`" class="checked" style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; place-content: center; gap: var(--size-gap);">
+		<a href="./sandbox.html" role="combobox" title="Sandbox" class="flex rounded combobox" style="padding: var(--size-gap);">
+			<img src="../resources/grid.png" class="icon" alt="">
+		</a>
+		<a role="combobox" title="Settings" class="flex rounded combobox checked" style="padding: var(--size-gap);">
 			<img src="../resources/settings.png" class="icon" alt="">
-		</button>
-		<button role="combobox" title="Information" disabled style="width: var(--size-standart-2); height: var(--size-standart-2); padding: var(--size-gap);">
+		</a>
+		<a role="combobox" title="Information" class="flex rounded combobox disabled" style="padding: var(--size-gap);">
 			<img src="../resources/info.png" class="icon" alt="">
-		</button>
+		</a>
 	</menu>
 	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
 		<div class="layer" style="align-self: flex-start; width: 40%; height: fit-content; display: flex; flex-direction: column; padding: calc(var(--size-gap) * 2);">
 			<h1 style="grid-column: auto / span 2;">Settings</h1>
 			<section class="option">
-				<p style="grid-area: title;">Theme</p>
-				<select id="dropdown-theme" style="grid-area: value;" required></select>
-				<dfn style="grid-area: definition;">External design of the page: color scheme, background and foreground, font.</dfn>
+				<p class="title">Theme</p>
+				<select id="dropdown-theme" class="value flex depth" required></select>
+				<dfn class="definition">External design of the page: color scheme, background and foreground, font.</dfn>
 			</section>
 			<section class="option">
-				<p style="grid-area: title;">Counter FPS</p>
-				<input id="toggle-counter-fps" type="checkbox" hidden>
-				<label for="toggle-counter-fps" role="checkbox" class="depth toggle" style="grid-area: value;">
+				<p class="title">Counter FPS</p>
+				<input id="toggle-fps" type="checkbox" hidden>
+				<label for="toggle-fps" role="checkbox" class="value depth toggle">
 					<span class="layer knob"></span>
 				</label>
-				<dfn style="grid-area: definition;">Show or hide FPS counter with load indicator.</dfn>
+				<dfn class="definition">Show or hide FPS counter with load indicator.</dfn>
 			</section>
 			<section class="option">
-				<p style="grid-area: title;">Elements counter</p>
-				<input id="toggle-elements-counter" type="checkbox" hidden>
-				<label for="toggle-elements-counter" role="checkbox" class="depth toggle" style="grid-area: value;">
+				<p class="title">Absolute frames per second</p>
+				<input id="textbox-afps" type="number" inputmode="numeric" min="1" max="240" placeholder="[1 - 240]" required class="value flex depth">
+				<dfn class="definition">The absolute number of frames per second that is calculated for the speed of the interaction of elements, as well as to calculate the number of frames per second.</dfn>
+			</section>
+			<section class="option">
+				<p class="title">Elements counter</p>
+				<input id="toggle-counter" type="checkbox" hidden>
+				<label for="toggle-counter" role="checkbox" class="value depth toggle">
 					<span class="layer knob"></span>
 				</label>
-				<dfn style="grid-area: definition;">Show or hide the elements counter, which displays the icons of the elements, their names and quantities.</dfn>
+				<dfn class="definition">Show or hide the elements counter, which displays the icons of the elements, their names and quantities.</dfn>
 				<section class="option">
-					<p style="grid-area: title;">Hide nullables</p>
-					<input id="toggle-hide-nullables" type="checkbox" hidden>
-					<label for="toggle-hide-nullables" role="checkbox" class="depth toggle" style="grid-area: value;">
+					<p class="title">Hide nullables</p>
+					<input id="toggle-nullables" type="checkbox" hidden>
+					<label for="toggle-nullables" role="checkbox" class="value depth toggle">
 						<span class="layer knob"></span>
 					</label>
-					<dfn style="grid-area: definition;">Show or hide elements with zero count.</dfn>
+					<dfn class="definition">Show or hide elements with zero count.</dfn>
 				</section>
 			</section>
 			<section class="option">
-				<p style="grid-area: title;">Absolute frames per second</p>
-				<input id="afps" type="number" inputmode="numeric" min="1" max="240" placeholder="[1 - 240]" required style="grid-area: value;" />
-				<dfn style="grid-area: definition;">The absolute number of frames per second that is calculated for the speed of the interaction of elements, as well as to calculate the number of frames per second.</dfn>
+				<p class="title">Board size</p>
+				<input id="textbox-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]" required class="value flex depth">
+				<dfn class="definition">Board generated size. The size can be from 20 to 200 inclusive. Resizing the board will generate it anew with the given coefficients.</dfn>
 			</section>
-			<section class="option">
-				<p style="grid-area: title;">Board size</p>
-				<input id="board-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]" required style="grid-area: value;" />
-				<dfn style="grid-area: definition;">Board generated size. The size can be from 20 to 200 inclusive. Resizing the board will generate it anew with the given coefficients.</dfn>
-			</section>
-			<!-- <section class="option">
-				<p style="grid-area: title;">Title</p>
-				<form style="grid-area: value; display: grid; grid-template-columns: repeat(2, min-content); gap: var(--size-gap);">
-					<div style="display: contents;">
-						<input type="text" inputmode="latin" value="Dirt" />
-						<input type="number" inputmode="numeric" value="90" />
-					</div>
-				</form>
-				<dfn style="grid-area: definition;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi enim sed, suscipit tempora placeat consectetur, laboriosam unde maiores iusto quam harum tenetur officiis quasi. Mollitia laboriosam voluptatem vitae dolorum ut.</dfn>
-			</section> -->
 			<section class="option" style="justify-items: center;">
-				<button id="reset-settings" style="grid-column: auto / span 2; text-align: center;">Reset settings</button>
-			</section>
-			<section id="new-version" class="option" hidden>
-				<button onclick="location.href=`https://github.com/eccs0103/Elements`" class="checked" style="grid-column: auto / span 2; text-align: center;">The new version is already available. Click to redirect to sources.</button>
+				<button id="reset-settings" class="layer" style="grid-column: auto / span 2; text-align: center;">Reset settings</button>
 			</section>
 		</div>
 	</div>
