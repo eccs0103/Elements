@@ -11,8 +11,8 @@ try {
 	//#endregion
 	//#region Canvas
 	const canvasView = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
-	canvasView.width = canvasView.getBoundingClientRect().width - (canvasView.getBoundingClientRect().width % settings.size);
-	canvasView.height = canvasView.getBoundingClientRect().height - (canvasView.getBoundingClientRect().height % settings.size);
+	canvasView.width = Math.floor(canvasView.getBoundingClientRect().width / settings.size) * settings.size;
+	canvasView.height = Math.floor(canvasView.getBoundingClientRect().height / settings.size) * settings.size;
 	function draw() {
 		const information = new Map(Array.from(board.cases).map(([type]) => [type, 0]));
 		const contextView = canvasView.getContext(`2d`);

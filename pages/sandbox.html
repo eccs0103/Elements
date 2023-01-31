@@ -26,16 +26,18 @@
 		</a>
 	</menu>
 	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
-		<div class="layer" style="height: 100%; aspect-ratio: 1; display: flex; flex-direction: column; gap: var(--size-gap);">
-			<canvas id="view" class="depth flex" style="height: 100%; width: 100%; padding: 0;"></canvas>
-			<div style="width: fit-content; display: grid; grid-template-columns: repeat(2, max-content);">
-				<input id="toggle-play" type="checkbox" hidden>
-				<label for="toggle-play" role="checkbox" title="Launch" class="flex" style="padding: var(--size-gap);">
-					<img src="../resources/play-arrow.png" class="icon" alt="">
-				</label>
-				<button id="reload-board" title="Reload" class="flex" style="padding: var(--size-gap);">
-					<img src="../resources/refresh.png" class="icon" alt="" >
-				</button>
+		<div class="layer flex" style="height: 100%; aspect-ratio: 1;">
+			<div class="depth flex" style="height: 100%; width: 100%; position: relative; padding: 0; overflow: hidden;">
+				<canvas id="view" style="width: 100%; height: 100%;"></canvas>
+				<div class="depth in-top -toolkit" style="position: absolute; bottom: 0; width: 100%; display: flex;">
+					<input id="toggle-play" type="checkbox" hidden>
+					<label for="toggle-play" role="checkbox" title="Launch" class="flex" style="padding: var(--size-gap);">
+						<img src="../resources/play-arrow.png" class="icon" alt="">
+					</label>
+					<button id="reload-board" title="Reload" class="flex" style="padding: var(--size-gap);">
+						<img src="../resources/refresh.png" class="icon" alt="">
+					</button>
+				</div>
 			</div>
 		</div>
 		<div class="transparent" style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; justify-content: start; align-items: flex-end;">

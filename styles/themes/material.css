@@ -15,6 +15,7 @@ html[data-mode="dark"]:root {
 }
 
 :root {
+	--time-duration: 100ms;
 	--color-highlight: hsl(200deg, 100%, 50%);
 	--color-warn: hsl(60deg, 100%, 50%);
 	--color-error: hsl(0deg, 100%, 75%);
@@ -91,7 +92,7 @@ button,
 *.combobox.checked,
 input[type="checkbox"]:checked+label[role="checkbox"] {
 	background-color: var(--color-highlight);
-	transition: 85ms;
+	transition: var(--time-duration);
 }
 
 button:hover,
@@ -99,7 +100,7 @@ button:hover,
 input[type="checkbox"]:hover+label[role="checkbox"],
 *.combobox:not(.checked):hover {
 	filter: invert(0.1);
-	transition: 85ms;
+	transition: var(--time-duration);
 }
 
 button:active,
@@ -107,7 +108,7 @@ button:active,
 input[type="checkbox"]:active+label[role="checkbox"],
 *.combobox:not(.checked):active {
 	filter: invert(0.2);
-	transition: 85ms;
+	transition: var(--time-duration);
 }
 
 button:disabled,
@@ -118,7 +119,7 @@ input[type="checkbox"]:disabled+label[role="checkbox"],
 select:disabled {
 	pointer-events: none;
 	filter: opacity(0.5);
-	transition: 85ms;
+	transition: var(--time-duration);
 }
 
 input:invalid,
@@ -165,4 +166,14 @@ time {
 /* Local */
 input[type="checkbox"]#toggle-play:checked+label[role="checkbox"] {
 	background-color: unset;
+}
+
+div.-toolkit {
+	opacity: 0.5;
+	transition: var(--time-duration);
+}
+
+div.-toolkit:hover {
+	opacity: 0.8;
+	transition: var(--time-duration);
 }
