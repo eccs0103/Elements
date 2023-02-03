@@ -512,7 +512,7 @@ class Settings {
 		this.FPS = false;
 		this.AFPS = 60;
 		this.counter = false;
-		this.nullables = false;
+		this.nullables = true;
 		this.size = 50;
 	}
 	/** @type {String} */ #mode;

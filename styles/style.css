@@ -22,7 +22,6 @@ body {
 	font-family: system-ui, sans-serif;
 	font-size: calc(var(--size-standart) / 1.6);
 	font-weight: normal;
-	line-height: 1;
 	scroll-behavior: smooth;
 }
 
@@ -46,7 +45,6 @@ select {
 	font-family: inherit;
 	font-size: inherit;
 	font-weight: bold;
-	line-height: inherit;
 }
 
 *::placeholder {
@@ -111,6 +109,10 @@ section.option>*.value {
 section.option>dfn.definition {
 	grid-area: definition;
 	font-size: smaller;
+}
+
+iframe {
+	aspect-ratio: 16 / 9;
 }
 
 table {

@@ -21,9 +21,7 @@ try {
 	}
 	selectDropdownTheme.value = `${settings.theme}-${settings.mode}`;
 	selectDropdownTheme.addEventListener(`change`, (event) => {
-		const [theme, mode] = selectDropdownTheme.value.split(`-`);
-		settings.mode = mode;
-		settings.theme = theme;
+		[settings.theme, settings.mode] = selectDropdownTheme.value.split(`-`);
 		document.documentElement.dataset[`mode`] = settings.mode;
 		linkTheme.href = `../styles/themes/${settings.theme}.css`;
 	});

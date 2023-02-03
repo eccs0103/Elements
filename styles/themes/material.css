@@ -1,13 +1,13 @@
 /* Main */
 
-html[data-mode="light"]:root {
+:root[data-mode="light"] {
 	--color-foreground: rgb(255, 255, 255);
 	--color-background: rgb(225, 225, 225);
 	--color-text: rgb(50, 50, 50);
 	--color-text-description: rgb(150, 150, 150);
 }
 
-html[data-mode="dark"]:root {
+:root[data-mode="dark"] {
 	--color-foreground: rgb(50, 50, 50);
 	--color-background: rgb(25, 25, 25);
 	--color-text: rgb(255, 255, 255);
@@ -19,6 +19,7 @@ html[data-mode="dark"]:root {
 	--color-highlight: hsl(200deg, 100%, 50%);
 	--color-warn: hsl(60deg, 100%, 50%);
 	--color-error: hsl(0deg, 100%, 75%);
+	--color-shadow: rgba(50, 50, 50, 0.5);
 }
 
 /* Global */
@@ -80,7 +81,7 @@ body *::placeholder {
 	background-color: transparent;
 }
 
-html[data-mode="dark"]:root img.icon {
+:root[data-mode="dark"] img.icon {
 	filter: invert(1);
 }
 
@@ -169,7 +170,8 @@ input[type="checkbox"]#toggle-play:checked+label[role="checkbox"] {
 }
 
 div.-toolkit {
-	opacity: 0.5;
+	/* background-color: var(--color-shadow); */
+	opacity: 0.4;
 	transition: var(--time-duration);
 }
 
