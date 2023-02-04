@@ -477,14 +477,14 @@ class Engine {
 class Settings {
 	static import(/** @type {SettingsNotation} */ object) {
 		const value = new Settings();
-		if (object.mode) value.#mode = object.mode;
-		if (object.theme) value.#theme = object.theme;
-		if (object.FPS) value.FPS = object.FPS;
-		if (object.AFPS) value.#AFPS = object.AFPS;
-		if (object.counter) value.counter = object.counter;
-		if (object.nullables) value.nullables = object.nullables;
-		if (object.size) value.#size = object.size;
-		if (object.cycle) value.cycle = object.cycle;
+		if (object.mode !== undefined) value.#mode = object.mode;
+		if (object.theme !== undefined) value.#theme = object.theme;
+		if (object.FPS !== undefined) value.FPS = object.FPS;
+		if (object.AFPS !== undefined) value.#AFPS = object.AFPS;
+		if (object.counter !== undefined) value.counter = object.counter;
+		if (object.nullables !== undefined) value.nullables = object.nullables;
+		if (object.size !== undefined) value.#size = object.size;
+		if (object.cycle !== undefined) value.cycle = object.cycle;
 		return value;
 	}
 	static export(/** @type {Settings} */ object) {
