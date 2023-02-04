@@ -88,8 +88,15 @@ try {
 		update();
 		if (!moves) {
 			engine.launch = false;
-			const inputTogglePlay = /** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`));
-			if (window.confirm(`Elements have no more moves. Do you want to reload the board?`)) {
+			const repeat = (() => {
+				switch (settings.cycle) {
+					case CycleType.break: return false;
+					case CycleType.ask: return (window.confirm(`Elements have no more moves. Do you want to reload the board?`));
+					case CycleType.loop: return true;
+					default: throw new TypeError(`Invalid cycle type: '${settings.cycle}'.`);
+				}
+			})();
+			if (repeat) {
 				board.generate();
 				wasLaunched = false;
 				engine.launch = true;
@@ -124,6 +131,15 @@ try {
 		board.generate();
 		wasLaunched = false;
 		update();
+	});
+	const buttonCaptureCanvas = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#capture-canvas`)));
+	buttonCaptureCanvas.addEventListener(`click`, (event) => {
+		const a = document.createElement(`a`);
+		a.download = `${new Date().toLocaleString()}.png`;
+		a.href = canvasView.toDataURL(`png`);
+		a.click();
+		URL.revokeObjectURL(a.href);
+		a.remove();
 	});
 	//#endregion
 	//#region Elements

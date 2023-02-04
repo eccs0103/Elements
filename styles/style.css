@@ -135,6 +135,7 @@ img.icon {
 
 hr {
 	margin: var(--size-gap) 0;
+	padding: calc(var(--size-serpator) / 2) !important;
 }
 
 code {

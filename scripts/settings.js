@@ -68,7 +68,7 @@ try {
 	});
 	//#endregion
 	//#endregion
-	//#region Board Size
+	//#region Board size
 	const inputTextboxSize = (/** @type {HTMLInputElement} */ (document.querySelector(`input#textbox-size`)));
 	inputTextboxSize.min = `${Settings.minSize}`;
 	inputTextboxSize.max = `${Settings.maxSize}`;
@@ -89,7 +89,19 @@ try {
 		}
 	});
 	//#endregion
-	//#region Reset Settings
+	//#region Cycle type
+	const selectDropdownCycle = (/** @type {HTMLSelectElement} */ (document.querySelector(`select#dropdown-cycle`)));
+	for (const property in CycleType) {
+		const option = selectDropdownCycle.appendChild(document.createElement(`option`));
+		option.value = CycleType[property];
+		option.innerText = `${String(CycleType[property]).replace(/\b\w/, (letter) => letter.toUpperCase())}`;
+	}
+	selectDropdownCycle.value = settings.cycle;
+	selectDropdownCycle.addEventListener(`change`, (event) => {
+		settings.cycle = selectDropdownCycle.value;
+	});
+	//#endregion
+	//#region Reset settings
 	const buttonResetSettings = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reset-settings`)));
 	buttonResetSettings.addEventListener(`click`, (event) => {
 		if (window.confirm(`The settings will be reset to factory defaults, after which the page will be reloaded. Are you sure?`)) {

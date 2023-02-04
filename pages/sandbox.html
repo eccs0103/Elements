@@ -29,13 +29,16 @@
 		<div class="layer flex" style="height: 100%; aspect-ratio: 1;">
 			<div class="depth flex" style="height: 100%; width: 100%; position: relative; padding: 0; overflow: hidden;">
 				<canvas id="view" style="width: 100%; height: 100%;"></canvas>
-				<div class="depth in-top -toolkit" style="position: absolute; bottom: 0; width: 100%; display: flex;">
+				<div class="depth in-top -toolkit" style="position: absolute; bottom: 0; width: 100%; display: grid; grid-template-columns: repeat(2, max-content) 1fr;">
 					<input id="toggle-play" type="checkbox" hidden>
 					<label for="toggle-play" role="checkbox" title="Launch" class="flex" style="padding: var(--size-gap);">
 						<img src="../resources/play-arrow.png" class="icon" alt="Launch">
 					</label>
 					<button id="reload-board" title="Reload" class="flex" style="padding: var(--size-gap);">
 						<img src="../resources/refresh.png" class="icon" alt="Reload">
+					</button>
+					<button id="capture-canvas" title="Capture canvas" class="flex" style="padding: var(--size-gap); justify-self: end;">
+						<img src="../resources/camera.png" class="icon" alt="Capture canvas">
 					</button>
 				</div>
 			</div>

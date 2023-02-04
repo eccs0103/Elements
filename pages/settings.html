@@ -27,12 +27,16 @@
 	</menu>
 	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
 		<div class="layer" style="align-self: flex-start; width: 40%; height: fit-content; display: flex; flex-direction: column; padding: calc(var(--size-gap) * 2);">
-			<h1 style="grid-column: auto / span 2;">Settings</h1>
+			<h1>Settings</h1>
+			<hr class="depth">
+			<h3>General</h3>
 			<section class="option">
 				<p class="title">Theme</p>
 				<select id="dropdown-theme" class="value flex depth" required></select>
 				<dfn class="definition">External design of the page: color scheme, background and foreground, font.</dfn>
 			</section>
+			<hr class="depth">
+			<h3>Game</h3>
 			<section class="option">
 				<p class="title">Counter FPS</p>
 				<input id="toggle-fps" type="checkbox" hidden>
@@ -62,10 +66,17 @@
 					<dfn class="definition">Show or hide elements with zero count.</dfn>
 				</section>
 			</section>
+			<hr class="depth">
+			<h3>Board</h3>
 			<section class="option">
 				<p class="title">Board size</p>
 				<input id="textbox-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]" required class="value flex depth">
 				<dfn class="definition">Board generated size. The size can be from 20 to 200 inclusive. Resizing the board will generate it anew with the given coefficients.</dfn>
+			</section>
+			<section class="option">
+				<p class="title">On cycle end</p>
+				<select id="dropdown-cycle" class="value flex depth" required></select>
+				<dfn class="definition">Actions after the end of the game cycle.</dfn>
 			</section>
 			<section class="option" style="justify-items: center;">
 				<button id="reset-settings" class="layer" style="grid-column: auto / span 2; text-align: center;">Reset settings</button>

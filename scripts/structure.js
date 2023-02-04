@@ -458,17 +458,33 @@ class Engine {
 }
 //#endregion
 //#region Settings
-/** @typedef {{ mode: String, theme: String, FPS: Boolean, AFPS: Number, counter: Boolean, nullables: Boolean, size: Number }} SettingsNotation */
+/** @enum {String} */ const CycleType = {
+	/** @readonly */ break: `break`,
+	/** @readonly */ ask: `ask`,
+	/** @readonly */ loop: `loop`,
+};
+/** 
+ * @typedef SettingsNotation
+ * @property {String | undefined} mode
+ * @property {String | undefined} theme
+ * @property {Boolean | undefined} FPS
+ * @property {Number | undefined} AFPS
+ * @property {Boolean | undefined} counter
+ * @property {Boolean | undefined} nullables
+ * @property {Number | undefined} size
+ * @property {CycleType | undefined} cycle
+ */
 class Settings {
 	static import(/** @type {SettingsNotation} */ object) {
 		const value = new Settings();
-		value.#mode = object.mode;
-		value.#theme = object.theme;
-		value.FPS = object.FPS;
-		value.#AFPS = object.AFPS;
-		value.counter = object.counter;
-		value.nullables = object.nullables;
-		value.#size = object.size;
+		if (object.mode) value.#mode = object.mode;
+		if (object.theme) value.#theme = object.theme;
+		if (object.FPS) value.FPS = object.FPS;
+		if (object.AFPS) value.#AFPS = object.AFPS;
+		if (object.counter) value.counter = object.counter;
+		if (object.nullables) value.nullables = object.nullables;
+		if (object.size) value.#size = object.size;
+		if (object.cycle) value.cycle = object.cycle;
 		return value;
 	}
 	static export(/** @type {Settings} */ object) {
@@ -480,6 +496,7 @@ class Settings {
 		value.counter = object.counter;
 		value.nullables = object.nullables;
 		value.size = object.#size;
+		value.cycle = object.cycle;
 		return value;
 	}
 	/** @type {Array<String>} */ static #modes = [`light`, `dark`];
@@ -514,6 +531,7 @@ class Settings {
 		this.counter = false;
 		this.nullables = true;
 		this.size = 50;
+		this.cycle = CycleType.ask;
 	}
 	/** @type {String} */ #mode;
 	get mode() {
@@ -562,6 +580,7 @@ class Settings {
 			throw new RangeError(`Value ${value} is out of range. It must be from ${Settings.#minSize} to ${Settings.#maxSize} inclusive.`);
 		}
 	}
+	/** @type {CycleType} */ cycle;
 }
 //#endregion
 //#region Metadata
