@@ -110,9 +110,9 @@ try {
 		}
 	});
 	//#endregion
-} catch (error) {
+} catch (exception) {
 	if (locked) {
-		window.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`);
+		window.alert(exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`);
 		location.reload();
-	} else console.error(error);
+	} else console.error(exception);
 }

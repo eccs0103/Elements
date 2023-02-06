@@ -38,7 +38,7 @@ body {
 button,
 *[role="button"],
 input,
-input[type="checkbox"]+label[role="checkbox"],
+input[type="checkbox"] + label[role="checkbox"],
 *[role="combobox"]:not([aria-checked="true"]),
 select {
 	cursor: pointer;
@@ -55,7 +55,7 @@ input:read-write {
 	cursor: text;
 }
 
-input[type="checkbox"]+label[role="checkbox"].toggle {
+input[type="checkbox"] + label[role="checkbox"].toggle {
 	aspect-ratio: 2;
 	width: calc(var(--size-standart) * 1.5);
 	display: flex;
@@ -63,7 +63,7 @@ input[type="checkbox"]+label[role="checkbox"].toggle {
 	padding: var(--size-serpator);
 }
 
-input[type="checkbox"]+label[role="checkbox"].toggle>span.knob {
+input[type="checkbox"] + label[role="checkbox"].toggle > span.knob {
 	aspect-ratio: 1;
 	height: 100%;
 	border-radius: inherit;
@@ -72,7 +72,7 @@ input[type="checkbox"]+label[role="checkbox"].toggle>span.knob {
 	margin-right: auto;
 }
 
-input[type="checkbox"]:checked+label[role="checkbox"].toggle>span.knob {
+input[type="checkbox"]:checked + label[role="checkbox"].toggle > span.knob {
 	margin-left: auto;
 	margin-right: 0;
 }
@@ -89,24 +89,28 @@ section.option {
 	padding-top: var(--size-gap);
 }
 
-section.option>section.option {
+section.option > section.option {
 	padding-left: 1em;
 	grid-column: auto / span 2;
 }
 
-section.option>input:not(:checked)~section.option {
+/* section.option>section.option>p.title::before {
+	content: "└ ";
+} */
+
+section.option > input:not(:checked) ~ section.option {
 	display: none !important;
 }
 
-section.option>p.title {
+section.option > p.title {
 	grid-area: title;
 }
 
-section.option>*.value {
+section.option > *.value {
 	grid-area: value;
 }
 
-section.option>dfn.definition {
+section.option > dfn.definition {
 	grid-area: definition;
 	font-size: smaller;
 }
@@ -149,12 +153,12 @@ code * {
 	user-select: inherit;
 }
 
-code>span {
+code > span {
 	white-space: pre;
 	display: list-item;
 }
 
-code>span::before {
+code > span::before {
 	counter-increment: index;
 	content: counters(index, '.', decimal) '	|';
 }
@@ -169,7 +173,7 @@ code>span::before {
 }
 
 /* Local */
-input[type="checkbox"]#toggle-play:checked+label[role="checkbox"]>img.icon {
+input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] > img.icon {
 	content: url(../resources/pause.png);
 }
 

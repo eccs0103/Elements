@@ -587,5 +587,5 @@ class Settings {
 const nameDeveloper = `Adaptive Core`;
 const nameProject = `Elements`;
 const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}`, Settings.export(new Settings()));
-const locked = false;
+const locked = true;
 //#endregion
