@@ -1,7 +1,12 @@
+// @ts-ignore
+/** @typedef {import("./sandbox")} */
+
+"use strict";
+
 //#region Dirt
 class Dirt extends Elemental {
 	static title = `Dirt`;
-	static color = new Color(150, 100, 80);
+	static color = Color.viaRGB(150, 100, 80);
 	constructor() {
 		super();
 		this._title = Dirt.title;
@@ -13,7 +18,7 @@ board.cases.set(Dirt, 90);
 //#region Grass
 class Grass extends Elemental {
 	static title = `Grass`;
-	static color = new Color(0, 128, 0);
+	static color = Color.viaRGB(0, 128, 0);
 	static durationGrow = 10;
 	constructor() {
 		super();
@@ -47,7 +52,7 @@ board.cases.set(Grass, 4);
 //#region Fire
 class Fire extends Elemental {
 	static title = `Fire`;
-	static color = new Color(255, 150, 0);
+	static color = Color.viaRGB(255, 150, 0);
 	static durationBurn = 4;
 	static durationFade = 16;
 	constructor() {
@@ -83,7 +88,7 @@ board.cases.set(Fire, 2);
 //#region Water
 class Water extends Elemental {
 	static title = `Water`;
-	static color = new Color(0, 50, 255);
+	static color = Color.viaRGB(0, 50, 255);
 	static durationFlow = 8;
 	static durationEvaporate = 8;
 	constructor() {
@@ -136,7 +141,7 @@ board.cases.set(Water, 2);
 //#region Lava
 class Lava extends Elemental {
 	static title = `Lava`;
-	static color = new Color(255, 0, 0);
+	static color = Color.viaRGB(255, 0, 0);
 	static maxDensity = 3;
 	static durationFlow = 15;
 	static durationBurn = 8;
@@ -149,7 +154,7 @@ class Lava extends Elemental {
 		super();
 		this._title = Lava.title;
 		this.#density = density;
-		this._color = new Color(
+		this._color = Color.viaRGB(
 			((Lava.color.red - Fire.color.red) * this.#density / Lava.maxDensity) + Fire.color.red,
 			((Lava.color.green - Fire.color.green) * this.#density / Lava.maxDensity) + Fire.color.green,
 			((Lava.color.blue - Fire.color.blue) * this.#density / Lava.maxDensity) + Fire.color.blue,
@@ -222,7 +227,7 @@ board.cases.set(Lava, 1);
 //#region Ice
 class Ice extends Elemental {
 	static title = `Ice`;
-	static color = new Color(0, 200, 255);
+	static color = Color.viaRGB(0, 200, 255);
 	static maxDensity = 3;
 	static durationFlow = 12;
 	static durationMelt = 4;
@@ -235,7 +240,7 @@ class Ice extends Elemental {
 		super();
 		this._title = Ice.title;
 		this.#density = density;
-		this._color = new Color(
+		this._color = Color.viaRGB(
 			((Ice.color.red - Water.color.red) * this.#density / Ice.maxDensity) + Water.color.red,
 			((Ice.color.green - Water.color.green) * this.#density / Ice.maxDensity) + Water.color.green,
 			((Ice.color.blue - Water.color.blue) * this.#density / Ice.maxDensity) + Water.color.blue,

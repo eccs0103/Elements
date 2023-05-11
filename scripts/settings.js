@@ -1,9 +1,10 @@
+// @ts-ignore
+/** @typedef {import("./structure")} */
+
+"use strict";
+
 try {
 	//#region Initialize
-	const linkTheme = (/** @type {HTMLLinkElement} */ (document.head.querySelector(`link#theme`)));
-	let settings = Settings.import(archiveSettings.data);
-	document.documentElement.dataset[`mode`] = settings.mode;
-	linkTheme.href = `../styles/themes/${settings.theme}.css`;
 	window.addEventListener(`beforeunload`, (event) => {
 		archiveSettings.data = Settings.export(settings);
 	});
@@ -22,8 +23,7 @@ try {
 	selectDropdownTheme.value = `${settings.theme}-${settings.mode}`;
 	selectDropdownTheme.addEventListener(`change`, (event) => {
 		[settings.theme, settings.mode] = selectDropdownTheme.value.split(`-`);
-		document.documentElement.dataset[`mode`] = settings.mode;
-		linkTheme.href = `../styles/themes/${settings.theme}.css`;
+		document.documentElement.dataset[`theme`] = settings.mode;
 	});
 	//#endregion
 	//#region Counter FPS
@@ -103,16 +103,13 @@ try {
 	//#endregion
 	//#region Reset settings
 	const buttonResetSettings = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reset-settings`)));
-	buttonResetSettings.addEventListener(`click`, (event) => {
-		if (window.confirm(`The settings will be reset to factory defaults, after which the page will be reloaded. Are you sure?`)) {
+	buttonResetSettings.addEventListener(`click`, async (event) => {
+		if (await Application.confirm(`The settings will be reset to factory defaults, after which the page will be reloaded. Are you sure?`)) {
 			settings = new Settings();
 			location.reload();
 		}
 	});
 	//#endregion
 } catch (exception) {
-	if (locked) {
-		window.alert(exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`);
-		location.reload();
-	} else console.error(exception);
+	
 }

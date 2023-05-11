@@ -1,9 +1,10 @@
+// @ts-ignore
+/** @typedef {import("./structure")} */
+
+"use strict";
+
 try {
 	//#region Initialize
-	const linkTheme = (/** @type {HTMLLinkElement} */ (document.head.querySelector(`link#theme`)));
-	const settings = Settings.import(archiveSettings.data);
-	document.documentElement.dataset[`mode`] = settings.mode;
-	linkTheme.href = `../styles/themes/${settings.theme}.css`;
 	/**
 	 * Board in scene.
 	 */
@@ -80,7 +81,7 @@ try {
 	/**
 	 * Engine for working with frames.
 	 */
-	var engine = new Engine(() => {
+	var engine = new Engine(async () => {
 		const moves = board.execute();
 		if (!wasLaunched && engine.launch) {
 			wasLaunched = true;
@@ -88,10 +89,10 @@ try {
 		update();
 		if (!moves) {
 			engine.launch = false;
-			const repeat = (() => {
+			const repeat = await (async () => {
 				switch (settings.cycle) {
 					case CycleType.break: return false;
-					case CycleType.ask: return (window.confirm(`Elements have no more moves. Do you want to reload the board?`));
+					case CycleType.ask: return (await Application.confirm(`Elements have no more moves. Do you want to reload the board?`));
 					case CycleType.loop: return true;
 					default: throw new TypeError(`Invalid cycle type: '${settings.cycle}'.`);
 				}
@@ -115,7 +116,7 @@ try {
 	const countRefreshPerSecond = 4;
 	setInterval(() => {
 		divCounterFPS.innerText = engine.FPS.toFixed(0);
-		divCounterFPS.style.borderColor = Color.viaHSV(120 * (Math.min(Math.max(0, engine.FPS / engine.AFPS), 1)), 100, 100).toString();
+		divCounterFPS.style.borderColor = Color.viaHSL(120 * (Math.min(Math.max(0, engine.FPS / engine.AFPS), 1)), 100, 50).toString();
 	}, 1000 / countRefreshPerSecond);
 	tableElementsCounter.hidden = !settings.counter;
 	//#endregion
@@ -153,9 +154,6 @@ try {
 		update();
 	});
 	//#endregion
-} catch (error) {
-	if (locked) {
-		window.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`);
-		location.reload();
-	} else console.error(error);
+} catch (exception) {
+	Application.prevent(exception);
 }
