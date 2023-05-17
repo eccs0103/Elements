@@ -28,14 +28,14 @@ class Grass extends Elemental {
 	}
 	#grow = new Ability(`Grow`, () => {
 		const positions = [
-			new Vector(this.position.x - 1, this.position.y - 1),
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x + 1, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x - 1, this.position.y + 1),
-			new Vector(this.position.x, this.position.y + 1),
-			new Vector(this.position.x + 1, this.position.y + 1)
+			new Coordinate(this.position.x - 1, this.position.y - 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x + 1, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x - 1, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x + 1, this.position.y + 1)
 		];
 		const targets = board.getElementsOfType(positions, Dirt);
 		if (targets.length > 0) {
@@ -63,10 +63,10 @@ class Fire extends Elemental {
 	}
 	#burn = new Ability(`Burn`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Grass);
 		if (targets.length > 0) {
@@ -99,14 +99,14 @@ class Water extends Elemental {
 	}
 	#flow = new Ability(`Flow`, () => {
 		const positions = [
-			new Vector(this.position.x - 1, this.position.y - 1),
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x + 1, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x - 1, this.position.y + 1),
-			new Vector(this.position.x, this.position.y + 1),
-			new Vector(this.position.x + 1, this.position.y + 1)
+			new Coordinate(this.position.x - 1, this.position.y - 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x + 1, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x - 1, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x + 1, this.position.y + 1)
 		];
 		const targets = board.getElementsOfType(positions, Dirt);
 		if (targets.length > 0) {
@@ -120,10 +120,10 @@ class Water extends Elemental {
 	}, Water.durationFlow);
 	#evaporate = new Ability(`Evaporate`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Fire);
 		if (targets.length > 0) {
@@ -173,10 +173,10 @@ class Lava extends Elemental {
 	}
 	#flow = new Ability(`Flow`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Dirt);
 		const lifespan = this.#density - 1;
@@ -190,10 +190,10 @@ class Lava extends Elemental {
 	}, Lava.durationFlow);
 	#burn = new Ability(`Burn`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Grass);
 		if (targets.length > 0) {
@@ -206,10 +206,10 @@ class Lava extends Elemental {
 	}, Lava.durationBurn);
 	#fade = new Ability(`Fade`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Water);
 		if (targets.length > 0) {
@@ -259,10 +259,10 @@ class Ice extends Elemental {
 	}
 	#flow = new Ability(`Flow`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Dirt);
 		const lifespan = this.#density - 1;
@@ -276,10 +276,10 @@ class Ice extends Elemental {
 	}, Ice.durationFlow);
 	#melt = new Ability(`Melt`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Fire);
 		if (targets.length > 0) {
@@ -293,10 +293,10 @@ class Ice extends Elemental {
 	}, Ice.durationMelt);
 	#evaporate = new Ability(`Evaporate`, () => {
 		const positions = [
-			new Vector(this.position.x, this.position.y - 1),
-			new Vector(this.position.x - 1, this.position.y),
-			new Vector(this.position.x + 1, this.position.y),
-			new Vector(this.position.x, this.position.y + 1),
+			new Coordinate(this.position.x, this.position.y - 1),
+			new Coordinate(this.position.x - 1, this.position.y),
+			new Coordinate(this.position.x + 1, this.position.y),
+			new Coordinate(this.position.x, this.position.y + 1),
 		];
 		const targets = board.getElementsOfType(positions, Lava);
 		if (targets.length > 0) {

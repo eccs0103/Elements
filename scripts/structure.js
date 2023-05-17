@@ -3,50 +3,16 @@
 // @ts-ignore
 /** @typedef {import("./modules/application")} */
 // @ts-ignore
+/** @typedef {import("./modules/engine")} */
+// @ts-ignore
 /** @typedef {import("./modules/color")} */
+// @ts-ignore
+/** @typedef {import("./modules/coordinate")} */
 // @ts-ignore
 /** @typedef {import("./modules/random")} */
 
 "use strict";
 
-//#region Vector
-/**
- * Class for storing two-dimensional coordinates.
- */
-class Vector {
-	/**
-	 * @param {Number} x The x value.
-	 * @param {Number} y The y value.
-	 */
-	constructor(x, y) {
-		this.#x = x;
-		this.#y = y;
-	}
-	/** @type {Number} */ #x;
-	/**
-	 * The x property.
-	 * @readonly 
-	 */
-	get x() {
-		return this.#x;
-	}
-	/** @type {Number} */ #y;
-	/**
-	 * The y property.
-	 * @readonly 
-	 */
-	get y() {
-		return this.#y;
-	}
-	/**
-	 * Converting to a string (x, y) of the form.
-	 * @returns The result.
-	 */
-	toString() {
-		return `(${this.#x}, ${this.#y})`;
-	}
-}
-//#endregion
 //#region Matrix
 /**
  * Class representing two-dimensional matrix.
@@ -54,7 +20,7 @@ class Vector {
  */
 class Matrix {
 	/**
-	 * @param {Vector} size Matrix dimensions.
+	 * @param {Coordinate} size Matrix dimensions.
 	 */
 	constructor(size) {
 		this.#size = size;
@@ -66,7 +32,7 @@ class Matrix {
 			}
 		}
 	}
-	/** @type {Vector} */ #size;
+	/** @type {Coordinate} */ #size;
 	/**
 	 * Matrix dimensions.
 	 * @readonly
@@ -76,7 +42,7 @@ class Matrix {
 	}
 	/**
 	 * A function to get values from a matrix.
-	 * @param {Vector} position Item position.
+	 * @param {Coordinate} position Item position.
 	 * @returns The value.
 	 */
 	get(position) {
@@ -85,7 +51,7 @@ class Matrix {
 	/** @type {Array<Array<Item>>} */ #data;
 	/**
 	 * A function to set values to a matrix.
-	 * @param {Vector} position Item position.
+	 * @param {Coordinate} position Item position.
 	 * @param {Item} value The value.
 	 */
 	set(position, value) {
@@ -169,7 +135,7 @@ class Elemental {
 	}
 	/**
 	 * Element position.
-	 * @type {Vector}
+	 * @type {Coordinate}
 	 */
 	position;
 	/** @protected @type {Color} */ _color;
@@ -221,7 +187,7 @@ class Elemental {
  */
 class Factory extends Matrix {
 	/**
-	* @param {Vector} size Matrix dimensions.
+	* @param {Coordinate} size Matrix dimensions.
 	* @param {(value: Case) => Item} modifier A function that transforms case type to matrix type.
 	*/
 	constructor(size, modifier) {
@@ -239,15 +205,15 @@ class Factory extends Matrix {
 	}
 	/**
 	 * A function that fills matrix cells with random variant from cases.
-	 * @param {Vector} from From which cell to fill.
-	 * @param {Vector} to To which cell to fill.
+	 * @param {Coordinate} from From which cell to fill.
+	 * @param {Coordinate} to To which cell to fill.
 	 */
-	generate(from = new Vector(0, 0), to = new Vector(this.size.x, this.size.y)) {
-		const start = new Vector(Math.min(from.x, to.x), Math.min(from.y, to.y));
-		const end = new Vector(Math.max(from.x, to.x), Math.max(from.y, to.y));
+	generate(from = new Coordinate(0, 0), to = new Coordinate(this.size.x, this.size.y)) {
+		const start = new Coordinate(Math.min(from.x, to.x), Math.min(from.y, to.y));
+		const end = new Coordinate(Math.max(from.x, to.x), Math.max(from.y, to.y));
 		for (let y = start.y; y < end.y; y++) {
 			for (let x = start.x; x < end.x; x++) {
-				const position = new Vector(x, y);
+				const position = new Coordinate(x, y);
 				this.set(position, this.#modifier(Random.case(this.#cases)));
 			}
 		}
@@ -261,14 +227,14 @@ class Factory extends Matrix {
  */
 class Board extends Factory {
 	/**
-	 * @param {Vector} size Matrix dimensions.
+	 * @param {Coordinate} size Matrix dimensions.
 	 */
 	constructor(size) {
 		super(size, (element) => new element());
 	}
 	/**
 	 * A function to set values to a matrix.
-	 * @param {Vector} position Item position.
+	 * @param {Coordinate} position Item position.
 	 * @param {Elemental} value The value.
 	 */
 	set(position, value) {
@@ -278,7 +244,7 @@ class Board extends Factory {
 	/**
 	 * Searches elements of given type in given positions.
 	 * @template {typeof Elemental} Item
-	 * @param {Array<Vector>} positions Positions to search.
+	 * @param {Array<Coordinate>} positions Positions to search.
 	 * @param {Item} type Elements type.
 	 */
 	getElementsOfType(positions, type) {
@@ -299,81 +265,15 @@ class Board extends Factory {
 		let moves = false;
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
-				const position = new Vector(x, y);
+				const position = new Coordinate(x, y);
 				const element = this.get(position);
+				console.log(element);
 				if (element && element.execute()) {
 					moves = true;
 				}
 			}
 		}
 		return moves;
-	}
-}
-//#endregion
-//#region Engine
-/**
- * Class that launches the frame execution.
- */
-class Engine {
-	/**
-	 * @param {() => void} handler Function that must be repeated in every frame.
-	 * @param {Number} AFPS Absolute frame rate per second. Default rate is 60.
-	 * @param {Boolean} launch Launch engine initially? In default, it'll be launched.
-	 */
-	constructor(handler, AFPS = 60, launch = true) {
-		this.#handler = handler;
-		this.#AFPS = AFPS;
-		this.#handlerIndex = this.#setHandler();
-		this.#launch = launch;
-	}
-	#handler;
-	/** @type {Number} */ #handlerIndex;
-	/** @type {Number} */ #FPS;
-	/**
-	 * Count of frames per second.
-	 * @readonly
-	 */
-	get FPS() {
-		return this.#FPS;
-	}
-	#setHandler() {
-		let previousFrame = Date.now();
-		return setInterval(() => {
-			let currentFrame = Date.now();
-			this.#FPS = (1000 / (currentFrame - previousFrame));
-			previousFrame = currentFrame;
-			if (this.#launch) {
-				this.#handler();
-			}
-		}, 1000 / this.#AFPS);
-	}
-	/** @type {Number} */ #AFPS;
-	/**
-	 * Count of absolute frames per second. Controls the average value of FPS.
-	 */
-	get AFPS() {
-		return this.#AFPS;
-	}
-	/**
-	 * Count of absolute frames per second. Controls the average value of FPS.
-	 */
-	set AFPS(value) {
-		this.#AFPS = value;
-		clearInterval(this.#handlerIndex);
-		this.#handlerIndex = this.#setHandler();
-	}
-	/** @type {Boolean} */ #launch = false;
-	/**
-	 * Is engine launched?
-	 */
-	get launch() {
-		return this.#launch;
-	}
-	/**
-	 * Is engine launched?
-	 */
-	set launch(value) {
-		this.#launch = value;
 	}
 }
 //#endregion

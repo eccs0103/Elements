@@ -8,7 +8,7 @@ try {
 	/**
 	 * Board in scene.
 	 */
-	var board = new Board(new Vector(settings.size, settings.size));
+	var board = new Board(new Coordinate(settings.size, settings.size));
 	//#endregion
 	//#region Canvas
 	const canvasView = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
@@ -22,7 +22,7 @@ try {
 		}
 		for (let y = 0; y < board.size.y; y++) {
 			for (let x = 0; x < board.size.x; x++) {
-				const position = new Vector(x, y);
+				const position = new Coordinate(x, y);
 				const element = board.get(position);
 				if (element) {
 					for (const [type, count] of information) {
@@ -31,7 +31,7 @@ try {
 						}
 					}
 					contextView.fillStyle = element.color.toString();
-					const cellSize = new Vector(contextView.canvas.width / board.size.x, contextView.canvas.height / board.size.y);
+					const cellSize = new Coordinate(contextView.canvas.width / board.size.x, contextView.canvas.height / board.size.y);
 					contextView.fillRect(position.x * cellSize.x, position.y * cellSize.y, cellSize.x, cellSize.y);
 				}
 			}
@@ -81,14 +81,16 @@ try {
 	/**
 	 * Engine for working with frames.
 	 */
-	var engine = new Engine(async () => {
+	var engine = new Engine(false);
+	engine.renderer(async () => {
 		const moves = board.execute();
-		if (!wasLaunched && engine.launch) {
+		console.log(moves);
+		if (!wasLaunched && engine.launched) {
 			wasLaunched = true;
 		}
 		update();
-		if (!moves) {
-			engine.launch = false;
+		if (wasLaunched && !moves) {
+			engine.launched = false;
 			const repeat = await (async () => {
 				switch (settings.cycle) {
 					case CycleType.break: return false;
@@ -100,11 +102,11 @@ try {
 			if (repeat) {
 				board.generate();
 				wasLaunched = false;
-				engine.launch = true;
+				engine.launched = true;
 			}
-			inputTogglePlay.checked = engine.launch;
+			inputTogglePlay.checked = engine.launched;
 		}
-	}, settings.AFPS, false);
+	});
 	window.addEventListener(`beforeunload`, (event) => {
 		if (wasLaunched) {
 			event.returnValue = `Board will be reseted.`;
@@ -116,16 +118,16 @@ try {
 	const countRefreshPerSecond = 4;
 	setInterval(() => {
 		divCounterFPS.innerText = engine.FPS.toFixed(0);
-		divCounterFPS.style.borderColor = Color.viaHSL(120 * (Math.min(Math.max(0, engine.FPS / engine.AFPS), 1)), 100, 50).toString();
+		divCounterFPS.style.borderColor = Color.viaHSL(120 * (Math.min(Math.max(0, engine.FPS / settings.AFPS), 1)), 100, 50).toString();
 	}, 1000 / countRefreshPerSecond);
 	tableElementsCounter.hidden = !settings.counter;
 	//#endregion
 	//#endregion
 	//#region Listeners
 	const inputTogglePlay = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`)));
-	inputTogglePlay.checked = engine.launch;
+	inputTogglePlay.checked = engine.launched;
 	inputTogglePlay.addEventListener(`change`, (event) => {
-		engine.launch = inputTogglePlay.checked;
+		engine.launched = inputTogglePlay.checked;
 	});
 	const buttonReloadBoard = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reload-board`)));
 	buttonReloadBoard.addEventListener(`click`, (event) => {
