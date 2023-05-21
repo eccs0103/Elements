@@ -84,7 +84,6 @@ try {
 	var engine = new Engine(false);
 	engine.renderer(async () => {
 		const moves = board.execute();
-		console.log(moves);
 		if (!wasLaunched && engine.launched) {
 			wasLaunched = true;
 		}

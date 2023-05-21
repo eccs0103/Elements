@@ -267,7 +267,6 @@ class Board extends Factory {
 			for (let x = 0; x < this.size.x; x++) {
 				const position = new Coordinate(x, y);
 				const element = this.get(position);
-				console.log(element);
 				if (element && element.execute()) {
 					moves = true;
 				}
