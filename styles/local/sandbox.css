@@ -1,0 +1,103 @@
+body {
+	position: fixed;
+	inset: 0;
+	display: grid;
+}
+
+@media screen and (orientation: portrait) {
+	body {
+		grid-template-rows: max-content 1fr;
+		align-items: center;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	body {
+		grid-template-columns: max-content 1fr;
+		justify-items: center;
+	}
+}
+
+nav {
+	border-top-left-radius: 0 !important;
+}
+
+@media screen and (orientation: portrait) {
+	nav {
+		flex-direction: row;
+		border-top-right-radius: 0 !important;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	nav {
+		flex-direction: column;
+		border-bottom-left-radius: 0 !important;
+	}
+}
+
+main {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+	aspect-ratio: 1;
+}
+
+div.-player {
+	width: 100%;
+	height: 100%;
+}
+
+div.-screen {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+canvas#view {
+	width: 100%;
+	height: 100%;
+}
+
+div.-toolkit {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(2, max-content) 1fr;
+	opacity: 0.5;
+	transition: var(--time-duration);
+}
+
+div.-toolkit:hover {
+	opacity: 1;
+	transition: var(--time-duration);
+}
+
+input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] {
+	background-color: unset;
+}
+
+input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] > img.icon {
+	content: url(../../resources/pause.png);
+}
+
+button#capture-canvas {
+	justify-self: end;
+}
+
+div.-side-panel {
+	position: absolute;
+	inset: 0 0 0 auto;
+	align-items: flex-end;
+}
+
+div#counter-fps {
+	border-style: solid;
+}
+
+table#elements-counter div.-view {
+	aspect-ratio: 1;
+	height: 1.4em;
+}

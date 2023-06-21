@@ -1,5 +1,9 @@
 // @ts-ignore
-/** @typedef {import("./structure")} */
+/** @typedef {import("./structure.js")} */
+// @ts-ignore
+/** @typedef {import("./modules/engine.js")} */
+// @ts-ignore
+/** @typedef {import("./modules/animator.js")} */
 
 "use strict";
 
@@ -11,12 +15,12 @@ try {
 	var board = new Board(new Coordinate(settings.size, settings.size));
 	//#endregion
 	//#region Canvas
-	const canvasView = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
-	canvasView.width = Math.floor(canvasView.getBoundingClientRect().width / settings.size) * settings.size;
-	canvasView.height = Math.floor(canvasView.getBoundingClientRect().height / settings.size) * settings.size;
+	const canvas = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
+	canvas.width = Math.floor(canvas.getBoundingClientRect().width / settings.size) * settings.size;
+	canvas.height = Math.floor(canvas.getBoundingClientRect().height / settings.size) * settings.size;
 	function draw() {
 		const information = new Map(Array.from(board.cases).map(([type]) => [type, 0]));
-		const contextView = canvasView.getContext(`2d`);
+		const contextView = canvas.getContext(`2d`);
 		if (!contextView) {
 			throw new ReferenceError(`Element 'contextView' isn't defined.`);
 		}
@@ -138,7 +142,7 @@ try {
 	buttonCaptureCanvas.addEventListener(`click`, (event) => {
 		const a = document.createElement(`a`);
 		a.download = `${new Date().toLocaleString()}.png`;
-		a.href = canvasView.toDataURL(`png`);
+		a.href = canvas.toDataURL(`png`);
 		a.click();
 		URL.revokeObjectURL(a.href);
 		a.remove();

@@ -1,15 +1,13 @@
 // @ts-ignore
-/** @typedef {import("./modules/archive")} */
+/** @typedef {import("./modules/archive.js")} */
 // @ts-ignore
-/** @typedef {import("./modules/application")} */
+/** @typedef {import("./modules/application.js")} */
 // @ts-ignore
-/** @typedef {import("./modules/engine")} */
+/** @typedef {import("./modules/color.js")} */
 // @ts-ignore
-/** @typedef {import("./modules/color")} */
+/** @typedef {import("./modules/coordinate.js")} */
 // @ts-ignore
-/** @typedef {import("./modules/coordinate")} */
-// @ts-ignore
-/** @typedef {import("./modules/random")} */
+/** @typedef {import("./modules/random.js")} */
 
 "use strict";
 

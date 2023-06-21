@@ -1,4 +1,5 @@
 "use strict";
+
 /** @enum {String} */ const ColorFormat = {
 	/** @readonly */ RGB: `RGB`,
 	/** @readonly */ HSL: `HSL`,
@@ -343,6 +344,18 @@ class Color {
 	}
 	//#endregion
 	//#region Methods
+	/**
+	 * @param {Color} value 
+	 */
+	assign(value) {
+		this.#red = value.#red;
+		this.#green = value.#green;
+		this.#blue = value.#blue;
+		this.#hue = value.#hue;
+		this.#saturation = value.#saturation;
+		this.#lightness = value.#lightness;
+		this.#alpha = value.#alpha;
+	}
 	/**
 	 * @param {ColorFormat} format 
 	 * @param {Boolean} deep

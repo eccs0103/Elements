@@ -10,6 +10,7 @@
 	<link rel="shortcut icon" href="../resources/settings (inverted).png" media="(prefers-color-scheme: dark)">
 	<link rel="stylesheet" href="../styles/style.css">
 	<link rel="stylesheet" href="../styles/themes/material.css">
+	<link rel="stylesheet" href="../styles/local/settings.css">
 	<script src="../scripts/modules/archive.js" defer></script>
 	<script src="../scripts/modules/application.js" defer></script>
 	<script src="../scripts/modules/color.js" defer></script>
@@ -19,26 +20,26 @@
 	<script src="../scripts/settings.js" defer></script>
 </head>
 
-<body class="flex" style="position: fixed; inset: 0;">
-	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; align-content: center; gap: var(--size-gap);">
-		<a href="./sandbox.html" role="combobox" title="Sandbox" class="flex rounded" style="padding: var(--size-gap);">
-			<img src="../resources/grid.png" class="icon" alt="">
+<body>
+	<nav class="layer rounded with-gap with-padding flex centered">
+		<a href="./sandbox.html" role="combobox" title="Sandbox" class="flex rounded with-padding">
+			<img src="../resources/grid.png" class="icon" alt="Sandbox">
 		</a>
-		<a role="combobox" aria-checked="true" title="Settings" class="flex rounded" style="padding: var(--size-gap);">
-			<img src="../resources/settings.png" class="icon" alt="">
+		<a href="./settings.html" role="combobox" aria-checked="true" title="Settings" class="flex rounded with-padding">
+			<img src="../resources/settings.png" class="icon" alt="Settings">
 		</a>
-		<a role="combobox" aria-disabled="true" title="Information" class="flex rounded" style="padding: var(--size-gap);">
-			<img src="../resources/info.png" class="icon" alt="">
+		<a role="combobox" aria-disabled="true" title="Information" class="flex rounded with-padding">
+			<img src="../resources/info.png" class="icon" alt="Information">
 		</a>
-	</menu>
-	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
-		<div class="layer" style="align-self: flex-start; width: 40%; height: fit-content; display: flex; flex-direction: column; padding: calc(var(--size-gap) * 2);">
+	</nav>
+	<main class="with-padding large-padding">
+		<div class="layer rounded flex column with-padding large-padding -settings-panel">
 			<h1>Settings</h1>
 			<hr class="depth">
 			<h3>General</h3>
 			<section class="option">
 				<p class="title">Theme</p>
-				<select id="dropdown-theme" class="value flex depth" required></select>
+				<select id="dropdown-theme" class="value depth rounded with-padding flex" required></select>
 				<dfn class="definition">External design of the page: color scheme, background and foreground, font.</dfn>
 			</section>
 			<hr class="depth">
@@ -53,7 +54,7 @@
 			</section>
 			<section class="option">
 				<p class="title">Absolute frames per second</p>
-				<input id="textbox-afps" type="number" inputmode="numeric" min="1" max="240" placeholder="[1 - 240]" required class="value flex depth">
+				<input id="textbox-afps" type="number" inputmode="numeric" min="1" max="240" placeholder="[1 - 240]" required class="value depth rounded with-padding flex">
 				<dfn class="definition">The absolute number of frames per second that is calculated for the speed of the interaction of elements, as well as to calculate the number of frames per second.</dfn>
 			</section>
 			<section class="option">
@@ -76,19 +77,19 @@
 			<h3>Board</h3>
 			<section class="option">
 				<p class="title">Board size</p>
-				<input id="textbox-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]" required class="value flex depth">
+				<input id="textbox-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]" required class="value depth rounded with-padding flex">
 				<dfn class="definition">Board generated size. The size can be from 20 to 200 inclusive. Resizing the board will generate it anew with the given coefficients.</dfn>
 			</section>
 			<section class="option">
 				<p class="title">On cycle end</p>
-				<select id="dropdown-cycle" class="value flex depth" required></select>
+				<select id="dropdown-cycle" class="value depth rounded with-padding flex" required></select>
 				<dfn class="definition">Actions after the end of the game cycle.</dfn>
 			</section>
-			<section class="option" style="justify-items: center;">
-				<button id="reset-settings" class="layer" style="grid-column: auto / span 2; text-align: center;">Reset settings</button>
+			<section class="option">
+				<button id="reset-settings" class="layer rounded with-padding grid-line">Reset settings</button>
 			</section>
 		</div>
-	</div>
+	</main>
 </body>
 
 </html>

@@ -37,7 +37,7 @@
 	--color-highlight: hsl(200deg, 100%, 50%);
 	--color-warn: hsl(60deg, 100%, 50%);
 	--color-error: hsl(0deg, 100%, 75%);
-	--color-shadow: hsla(0, 0%, 50%, 0.75);
+	--color-shadow: hsla(0, 0%, 0%, 0.75);
 }
 
 /* Global */
@@ -59,38 +59,36 @@ body *::placeholder {
 
 *.layer {
 	background-color: var(--color-foreground);
-	border-radius: var(--size-gap);
 }
 
 *.depth {
 	background-color: var(--color-background);
-	border-radius: var(--size-gap);
+}
+
+*.translucent {
+	background-color: var(--color-shadow);
 }
 
 *.rounded {
 	border-radius: var(--size-gap);
 }
 
-*.layer.in-top,
-*.depth.in-top {
+*.rounded.in-top {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
 
-*.layer.in-right,
-*.depth.in-right {
+*.rounded.in-right {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-*.layer.in-bottom,
-*.depth.in-bottom {
+*.rounded.in-bottom {
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-*.layer.in-left,
-*.depth.in-left {
+*.rounded.in-left {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
@@ -178,6 +176,10 @@ dialog::backdrop {
 	background-color: rgba(0, 0, 0, 75%);
 }
 
+div#debug {
+	font-family: "Consolas", monospace;
+}
+
 a {
 	text-decoration: none;
 }
@@ -212,20 +214,4 @@ time {
 
 ::-webkit-scrollbar-thumb {
 	background-color: var(--color-highlight);
-}
-
-/* Local */
-input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] {
-	background-color: unset;
-}
-
-div.-toolkit {
-	/* background-color: var(--color-shadow); */
-	opacity: 0.4;
-	transition: var(--time-duration);
-}
-
-div.-toolkit:hover {
-	opacity: 0.8;
-	transition: var(--time-duration);
 }

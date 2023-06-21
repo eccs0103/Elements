@@ -7,7 +7,7 @@
 		{
 			"type": "msedge",
 			"request": "launch",
-			"name": "Launch sandbox!",
+			"name": "Launch",
 			"file": "${workspaceFolder}/index.html"
 		}
 	]

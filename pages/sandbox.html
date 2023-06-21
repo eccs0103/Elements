@@ -10,49 +10,51 @@
 	<link rel="shortcut icon" href="../resources/grid (inverted).png" media="(prefers-color-scheme: dark)">
 	<link rel="stylesheet" href="../styles/style.css">
 	<link rel="stylesheet" href="../styles/themes/material.css">
+	<link rel="stylesheet" href="../styles/local/sandbox.css">
 	<script src="../scripts/modules/archive.js" defer></script>
 	<script src="../scripts/modules/application.js" defer></script>
-	<script src="../scripts/modules/engine.js" defer></script>
 	<script src="../scripts/modules/color.js" defer></script>
 	<script src="../scripts/modules/coordinate.js" defer></script>
 	<script src="../scripts/modules/random.js" defer></script>
 	<script src="../scripts/structure.js" defer></script>
+	<script src="../scripts/modules/engine.js" defer></script>
+	<script src="../scripts/modules/animator.js" defer></script>
 	<script src="../scripts/sandbox.js" defer></script>
 </head>
 
-<body class="flex" style="position: fixed; inset: 0;">
-	<menu class="layer in-left" style="position: absolute; inset: 0 auto 0 0; display: grid; grid-auto-rows: max-content; align-content: center; gap: var(--size-gap);">
-		<a role="combobox" aria-checked="true" title="Sandbox" class="flex rounded" style="padding: var(--size-gap);">
+<body>
+	<nav class="layer rounded with-gap with-padding flex centered">
+		<a href="./sandbox.html" role="combobox" aria-checked="true" title="Sandbox" class="flex rounded with-padding">
 			<img src="../resources/grid.png" class="icon" alt="Sandbox">
 		</a>
-		<a href="./settings.html" role="combobox" title="Settings" class="flex rounded" style="padding: var(--size-gap);">
+		<a href="./settings.html" role="combobox" title="Settings" class="flex rounded with-padding">
 			<img src="../resources/settings.png" class="icon" alt="Settings">
 		</a>
-		<a role="combobox" aria-disabled="true" title="Information" class="flex rounded" style="padding: var(--size-gap);">
+		<a role="combobox" aria-disabled="true" title="Information" class="flex rounded with-padding">
 			<img src="../resources/info.png" class="icon" alt="Information">
 		</a>
-	</menu>
-	<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: calc(var(--size-gap) * 2);">
-		<div class="layer flex" style="height: 100%; aspect-ratio: 1;">
-			<div class="depth flex" style="height: 100%; width: 100%; position: relative; padding: 0; overflow: hidden;">
-				<canvas id="view" style="width: 100%; height: 100%;"></canvas>
-				<div class="depth in-top -toolkit" style="position: absolute; bottom: 0; width: 100%; display: grid; grid-template-columns: repeat(2, max-content) 1fr;">
+	</nav>
+	<main class="with-padding large-padding">
+		<div class="layer rounded flex with-padding -player">
+			<div class="depth rounded flex -screen">
+				<canvas id="view"></canvas>
+				<div class="translucent with-padding -toolkit">
 					<input id="toggle-play" type="checkbox" hidden>
-					<label for="toggle-play" role="checkbox" title="Launch" class="flex" style="padding: var(--size-gap);">
+					<label for="toggle-play" role="checkbox" title="Launch" class="flex with-padding">
 						<img src="../resources/play-arrow.png" class="icon" alt="Launch">
 					</label>
-					<button id="reload-board" title="Reload" class="flex" style="padding: var(--size-gap);">
+					<button id="reload-board" title="Reload" class="flex with-padding">
 						<img src="../resources/refresh.png" class="icon" alt="Reload">
 					</button>
-					<button id="capture-canvas" title="Capture canvas" class="flex" style="padding: var(--size-gap); justify-self: end;">
+					<button id="capture-canvas" title="Capture canvas" class="flex with-padding">
 						<img src="../resources/camera.png" class="icon" alt="Capture canvas">
 					</button>
 				</div>
 			</div>
 		</div>
-		<div class="transparent" style="position: absolute; inset: 0 0 0 auto; display: flex; flex-direction: column; align-items: flex-end;">
-			<div id="counter-fps" class="layer in-right" style="border-style: solid;" hidden>0</div>
-			<table id="elements-counter" class="layer in-right" hidden>
+		<div class="flex column -side-panel">
+			<div id="counter-fps" class="layer rounded in-right with-padding" hidden>0</div>
+			<table id="elements-counter" class="layer rounded in-right" hidden>
 				<thead>
 					<tr>
 						<!-- <th>Coefficent</th> -->
@@ -61,10 +63,12 @@
 						<th>Amount</th>
 					</tr>
 				</thead>
-				<tbody></tbody>
+				<tbody>
+					<!--  -->
+				</tbody>
 			</table>
 		</div>
-	</div>
+	</main>
 </body>
 
 </html>
