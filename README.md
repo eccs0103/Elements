@@ -1,109 +1,118 @@
-# Elements  
-Игра в стиле песочница.  
+# Elements
+A sandbox-style game.
 
 ![Screenshot](https://imgur.com/hN4VArk.png)
 
 © Adaptive Core 2023  
 - - -
-## Руководство
-Песочница с автоматически генерируемой доской, который можно запустить и посмотреть на взаимодействия элементов. Но главное в игре является не случайная генерация доски, а поддержка пользовательского кода. Ведь можно редактировать или же вообще убрать встроенные элементы, можно создать свои элементы, дополнить принципом взаимодействия с другими элементами и подключить к доске. Пользовательские элементы так же будут сгенерированы на доске с заданным процентом и полностью поддерживаться игрой. Структура элементов и их взаимодействие содержится в файле [`elements.js`](./scripts/elements.js), который можно редактировать как угодно. Для написания пользовательских элементов советуем взглянуть на код встроенных элементов, или же на пример пользовательского элемента снизу.
+## Guide
+A sandbox with an automatically generated board that can be launched to observe the interactions between elements. But the main focus of the game is not the random generation of the board, but the support for user code. After all, you can edit or remove built-in elements, create your own elements, add interaction principles with other elements, and connect them to the board. User-created elements will also be generated on the board with a specified percentage and fully supported by the game. The structure of the elements and their interactions is contained in the `elements.js` file, which can be edited as desired. To create custom elements, it is recommended to look at the code of the built-in elements or the example of a user element below.
 ```js
-//#region Sample Element // Рекомендуется собрать каждый элемент в отдельный регион.
-class SampleElement extends Elemental { // Все элементы должны расширить класс Elemental.
-	static title = `Sample Element`; // Создается статичное поле title который хранит в себе название этого типа элементов.
-	static color = new Color(0, 0, 0); // Таким же методом создается color хранящий в себе цвет.
-	static durationSampleAbility = 1; // Для каждой способности рекомендуется создать отдельную переменную указавшую его длительность подготовки.
+//#region Sample Element // It is recommended to encapsulate each element in a separate region.
+class SampleElement extends Elemental { // All elements should extend the Elemental class.
+	static title = `Sample Element`; // A static field named "title" is created to store the name of this type of element.
+	static color = new Color(0, 0, 0); // Similarly, a "color" field is created to store the color.
+	static durationSampleAbility = 1; // It is recommended to create a separate variable for each ability indicating its preparation duration.
 	constructor() {
-		super(); // Конструктор родителя зовется в начале без аргументов.
-		this._title = SampleElement.title; // Передается имя типа в отдельные экземпляры.
-		this._color = SampleElement.color; // То же самое и с цветом.
-		this.abilities.push(this.#sampleAbility) // Подключаются способности. О них чуть ниже.
+		super(); // The parent constructor is called at the beginning without arguments.
+		this._title = SampleElement.title; // The type name is passed to individual instances.
+		this._color = SampleElement.color; // Similarly, the color is passed.
+		this.abilities.push(this.#sampleAbility); // Abilities are attached. More about them below.
 	}
-	#sampleAbility = new Ability(`Sample Ability`, () => { // Для каждой способности создается приватное поле хранящий его в себе. Для создания способности используется класс Ability.
-		// Действия при использовании способности.
-		return true; // Обнулить прогресс подготовки способности после его использования? Значение true соответствует обнулению.
-	}, SampleElement.durationSampleAbility); // Передача длительности.
+	#sampleAbility = new Ability(`Sample Ability`, () => { // Each ability is stored in a private field. The Ability class is used to create abilities.
+		// Actions performed when the ability is used.
+		return true; // Reset the progress of the ability after it is used? A value of true corresponds to resetting.
+	}, SampleElement.durationSampleAbility); // Passing the duration.
 }
-board.cases.set(SampleElement, 50); // После создания элемента подключается она следующим образом, в котором второй параметр указывает процент появления этого элемента. Стоит учитывать что на результат влияют так же проценты появления остальных элементов.
+board.cases.set(SampleElement, 50); // After creating the element, it is connected in the following way, where the second parameter indicates the percentage of appearance of this element. Note that the appearance percentages of other elements also affect the result.
 //#endregion
 ```
 - - -
-## Новости
-### Обновление 2.6.4 (21.06.2023)
-*(Информация пока недоступна)*
+## News
+### Update 2.6.4 (21.06.2023)
+- Updated internal engine.  
+- Fixed design issues.  
+- Updated design layout.  
+- Improved adaptation for mobile devices.  
+- Enhanced internal modules.  
+- Changed rendering algorithm.  
+- Improved translation.  
 
-### Обновление 2.5.7 (17.05.2023)
-*(Информация пока недоступна)*
+### Update 2.5.7 (17.05.2023)
+- Improved internal engine.  
+- Fixed rendering issue.  
 
-### Обновление 2.5.5 (04.02.2023)
-- Добавлена возможность сделать снимок доски.  
-- Добавлена возможность изменить игровой цикл в настройках.  
-- Исправлена ошибка со совместимостью версий настроек.  
-- Улучшен дизайн.  
+### Update 2.5.5 (04.02.2023)
+- Added the ability to take a snapshot of the board.  
+- Added the option to change the game loop in the settings.  
+- Fixed a version compatibility issue with settings.  
+- Improved design.  
 
-### Патч 2.5.3 (31.01.2023)
-- Исправлены ошибки дизайна, при которой доска с размером 101 и больше выходила из границ страницы.  
-- Адаптирована панель управления под разные темы.  
+### Patch 2.5.3 (31.01.2023)
+- Fixed design issues where the board with a size of 101 or larger would go beyond the page boundaries.  
+- Adapted the control panel to different themes.  
 
-### Обновление 2.5.2 - Custom code support (30.01.2023)
-- Улучшена HTML структура.  
-- Изменена иконка песочницы.  
-- Изменены стили.  
-- Исправлены ошибки в дизайне.  
-- Добавлены описания к коду.  
-- Улучшены модули, для удобной работы.  
-- Улучшена структура кода.  
-- Сокращена структура кода, насчет сжатия повторяющийся действий.  
-- Добавлена полная поддержка пользовательских скриптов.  
-- Оптимизирована работа счетчика элементов.  
-- Улучшена работа настроек темы.  
-- Улучшены описания ошибок.  
-- Убраны нестабильные функции.  
-- Добавлен пример пользовательского кода.  
+### Update 2.5.2 - Custom code support (30.01.2023)
+- Improved HTML structure.  
+- Changed the sandbox icon.  
+- Updated styles.  
+- Fixed design issues.  
+- Added code descriptions.  
+- Improved modules for easier operation.  
+- Enhanced code structure.  
+- Reduced code redundancy.  
+- Added full support for user scripts.  
+- Optimized element counter functionality.  
+- Improved theme settings.  
+- Enhanced error descriptions.  
+- Removed unstable functions.  
+- Added a sample of user code.  
 
-### Обновление 2.1.6 (20.11.2022)
-- Добавлена возможность изменить абсолютное количество кадров в секунду в меню настроек.  
-- Ускорена работа настроек и сохранений.  
-- Изменена иконка главной страницы.  
-- Добавлены иконки сверху в страницах.  
-- Активирован безопасный режим, который сохранит целостность данных при появлении ошибок.  
-- Доступна проверка обновлений при подключении к интернету из меню настроек.  
+### Update 2.1.6 (20.11.2022)
+- Added the ability to change the absolute frames per second (FPS) count in the settings menu.  
+- Accelerated the operation of settings and saves.  
+- Changed the icon on the main page.  
+- Added icons at the top of the pages.  
+- Activated a safe mode to preserve data integrity in case of errors.  
+- Available update check when connected to the internet from the settings menu.  
 
-### Обновление 2.1.3 (13.11.2022)
-- Теперь можно скрыть элементы с нулевым количеством в счетчике элементов.  
-- Улучшена структура настроек.  
-- Улучшена структура выпадающего меню в настройках.  
+### Update 2.1.3 (13.11.2022)
+- Now it is possible to hide elements with a zero count in the element counter.  
+- Improved settings structure.  
+- Enhanced dropdown menu structure in the settings.  
 
-### Обновление 2.1.2
-- Добвлен раздел настроек.  
-- В настройках доступно изменение темы.  
-- В настройках можно скрыть или показать счетчик FPS.  
-- В настройках можно скрыть или показать счетчик элементов.  
-- В настройках можно измнить размер доски.  
-- Исправлена внутренняя конструкция программы.  
-- Исправлены стили.  
-- Добавлены эффекты.  
-- Исправлены шрифты.  
-- Добавлены предупреждающие подсказки о потере данных.  
-- Изменена цвет элементы Dirt (раньше Void).  
-- Оптимизирована работа программы.  
-- Исправлена индикатор движения у доски.  
+### Update 2.1.2
+- Added a settings section.  
+- The theme can be changed in the settings.  
+- The FPS counter can be hidden or shown in the settings.  
+- The element counter can be hidden or shown in the settings.  
+- The board size can be changed in the settings.  
+- Fixed internal program structure.  
+- Fixed styles.  
+- Added effects.  
+- Fixed fonts.  
+- Added warning hints about data loss.  
+- Changed the color of the Dirt element (previously Void).  
+- Optimized program performance.  
+- Fixed the movement indicator for the board.  
 
-### Обновление 2.0.5
-- Изменен дизайн.  
-- Добавлена темна тема (внутренное переключение).  
-- Изменена структура элементов.  
-- Исправлена ошибка неправильной отрисовки слоя.  
-- Добавлены маленькие эффекты.  
+### Update 2.0.5
+- Updated design.  
+- Added a dark theme (internal toggle).  
+- Changed the structure of the elements.  
+- Fixed an issue with incorrect layer rendering.  
+- Added small effects.  
 
-### Обновление 2.0.2
-- Добавлен цвет счетчика FPS.  
-- Добавлен таблица элементов.  
-- Улучшена структура доски.  
+### Update 2.0.2
+- Added color for the FPS counter.  
+- Added an element table.  
+- Improved board structure.  
 
-### Обновление 2.0.0  
-- Игра переписана на JS (с поддержкой JSDoc).  
-- Изменена вся структура игры.  
-- Добавлено (пока что) внутренное динамическое взаимодействие.  
-- Добавлены пользовательские элементы.  
-- Добавлен счетсик FPS.  
+### Update 2.0.0
+- The game has been rewritten in JS (with JSDoc support).  
+- The entire game structure has been changed.  
+- Dynamic internal interactions have been added (for now).  
+- Custom elements have been added.  
+- The FPS counter has been added.  
+
+...

@@ -282,10 +282,9 @@ class Board extends Factory {
 };
 /** 
  * @typedef SettingsNotation
- * @property {String | undefined} mode
  * @property {String | undefined} theme
  * @property {Boolean | undefined} FPS
- * @property {Number | undefined} AFPS
+ * @property {Number | undefined} FPSLimit
  * @property {Boolean | undefined} counter
  * @property {Boolean | undefined} nullables
  * @property {Number | undefined} size
@@ -294,10 +293,9 @@ class Board extends Factory {
 class Settings {
 	static import(/** @type {SettingsNotation} */ object) {
 		const value = new Settings();
-		if (object.mode !== undefined) value.#mode = object.mode;
 		if (object.theme !== undefined) value.#theme = object.theme;
 		if (object.FPS !== undefined) value.FPS = object.FPS;
-		if (object.AFPS !== undefined) value.#AFPS = object.AFPS;
+		if (object.FPSLimit !== undefined) value.#FPSLimit = object.FPSLimit;
 		if (object.counter !== undefined) value.counter = object.counter;
 		if (object.nullables !== undefined) value.nullables = object.nullables;
 		if (object.size !== undefined) value.#size = object.size;
@@ -306,31 +304,26 @@ class Settings {
 	}
 	static export(/** @type {Settings} */ object) {
 		const value = (/** @type {SettingsNotation} */ ({}));
-		value.mode = object.#mode;
 		value.theme = object.#theme;
 		value.FPS = object.FPS;
-		value.AFPS = object.#AFPS;
+		value.FPSLimit = object.#FPSLimit;
 		value.counter = object.counter;
 		value.nullables = object.nullables;
 		value.size = object.#size;
 		value.cycle = object.cycle;
 		return value;
 	}
-	/** @type {Array<String>} */ static #modes = [`light`, `dark`];
-	/** @readonly */ static get modes() {
-		return Settings.#modes;
-	}
-	/** @type {Array<String>} */ static #themes = [`material`];
+	/** @type {Array<String>} */ static #themes = [`system`, `light`, `dark`];
 	/** @readonly */ static get themes() {
 		return Settings.#themes;
 	}
-	/** @type {Number} */ static #minAFPS = 1;
-	/** @readonly */ static get minAFPS() {
-		return this.#minAFPS;
+	/** @type {Number} */ static #minFPSLimit = 1;
+	/** @readonly */ static get minFPSLimit() {
+		return this.#minFPSLimit;
 	}
-	/** @type {Number} */ static #maxAFPS = 240;
-	/** @readonly */ static get maxAFPS() {
-		return this.#maxAFPS;
+	/** @type {Number} */ static #maxFPSLimit = 240;
+	/** @readonly */ static get maxFPSLimit() {
+		return this.#maxFPSLimit;
 	}
 	/** @type {Number} */ static #minSize = 20;
 	/** @readonly */ static get minSize() {
@@ -341,25 +334,13 @@ class Settings {
 		return this.#maxSize;
 	}
 	constructor() {
-		this.mode = Settings.#modes[0];
 		this.theme = Settings.#themes[0];
 		this.FPS = false;
-		this.AFPS = 60;
+		this.FPSLimit = 60;
 		this.counter = false;
 		this.nullables = true;
 		this.size = 50;
 		this.cycle = CycleType.ask;
-	}
-	/** @type {String} */ #mode;
-	get mode() {
-		return this.#mode;
-	}
-	set mode(value) {
-		if (Settings.#modes.includes(value)) {
-			this.#mode = value;
-		} else {
-			throw new Error(`Can't reach ${value} mode in modes list.`);
-		}
 	}
 	/** @type {String} */ #theme;
 	get theme() {
@@ -373,15 +354,15 @@ class Settings {
 		}
 	}
 	/** @type {Boolean} */ FPS;
-	/** @type {Number} */ #AFPS;
-	get AFPS() {
-		return this.#AFPS;
+	/** @type {Number} */ #FPSLimit;
+	get FPSLimit() {
+		return this.#FPSLimit;
 	}
-	set AFPS(value) {
-		if (Settings.#minAFPS <= value && value <= Settings.#maxAFPS) {
-			this.#AFPS = value;
+	set FPSLimit(value) {
+		if (Settings.#minFPSLimit <= value && value <= Settings.#maxFPSLimit) {
+			this.#FPSLimit = value;
 		} else {
-			throw new RangeError(`Value ${value} is out of range. It must be from ${Settings.#minAFPS} to ${Settings.#maxAFPS} inclusive.`);
+			throw new RangeError(`Value ${value} is out of range. It must be from ${Settings.#minFPSLimit} to ${Settings.#maxFPSLimit} inclusive.`);
 		}
 	}
 	/** @type {Boolean} */ counter;
@@ -402,6 +383,12 @@ class Settings {
 //#endregion
 //#region Metadata
 const archiveSettings = new Archive(`${Application.developer}\\${Application.title}`, Settings.export(new Settings()));
+archiveSettings.change((data) => {
+	if (data.theme == `material`) {
+		data.theme = Settings.themes[0];
+	}
+	return data;
+});
 let settings = Settings.import(archiveSettings.data);
-document.documentElement.dataset[`mode`] = settings.mode;
+document.documentElement.dataset[`theme`] = settings.theme;
 //#endregion

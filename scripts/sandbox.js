@@ -11,42 +11,57 @@ try {
 	//#region Initialize
 	/**
 	 * Board in scene.
+	 * @readonly
 	 */
 	var board = new Board(new Coordinate(settings.size, settings.size));
-	//#endregion
-	//#region Canvas
+	Object.defineProperty(window, `board`, {
+		value: board,
+		writable: false,
+	});
 	const canvas = (/** @type {HTMLCanvasElement} */ (document.querySelector(`canvas#view`)));
-	canvas.width = Math.floor(canvas.getBoundingClientRect().width / settings.size) * settings.size;
-	canvas.height = Math.floor(canvas.getBoundingClientRect().height / settings.size) * settings.size;
-	function draw() {
-		const information = new Map(Array.from(board.cases).map(([type]) => [type, 0]));
-		const contextView = canvas.getContext(`2d`);
-		if (!contextView) {
-			throw new ReferenceError(`Element 'contextView' isn't defined.`);
-		}
-		for (let y = 0; y < board.size.y; y++) {
-			for (let x = 0; x < board.size.x; x++) {
-				const position = new Coordinate(x, y);
-				const element = board.get(position);
-				if (element) {
-					for (const [type, count] of information) {
-						if (element instanceof type) {
-							information.set(type, count + 1);
-						}
-					}
-					contextView.fillStyle = element.color.toString();
-					const cellSize = new Coordinate(contextView.canvas.width / board.size.x, contextView.canvas.height / board.size.y);
-					contextView.fillRect(position.x * cellSize.x, position.y * cellSize.y, cellSize.x, cellSize.y);
-				}
-			}
-		}
-		return Promise.resolve(information);
-	}
-	//#endregion
-	//#region Rendering
 	const tableElementsCounter = (/** @type {HTMLTableElement} */ (document.querySelector(`table#elements-counter`)));
 	const tbodyInformation = tableElementsCounter.tBodies[0];
-	function render() {
+	const animator = new Animator(canvas);
+	animator.FPSLimit = settings.FPSLimit;
+	window.addEventListener(`beforeunload`, (event) => {
+		if (animator.wasLaunched) {
+			event.returnValue = `Board will be reseted.`;
+		}
+	});
+	const divCounterFPS = (/** @type {HTMLDivElement} */ (document.querySelector(`div#counter-fps`)));
+	divCounterFPS.hidden = !settings.FPS;
+	tableElementsCounter.hidden = !settings.counter;
+	//#endregion
+	//#region Listeners
+	const inputTogglePlay = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`)));
+	inputTogglePlay.checked = animator.launched;
+	inputTogglePlay.addEventListener(`change`, (event) => {
+		animator.launched = inputTogglePlay.checked;
+	});
+	const buttonReloadBoard = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reload-board`)));
+	buttonReloadBoard.addEventListener(`click`, (event) => {
+		board.generate();
+		animator.wasLaunched = false;
+		animator.invoke();
+	});
+	const buttonCaptureCanvas = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#capture-canvas`)));
+	buttonCaptureCanvas.addEventListener(`click`, (event) => {
+		canvas.toBlob((blob) => {
+			if (!blob) {
+				throw new ReferenceError(`Can't convert canvase to blob.`);
+			}
+			Application.download(new File([blob], `${Date.now()}.png`));
+		});
+	});
+	//#endregion
+	//#region Elements
+	board.cases.clear();
+	const scriptElements = document.head.appendChild(document.createElement(`script`));
+	scriptElements.defer = true;
+	scriptElements.src = `../scripts/elements.js`;
+	scriptElements.addEventListener(`load`, (event) => {
+		board.generate();
+		//#region Render
 		for (const [element, coeffincent] of board.cases) {
 			const row = tbodyInformation.insertRow();
 			{
@@ -66,9 +81,30 @@ try {
 				{ }
 			}
 		}
-	}
-	function update() {
-		draw().then((information) => {
+		//#endregion
+		//#region Update
+		animator.renderer(async (context) => {
+			divCounterFPS.innerText = animator.FPS.toFixed(0);
+			divCounterFPS.style.borderColor = Color.viaHSL(120 * (Math.min(Math.max(0, animator.FPS / animator.FPSLimit), 1)), 100, 50).toString();
+			const moves = board.execute();
+			//#region Draw
+			const information = new Map(Array.from(board.cases).map(([type]) => [type, 0]));
+			const size = new Coordinate(canvas.width / board.size.x, canvas.height / board.size.y);
+			for (let y = 0; y < board.size.y; y++) {
+				for (let x = 0; x < board.size.x; x++) {
+					const position = new Coordinate(x, y);
+					const element = board.get(position);
+					if (element) {
+						for (const [type, count] of information) {
+							if (element instanceof type) {
+								information.set(type, count + 1);
+							}
+						}
+						context.fillStyle = element.color.toString();
+						context.fillRect(position.x * size.x - canvas.width / 2, position.y * size.y - canvas.height / 2, size.x, size.y);
+					}
+				}
+			}
 			Array.from(information).forEach(([element, count], index) => {
 				const row = tbodyInformation.rows[index];
 				const isDisabled = (!settings.nullables && count == 0);
@@ -77,87 +113,27 @@ try {
 					row.cells[2].innerText = `${count}`;
 				}
 			});
-		});
-	}
-	//#endregion
-	//#region Engine
-	let wasLaunched = false;
-	/**
-	 * Engine for working with frames.
-	 */
-	var engine = new Engine(false);
-	engine.renderer(async () => {
-		const moves = board.execute();
-		if (!wasLaunched && engine.launched) {
-			wasLaunched = true;
-		}
-		update();
-		if (wasLaunched && !moves) {
-			engine.launched = false;
-			const repeat = await (async () => {
-				switch (settings.cycle) {
-					case CycleType.break: return false;
-					case CycleType.ask: return (await Application.confirm(`Elements have no more moves. Do you want to reload the board?`));
-					case CycleType.loop: return true;
-					default: throw new TypeError(`Invalid cycle type: '${settings.cycle}'.`);
+			//#endregion
+			if (animator.wasLaunched && !moves) {
+				animator.launched = false;
+				const repeat = await (async () => {
+					switch (settings.cycle) {
+						case CycleType.break: return false;
+						case CycleType.ask: return (await Application.confirm(`Elements have no more moves. Do you want to reload the board?`));
+						case CycleType.loop: return true;
+						default: throw new TypeError(`Invalid cycle type: '${settings.cycle}'.`);
+					}
+				})();
+				if (repeat) {
+					board.generate();
+					animator.wasLaunched = false;
+					animator.launched = true;
 				}
-			})();
-			if (repeat) {
-				board.generate();
-				wasLaunched = false;
-				engine.launched = true;
+				inputTogglePlay.checked = animator.launched;
 			}
-			inputTogglePlay.checked = engine.launched;
-		}
-	});
-	window.addEventListener(`beforeunload`, (event) => {
-		if (wasLaunched) {
-			event.returnValue = `Board will be reseted.`;
-		}
-	});
-	//#region FPS Counter
-	const divCounterFPS = (/** @type {HTMLDivElement} */ (document.querySelector(`div#counter-fps`)));
-	divCounterFPS.hidden = !settings.FPS;
-	const countRefreshPerSecond = 4;
-	setInterval(() => {
-		divCounterFPS.innerText = engine.FPS.toFixed(0);
-		divCounterFPS.style.borderColor = Color.viaHSL(120 * (Math.min(Math.max(0, engine.FPS / settings.AFPS), 1)), 100, 50).toString();
-	}, 1000 / countRefreshPerSecond);
-	tableElementsCounter.hidden = !settings.counter;
-	//#endregion
-	//#endregion
-	//#region Listeners
-	const inputTogglePlay = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-play`)));
-	inputTogglePlay.checked = engine.launched;
-	inputTogglePlay.addEventListener(`change`, (event) => {
-		engine.launched = inputTogglePlay.checked;
-	});
-	const buttonReloadBoard = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reload-board`)));
-	buttonReloadBoard.addEventListener(`click`, (event) => {
-		board.generate();
-		wasLaunched = false;
-		update();
-	});
-	const buttonCaptureCanvas = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#capture-canvas`)));
-	buttonCaptureCanvas.addEventListener(`click`, (event) => {
-		const a = document.createElement(`a`);
-		a.download = `${new Date().toLocaleString()}.png`;
-		a.href = canvas.toDataURL(`png`);
-		a.click();
-		URL.revokeObjectURL(a.href);
-		a.remove();
-	});
-	//#endregion
-	//#region Elements
-	board.cases.clear();
-	const scriptElements = document.head.appendChild(document.createElement(`script`));
-	scriptElements.async = false;
-	scriptElements.src = `../scripts/elements.js`;
-	scriptElements.addEventListener(`load`, (event) => {
-		board.generate();
-		render();
-		update();
-	});
+		});
+		//#endregion
+	}, { once: true });
 	//#endregion
 } catch (exception) {
 	Application.prevent(exception);

@@ -11,19 +11,15 @@ try {
 	//#endregion
 	//#region Theme
 	const selectDropdownTheme = (/** @type {HTMLSelectElement} */ (document.querySelector(`select#dropdown-theme`)));
-	for (const mode of Settings.modes) {
-		const optgroup = selectDropdownTheme.appendChild(document.createElement(`optgroup`));
-		optgroup.label = `${mode.replace(/\b\w/, (letter) => letter.toUpperCase())}`;
-		for (const theme of Settings.themes) {
-			const option = optgroup.appendChild(document.createElement(`option`));
-			option.value = `${theme}-${mode}`;
-			option.innerText = `${theme.replace(/\b\w/, (letter) => letter.toUpperCase())}`;
-		}
+	for (const theme of Settings.themes) {
+		const option = selectDropdownTheme.appendChild(document.createElement(`option`));
+		option.value = `${theme}`;
+		option.innerText = `${theme.replace(/\b\w/, (letter) => letter.toUpperCase())}`;
 	}
-	selectDropdownTheme.value = `${settings.theme}-${settings.mode}`;
+	selectDropdownTheme.value = settings.theme;
 	selectDropdownTheme.addEventListener(`change`, (event) => {
-		[settings.theme, settings.mode] = selectDropdownTheme.value.split(`-`);
-		document.documentElement.dataset[`theme`] = settings.mode;
+		settings.theme = selectDropdownTheme.value;
+		document.documentElement.dataset[`theme`] = settings.theme;
 	});
 	//#endregion
 	//#region Counter FPS
@@ -33,20 +29,20 @@ try {
 		settings.FPS = inputToggleFPS.checked;
 	});
 	//#endregion
-	//#region Absolute frames per second
-	const inputTextboxAFPS = (/** @type {HTMLInputElement} */ (document.querySelector(`input#textbox-afps`)));
-	inputTextboxAFPS.min = `${Settings.minAFPS}`;
-	inputTextboxAFPS.max = `${Settings.maxAFPS}`;
-	inputTextboxAFPS.placeholder = `[${Settings.minAFPS} - ${Settings.maxAFPS}]`;
-	inputTextboxAFPS.value = `${settings.AFPS}`;
-	inputTextboxAFPS.addEventListener(`change`, (event) => {
-		if (inputTextboxAFPS.checkValidity()) {
-			const number = Number.parseInt(inputTextboxAFPS.value);
+	//#region FPS limit
+	const inputTextboxFPSLimit = (/** @type {HTMLInputElement} */ (document.querySelector(`input#textbox-fps-limit`)));
+	inputTextboxFPSLimit.min = `${Settings.minFPSLimit}`;
+	inputTextboxFPSLimit.max = `${Settings.maxFPSLimit}`;
+	inputTextboxFPSLimit.placeholder = `[${Settings.minFPSLimit} - ${Settings.maxFPSLimit}]`;
+	inputTextboxFPSLimit.value = `${settings.FPSLimit}`;
+	inputTextboxFPSLimit.addEventListener(`change`, (event) => {
+		if (inputTextboxFPSLimit.checkValidity()) {
+			const number = Number.parseInt(inputTextboxFPSLimit.value);
 			if (!Number.isNaN(number)) {
-				if (Settings.minAFPS <= number && number <= Settings.maxAFPS) {
-					settings.AFPS = number;
+				if (Settings.minFPSLimit <= number && number <= Settings.maxFPSLimit) {
+					settings.FPSLimit = number;
 				} else {
-					throw new RangeError(`Input must be from ${Settings.minAFPS} to ${Settings.maxAFPS} inclusive.`);
+					throw new RangeError(`Input must be from ${Settings.minFPSLimit} to ${Settings.maxFPSLimit} inclusive.`);
 				}
 			} else {
 				throw new TypeError(`Can't convert input to a integer number.`);
@@ -111,5 +107,5 @@ try {
 	});
 	//#endregion
 } catch (exception) {
-	
+	Application.prevent(exception);
 }
