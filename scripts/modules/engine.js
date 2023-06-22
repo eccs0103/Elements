@@ -67,7 +67,7 @@ class Engine {
 			this.#wasLaunched = true;
 		}
 	}
-	/** @type {Boolean} */ #wasLaunched;
+	/** @type {Boolean} */ #wasLaunched = false;
 	get wasLaunched() {
 		return this.#wasLaunched;
 	}
