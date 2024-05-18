@@ -43,24 +43,24 @@ main {
 	aspect-ratio: 1;
 }
 
-div.-player {
+div.--player {
 	width: 100%;
 	height: 100%;
 }
 
-div.-screen {
+div.--display {
 	height: 100%;
 	width: 100%;
 	position: relative;
 	overflow: hidden;
 }
 
-canvas#view {
+canvas#display {
 	width: 100%;
 	height: 100%;
 }
 
-div.-toolkit {
+div.--toolkit {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -68,26 +68,26 @@ div.-toolkit {
 	grid-template-columns: repeat(2, max-content) 1fr;
 	opacity: 0.5;
 	transition: var(--time-duration);
-}
 
-div.-toolkit:hover {
-	opacity: 1;
-	transition: var(--time-duration);
+	&:hover {
+		opacity: 1;
+		transition: var(--time-duration);
+	}
 }
 
 input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] {
 	background-color: unset;
-}
 
-input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] > img.icon {
-	content: url(../../resources/pause.png);
+	& > img.icon {
+		content: url(../resources/icons/pause.png);
+	}
 }
 
 button#capture-canvas {
 	justify-self: end;
 }
 
-div.-side-panel {
+div.--side-panel {
 	position: absolute;
 	inset: 0 0 0 auto;
 	align-items: flex-end;
@@ -97,7 +97,7 @@ div#counter-fps {
 	border-style: solid;
 }
 
-table#elements-counter div.-view {
+/* table#elements-counter div.--view {
 	aspect-ratio: 1;
 	height: 1.4em;
-}
+} */

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- <meta name="generator" content="0.0.0"> -->
+	<meta name="title" content="Elements">
+	<meta name="author" content="eccs0103">
+	<meta name="color-scheme" content="system">
+	<meta name="description" content="A sandbox-style game">
+	<!-- <meta name="keywords" content="javascript,css,game,html,web,jsdoc,elements"> -->
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="English">
+	<meta name="revisit-after" content="0 days">
+	<title>Sandbox - Elements</title>
+	<link rel="shortcut icon" href="../resources/icons/grid.png" media="(prefers-color-scheme: light)">
+	<link rel="shortcut icon" href="../resources/icons/grid-inverted.png" media="(prefers-color-scheme: dark)">
+	<link rel="preload" as="image" href="../resources/loading.gif">
+	<link rel="stylesheet" href="../styles/global.css">
+	<link rel="stylesheet" href="../styles/themes/material.css">
+	<link rel="stylesheet" href="./style.css">
+	<script type="module" src="./script.js"></script>
+</head>
+
+<body>
+	<nav class="layer rounded with-gap with-padding flex centered">
+		<a href="../sandbox" role="combobox" aria-checked="true" title="Sandbox" class="flex rounded with-padding">
+			<img src="../resources/icons/grid.png" class="icon" alt="Sandbox">
+		</a>
+		<a href="../settings" role="combobox" title="Settings" class="flex rounded with-padding">
+			<img src="../resources/icons/settings.png" class="icon" alt="Settings">
+		</a>
+		<a href="../information" role="combobox" aria-disabled="true" title="Information" class="flex rounded with-padding">
+			<img src="../resources/icons/information.png" class="icon" alt="Information">
+		</a>
+	</nav>
+	<main class="with-padding large-padding">
+		<div class="--player layer rounded flex with-padding">
+			<div class="--display depth rounded flex">
+				<canvas id="display"></canvas>
+				<div class="--toolkit translucent with-padding">
+					<input id="toggle-play" type="checkbox" hidden>
+					<label for="toggle-play" role="checkbox" title="Launch" class="flex with-padding">
+						<img src="../resources/icons/play-arrow.png" class="icon" alt="Launch">
+					</label>
+					<button id="reload-board" title="Reload" class="flex with-padding">
+						<img src="../resources/icons/refresh.png" class="icon" alt="Reload">
+					</button>
+					<button id="capture-canvas" title="Capture canvas" class="flex with-padding">
+						<img src="../resources/icons/camera.png" class="icon" alt="Capture canvas">
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="--side-panel flex column">
+			<div id="counter-fps" class="layer rounded in-right with-padding" hidden>0</div>
+			<table id="elements-counter" class="layer rounded in-right" hidden>
+				<thead>
+					<tr>
+						<!-- <th>Coefficent</th> -->
+						<th>View</th>
+						<th>Element</th>
+						<th>Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--  -->
+				</tbody>
+			</table>
+		</div>
+	</main>
+	<script src="../scripts/templates/loader.js"></script>
+	<script src="../scripts/templates/popup.js"></script>
+</body>
+
+</html>
