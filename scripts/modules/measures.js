@@ -753,20 +753,26 @@ class Matrix {
 	/**
 	 * @param {Readonly<Point2D>} size The size of the matrix.
 	 * @param {T} initial The initial value for all elements in the matrix.
+	 * @throws {TypeError} If the x or y coordinate of the size is not an integer.
+	 * @throws {RangeError} If the x or y coordinate of the size is negative.
 	 */
 	constructor(size, initial) {
-		this.#size = size.clone();
+		if (!Number.isInteger(size.x)) throw new TypeError(`The x-coordinate of size ${size} must be finite integer number`);
+		if (size.x < 0) throw new RangeError(`The x-coordinate of size ${size} is out of range [0 - +∞)`);
+		if (!Number.isInteger(size.y)) throw new TypeError(`The y-coordinate of size ${size} must be finite integer number`);
+		if (size.y < 0) throw new RangeError(`The x-coordinate of size ${size} is out of range [0 - +∞)`);
+		this.#size = size;
 		/** @type {T[][]} */
-		const data = (this.#data = new Array(this.#size.y));
+		const data = (this.#data = new Array(size.y));
 		for (let y = 0; y < data.length; y++) {
 			/** @type {T[]} */
-			const row = (data[y] = new Array(this.#size.x));
+			const row = (data[y] = new Array(size.x));
 			for (let x = 0; x < row.length; x++) {
 				(row[x] = initial);
 			}
 		}
 	}
-	/** @type {Point2D} */
+	/** @type {Readonly<Point2D>} */
 	#size;
 	/** 
 	 * Gets the size of the matrix.
@@ -774,7 +780,7 @@ class Matrix {
 	 * @returns {Readonly<Point2D>} The size of the matrix.
 	 */
 	get size() {
-		return Object.freeze(this.#size);
+		return this.#size;
 	}
 	/** @type {T[][]} */
 	#data;
@@ -782,25 +788,31 @@ class Matrix {
 	 * Gets the value at the specified position in the matrix.
 	 * @param {Readonly<Point2D>} position The position to get the value from.
 	 * @returns {T} The value at the specified position.
-	 * @throws {RangeError} If the position is out of range.
+	 * @throws {TypeError} If the x or y coordinate of the position is not an integer.
+	 * @throws {RangeError} If the x or y coordinate of the position is out of range.
 	 */
 	get(position) {
-		if (0 > position.x || position.x >= this.#size.x) throw new RangeError(`The x-coordinate of ${position} is out of range [0 - ${this.#size.x})`);
-		if (0 > position.y || position.y >= this.#size.y) throw new RangeError(`The y-coordinate of ${position} is out of range [0 - ${this.#size.y})`);
+		if (!Number.isInteger(position.x)) throw new TypeError(`The x-coordinate of position ${position} must be finite integer number`);
+		if (0 > position.x || position.x >= this.#size.x) throw new RangeError(`The x-coordinate of position ${position} is out of range [0 - ${this.#size.x})`);
+		if (!Number.isInteger(position.y)) throw new TypeError(`The y-coordinate of position ${position} must be finite integer number`);
+		if (0 > position.y || position.y >= this.#size.y) throw new RangeError(`The x-coordinate of position ${position} is out of range [0 - ${this.#size.y})`);
 		return this.#data[position.y][position.x];
 	}
 	/**
 	 * Sets the value at the specified position in the matrix.
 	 * @param {Readonly<Point2D>} position The position to set the value at.
 	 * @param {T} value The value to set.
-	 * @throws {RangeError} If the position is out of range.
+	 * @throws {TypeError} If the x or y coordinate of the position is not an integer.
+	 * @throws {RangeError} If the x or y coordinate of the position is out of range.
 	 */
 	set(position, value) {
-		if (0 > position.x || position.x >= this.#size.x) throw new RangeError(`The x-coordinate of ${position} is out of range [0 - ${this.#size.x})`);
-		if (0 > position.y || position.y >= this.#size.y) throw new RangeError(`The y-coordinate of ${position} is out of range [0 - ${this.#size.y})`);
+		if (!Number.isInteger(position.x)) throw new TypeError(`The x-coordinate of position ${position} must be finite integer number`);
+		if (0 > position.x || position.x >= this.#size.x) throw new RangeError(`The x-coordinate of position ${position} is out of range [0 - ${this.#size.x})`);
+		if (!Number.isInteger(position.y)) throw new TypeError(`The y-coordinate of position ${position} must be finite integer number`);
+		if (0 > position.y || position.y >= this.#size.y) throw new RangeError(`The x-coordinate of position ${position} is out of range [0 - ${this.#size.y})`);
 		this.#data[position.y][position.x] = value;
 	}
-};
+}
 //#endregion
 
 export { Point, Point1D, Point2D, Point3D, Matrix };

@@ -172,9 +172,7 @@ class FastEngine extends Engine {
 	 * @throws {RangeError} If the FPS limit is not higher than 0.
 	 */
 	set limit(value) {
-		if (value <= 0) {
-			throw new RangeError(`FPS limit must be higher than 0`);
-		}
+		if (value <= 0) throw new RangeError(`FPS limit must be higher than 0`);
 		this.#gap = 1000 / value;
 	}
 	/** @type {number} */
@@ -296,9 +294,7 @@ class PreciseEngine extends Engine {
 	 * @throws {RangeError} If the FPS limit is not higher than 0.
 	 */
 	set limit(value) {
-		if (value <= 0) {
-			throw new RangeError(`FPS limit must be higher than 0`);
-		}
+		if (value <= 0) throw new RangeError(`FPS limit must be higher than 0`);
 		this.#gap = 1000 / value;
 	}
 	/** @type {number} */
@@ -327,6 +323,16 @@ class PreciseEngine extends Engine {
  * Random values generator.
  */
 class Random {
+	/** @type {Random} */
+	static #global = new Random();
+	/**
+	 * The global instance.
+	 * @readonly
+	 * @returns {Random}
+	 */
+	static get global() {
+		return Random.#global;
+	}
 	/**
 	 * Generates a random boolean value.
 	 * @returns {boolean} A random boolean value.
@@ -335,7 +341,7 @@ class Random {
 		return Boolean(round(random()));
 	}
 	/**
-	 * Returns a random number between the specified values.
+	 * Returns a random number in range [min - max).
 	 * @param {number} min The minimum value.
 	 * @param {number} max The maximum value.
 	 * @returns {number} A random number.
@@ -344,7 +350,7 @@ class Random {
 		return random() * (max - min) + min;
 	}
 	/**
-	 * Returns a random integer between the specified values.
+	 * Returns a random integer in range [min - max).
 	 * @param {number} min The minimum value.
 	 * @param {number} max The maximum value.
 	 * @returns {number} A random integer.
@@ -355,20 +361,42 @@ class Random {
 	/**
 	 * Returns a random element from an array.
 	 * @template T
-	 * @param {T[]} array The array of elements.
+	 * @param {Readonly<T[]>} array The array of elements.
 	 * @returns {T} A random element.
+	 * @throws {EvalError} If the array is empty.
 	 */
 	item(array) {
+		if (1 > array.length) throw new EvalError(`Array must have at least 1 item`);
 		return array[this.integer(0, array.length)];
+	}
+	/**
+	 * Returns a random subarray of elements from an array.
+	 * @template T
+	 * @param {Readonly<T[]>} array The array of elements.
+	 * @param {number} count The number of elements to select.
+	 * @returns {T[]} A random subarray of elements.
+	 * @throws {TypeError} If count is not a finite integer.
+	 * @throws {RangeError} If count is less than 0 or greater than array length.
+	 */
+	items(array, count = 1) {
+		if (!Number.isInteger(count)) throw new TypeError(`Count ${count} must be finite integer number`);
+		if (count < 0 || count > array.length) throw new RangeError(`Count ${count} is out of range [0 - ${array}]`);
+		const clone = Array.from(array);
+		const result = [];
+		for (let index = 0; index < count; index++) {
+			result.push(...clone.splice(this.integer(0, clone.length), 1));
+		}
+		return result;
 	}
 	/**
 	 * Selects a random element from a list according to their weights.
 	 * @template T
-	 * @param {Map<T, number>} cases The map with elements and their weights.
+	 * @param {Readonly<Map<T, number>>} cases The map with elements and their weights.
 	 * @returns {T} A random element.
-	 * @throws {RangeError} If the map is empty.
+	 * @throws {EvalError} If the map is empty.
 	 */
 	case(cases) {
+		if (1 > cases.size) throw new EvalError(`Map must have at least 1 item`);
 		const summary = [...cases].reduce((previous, [, percentage]) => previous + percentage, 0);
 		const random = this.number(0, summary);
 		let begin = 0;
@@ -379,7 +407,7 @@ class Random {
 			}
 			begin = end;
 		}
-		throw new RangeError(`Unable to select value. Most likely the map is empty.`);
+		throw new EvalError(`Unable to select element with value ${random}`);
 	}
 	/**
 	 * Generates a random GUID identifier.
@@ -391,4 +419,4 @@ class Random {
 }
 //#endregion
 
-export { Engine, FastEngine, PreciseEngine, Random };
+export { FastEngine, PreciseEngine, Random };

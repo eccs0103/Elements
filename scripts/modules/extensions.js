@@ -18,8 +18,7 @@ Number.import = function (source, name = `source`) {
 	if (typeof (source) !== `number`) {
 		throw new TypeError(`Unable to import ${(name)} due its ${typename(source)} type`);
 	}
-	const result = source.valueOf();
-	return result;
+	return source.valueOf();
 };
 
 /**
@@ -27,8 +26,7 @@ Number.import = function (source, name = `source`) {
  * @returns {number} The exported number value.
  */
 Number.prototype.export = function () {
-	const result = this.valueOf();
-	return result;
+	return this.valueOf();
 };
 //#endregion
 //#region Boolean
@@ -47,8 +45,7 @@ Boolean.import = function (source, name = `source`) {
 	if (typeof (source) !== `boolean`) {
 		throw new TypeError(`Unable to import ${(name)} due its ${typename(source)} type`);
 	}
-	const result = source.valueOf();
-	return result;
+	return source.valueOf();
 };
 
 /**
@@ -56,8 +53,7 @@ Boolean.import = function (source, name = `source`) {
  * @returns {boolean} The exported boolean value.
  */
 Boolean.prototype.export = function () {
-	const result = this.valueOf();
-	return result;
+	return this.valueOf();
 };
 //#endregion
 //#region String
@@ -76,8 +72,7 @@ String.import = function (source, name = `source`) {
 	if (typeof (source) !== `string`) {
 		throw new TypeError(`Unable to import ${(name)} due its ${typename(source)} type`);
 	}
-	const result = source.valueOf();
-	return result;
+	return source.valueOf();
 };
 
 /**
@@ -86,7 +81,7 @@ String.import = function (source, name = `source`) {
  * @returns {boolean} True if the string is empty, otherwise false.
  */
 String.isEmpty = function (text) {
-	return text.length === 0;
+	return (text.length === 0);
 };
 
 /**
@@ -94,8 +89,7 @@ String.isEmpty = function (text) {
  * @returns {string} The exported string value.
  */
 String.prototype.export = function () {
-	const result = this.valueOf();
-	return result;
+	return this.valueOf();
 };
 
 /**
@@ -162,8 +156,7 @@ Object.import = function (source, name = `source`) {
 	if (source === null) {
 		throw new TypeError(`Unable to import ${(name)} due its ${typename(null)} type`);
 	}
-	const result = source.valueOf();
-	return result;
+	return source.valueOf();
 };
 
 /**
@@ -171,8 +164,7 @@ Object.import = function (source, name = `source`) {
  * @returns {Object} The exported object.
  */
 Object.prototype.export = function () {
-	const result = this.valueOf();
-	return result;
+	return this.valueOf();
 };
 //#endregion
 //#region Array
@@ -191,8 +183,7 @@ Array.import = function (source, name = `source`) {
 	if (!(source instanceof Array)) {
 		throw new TypeError(`Unable to import ${name} due its ${typename(source)} type`);
 	}
-	const result = Array.from(source);
-	return result;
+	return Array.from(source);
 };
 
 /**
@@ -200,8 +191,7 @@ Array.import = function (source, name = `source`) {
  * @returns {this[]} The exported array.
  */
 Array.prototype.export = function () {
-	const result = this.map(item => item.export());
-	return result;
+	return Array.from(this);
 };
 //#endregion
 //#region Stack
@@ -211,7 +201,7 @@ Array.prototype.export = function () {
  */
 class Stack {
 	/**
-	 * @param {...T} items The initial items to add to the stack.
+	 * @param {T[]} items The initial items to add to the stack.
 	 */
 	constructor(...items) {
 		this.#array = items;
@@ -230,21 +220,21 @@ class Stack {
 	 * Returns the item at the top of the stack without removing it.
 	 * @readonly
 	 * @returns {T} The item at the top of the stack.
-	 * @throws {ReferenceError} If the stack is empty.
+	 * @throws {EvalError} If the stack is empty.
 	 */
 	get peek() {
 		const value = this.#array.at(-1);
-		if (value === undefined) throw new ReferenceError(`Stack is empty`);
+		if (value === undefined) throw new EvalError(`Stack is empty`);
 		return value;
 	}
 	/**
 	 * Removes and returns the item at the top of the stack.
 	 * @returns {T} The item that was removed from the top of the stack.
-	 * @throws {ReferenceError} If the stack is empty.
+	 * @throws {EvalError} If the stack is empty.
 	 */
 	pop() {
 		const value = this.#array.pop();
-		if (value === undefined) throw new ReferenceError(`Stack is empty`);
+		if (value === undefined) throw new EvalError(`Stack is empty`);
 		return value;
 	}
 	/**
@@ -301,7 +291,7 @@ class Stack {
  */
 class Queue {
 	/**
-	 * @param {...T} items The initial items to add to the queue.
+	 * @param {T[]} items The initial items to add to the queue.
 	 */
 	constructor(...items) {
 		this.#array = items;
@@ -320,21 +310,21 @@ class Queue {
 	 * Returns the item at the front of the queue without removing it.
 	 * @readonly
 	 * @returns {T} The item at the front of the queue.
-	 * @throws {ReferenceError} If the queue is empty.
+	 * @throws {EvalError} If the queue is empty.
 	 */
 	get peek() {
 		const value = this.#array.at(0);
-		if (value === undefined) throw new ReferenceError(`Queue is empty`);
+		if (value === undefined) throw new EvalError(`Queue is empty`);
 		return value;
 	}
 	/**
 	 * Removes and returns the item at the front of the queue.
 	 * @returns {T} The item that was removed from the front of the queue.
-	 * @throws {ReferenceError} If the queue is empty.
+	 * @throws {EvalError} If the queue is empty.
 	 */
 	shift() {
 		const value = this.#array.shift();
-		if (value === undefined) throw new ReferenceError(`Queue is empty`);
+		if (value === undefined) throw new EvalError(`Queue is empty`);
 		return value;
 	}
 	/**
@@ -395,7 +385,7 @@ class DataPair {
 	 * Creates a DataPair instance from an array containing a key-value pair.
 	 * @template K The type of the key.
 	 * @template V The type of the value.
-	 * @param {[NonNullable<K>, V]} source The source array containing the key-value pair.
+	 * @param {Readonly<[NonNullable<K>, V]>} source The source array containing the key-value pair.
 	 * @returns {DataPair<K, V>} A new DataPair instance.
 	 */
 	static fromArray(source) {
@@ -454,7 +444,7 @@ class DataPair {
  */
 class StrictMap {
 	/**
-	 * @param {...[NonNullable<K>, V]} items The initial key-value pairs to add to the map.
+	 * @param {Readonly<[NonNullable<K>, V]>[]} items The initial key-value pairs to add to the map.
 	 */
 	constructor(...items) {
 		this.#map = new Map(items);
@@ -465,11 +455,11 @@ class StrictMap {
 	 * Gets the value associated with the specified key.
 	 * @param {NonNullable<K>} key The key to look up in the map.
 	 * @returns {V} The value associated with the specified key.
-	 * @throws {ReferenceError} If the key is missing in the map.
+	 * @throws {EvalError} If the key is missing in the map.
 	 */
 	get(key) {
 		const value = this.#map.get(key);
-		if (value === undefined) throw new ReferenceError(`Value for key '${key}' is missing`);
+		if (value === undefined) throw new EvalError(`Value for key '${key}' is missing`);
 		return value;
 	}
 	/**
@@ -513,10 +503,10 @@ class StrictMap {
 	 * Deletes the key-value pair associated with the specified key from the map.
 	 * @param {NonNullable<K>} key The key to delete from the map.
 	 * @returns {void}
-	 * @throws {ReferenceError} If the key is missing in the map.
+	 * @throws {EvalError} If the key is missing in the map.
 	 */
 	delete(key) {
-		if (!this.#map.delete(key)) throw new ReferenceError(`Value for key '${key}' is missing`);
+		if (!this.#map.delete(key)) throw new EvalError(`Value for key '${key}' is missing`);
 	}
 	/**
 	 * Removes all key-value pairs from the map.
@@ -641,6 +631,23 @@ Promise.fulfill = function (action) {
 			reject(error);
 		}
 	});
+};
+
+/**
+ * Creates a promise that can be controlled with an abort signal.
+ * @template T
+ * @param {(signal: AbortSignal, resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void} callback The callback to execute with an abort signal, resolve, and reject functions.
+ * @returns {Promise<T>} A promise that can be controlled with an abort signal.
+ */
+Promise.withSignal = function (callback) {
+	const abortController = new AbortController();
+	const promise = new Promise((resolve, reject) => {
+		callback(abortController.signal, resolve, reject);
+	});
+	promise.finally(() => {
+		abortController.abort();
+	});
+	return promise;
 };
 //#endregion
 //#region Error
@@ -1045,18 +1052,37 @@ Window.prototype.catch = async function (error, reload = true) {
 };
 
 /**
- * Executes a callback and handles any errors that occur.
+ * Ensures the execution of an action or stops the program if errors occur.
  * @template T
- * @param {() => T} callback The callback function to execute.
+ * @param {() => T | PromiseLike<T>} action The action to execute.
  * @param {boolean} reload Indicates whether the application should be reloaded after an error.
- * @returns {Promise<T>} A Promise that resolves with the result of the callback or rejects with the error.
+ * @returns {Promise<T>} A Promise that resolves with the result of the action or rejects with the error.
+ * @throws {Error} If the action throws an error.
  */
-Window.prototype.ensure = async function (callback, reload = true) {
+Window.prototype.ensure = async function (action, reload = true) {
 	try {
-		return await callback();
+		return await action();
 	} catch (error) {
 		await window.catch(Error.generate(error), reload);
 		throw error;
+	}
+};
+
+/**
+ * Insures that no errors occur when executing an action.
+ * @template T
+ * @param {() => T | PromiseLike<T>} action The action to execute.
+ * @param {() => unknown} eventually The callback to execute after the action is complete.
+ * @returns {Promise<T | void>} A Promise that resolves with the result of the action, or void if it fails.
+ * @throws {Error} If the action throws an error.
+ */
+Window.prototype.insure = async function (action, eventually = () => { }) {
+	try {
+		return await action();
+	} catch (error) {
+		await window.catch(Error.generate(error), false);
+	} finally {
+		await eventually();
 	}
 };
 
