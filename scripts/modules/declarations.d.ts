@@ -364,13 +364,21 @@ interface Window {
 	 */
 	catch(error: Error, reload?: boolean): Promise<void>;
 	/**
-	 * Executes a action and handles any errors that occur.
+	 * Ensures the execution of an action or stops the program if errors occur.
 	 * @template T
 	 * @param action The action to execute.
 	 * @param reload Indicates whether the application should be reloaded after an error.
 	 * @returns A Promise that resolves with the result of the action or rejects with the error.
+	 * @throws {Error} If the action throws an error.
 	 */
 	ensure<T>(action: () => T, reload?: boolean): Promise<T>;
+	/**
+	 * Insures that no errors occur when executing an action.
+	 * @template T
+	 * @param action The action to execute.
+	 * @param eventually The callback to execute after the action is complete.
+	 * @returns A Promise that resolves with the result of the action, or void if it fails.
+	 */
 	insure<T>(action: () => T, eventually?: () => unknown): Promise<T | void>;
 	/**
 	 * Asynchronously loads a promise with a loading animation.
@@ -431,7 +439,6 @@ declare function ensure<T>(action: () => T, reload?: boolean): Promise<T>;
  * @param action The action to execute.
  * @param eventually The callback to execute after the action is complete.
  * @returns A Promise that resolves with the result of the action, or void if it fails.
- * @throws {Error} If the action throws an error.
  */
 declare function insure<T>(action: () => T, eventually?: () => unknown): Promise<T | void>;
 /**

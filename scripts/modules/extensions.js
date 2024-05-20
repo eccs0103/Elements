@@ -1074,7 +1074,6 @@ Window.prototype.ensure = async function (action, reload = true) {
  * @param {() => T | PromiseLike<T>} action The action to execute.
  * @param {() => unknown} eventually The callback to execute after the action is complete.
  * @returns {Promise<T | void>} A Promise that resolves with the result of the action, or void if it fails.
- * @throws {Error} If the action throws an error.
  */
 Window.prototype.insure = async function (action, eventually = () => { }) {
 	try {

@@ -378,7 +378,7 @@ class Random {
 	 * @throws {TypeError} If count is not a finite integer.
 	 * @throws {RangeError} If count is less than 0 or greater than array length.
 	 */
-	items(array, count = 1) {
+	subarray(array, count = 1) {
 		if (!Number.isInteger(count)) throw new TypeError(`Count ${count} must be finite integer number`);
 		if (count < 0 || count > array.length) throw new RangeError(`Count ${count} is out of range [0 - ${array}]`);
 		const clone = Array.from(array);
