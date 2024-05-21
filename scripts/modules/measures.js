@@ -815,4 +815,4 @@ class Matrix {
 }
 //#endregion
 
-export { Point, Point1D, Point2D, Point3D, Matrix };
+export { Point1D, Point2D, Point3D, Matrix };

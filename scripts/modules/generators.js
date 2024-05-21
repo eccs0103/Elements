@@ -382,11 +382,11 @@ class Random {
 		if (!Number.isInteger(count)) throw new TypeError(`Count ${count} must be finite integer number`);
 		if (count < 0 || count > array.length) throw new RangeError(`Count ${count} is out of range [0 - ${array}]`);
 		const clone = Array.from(array);
-		const result = [];
+		const destination = [];
 		for (let index = 0; index < count; index++) {
-			result.push(...clone.splice(this.integer(0, clone.length), 1));
+			destination.push(...clone.splice(this.integer(0, clone.length), 1));
 		}
-		return result;
+		return destination;
 	}
 	/**
 	 * Selects a random element from a list according to their weights.
