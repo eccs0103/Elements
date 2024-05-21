@@ -3,7 +3,6 @@ A sandbox-style game.
 
 ![Screenshot](https://imgur.com/hN4VArk.png)
 
-© Adaptive Core 2023  
 - - -
 ## Guide
 A sandbox with an automatically generated board that can be launched to observe the interactions between elements. But the main focus of the game is not the random generation of the board, but the support for user code. After all, you can edit or remove built-in elements, create your own elements, add interaction principles with other elements, and connect them to the board. User-created elements will also be generated on the board with a specified percentage and fully supported by the game. The structure of the elements and their interactions is contained in the `elements.js` file, which can be edited as desired. To create custom elements, it is recommended to look at the code of the built-in elements or the example of a user element below.
@@ -28,7 +27,12 @@ board.cases.set(SampleElement, 50); // After creating the element, it is connect
 //#endregion
 ```
 - - -
+
 ## News
+### 2.8.0 : Adaptive Core 2.8.3 (21.05.2024)
+- Обновлено ядро.
+- Проект пересобран с использованием новейших структур ООП.
+
 ### Update 2.6.4 (21.06.2023)
 - Updated internal engine.  
 - Fixed design issues.  
