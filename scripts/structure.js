@@ -7,6 +7,8 @@ import { Color } from "./modules/palette.js";
 import { } from "./modules/storage.js";
 import { } from "./modules/time.js";
 
+const { ceil } = Math;
+
 //#region Render event
 /**
  * @typedef {Object} UncomposedRenderEventInit
@@ -196,6 +198,7 @@ class Ability extends EventTarget {
  * @property {Event} generate
  * @property {Event} execute
  * @property {RenderEvent} render
+ * @property {RenderEvent} repaint
  * 
  * @typedef {EventListener & UncomposedElementalBoardEventMap} ElementalBoardEventMap
  */
@@ -246,6 +249,7 @@ class Elemental extends EventTarget {
 	 * Represents board for the elements.
 	 */
 	static Board = class ElementalBoard extends EventTarget {
+
 		/**
 		 * @param {Readonly<Point2D>} size The size of the board.
 		 */
@@ -264,6 +268,9 @@ class Elemental extends EventTarget {
 						this.spawnElementOfType(position, type);
 					}
 				}
+				if (!this.#isGenerated) {
+					this.#isGenerated = true;
+				}
 			}));
 
 			this.addEventListener(`execute`, (event) => window.ensure(() => {
@@ -280,39 +287,66 @@ class Elemental extends EventTarget {
 				if (!moves) event.preventDefault();
 			}));
 
-			const isRender = mapSearch.has(`render`);
-			this.addEventListener(`render`, ({ context }) => window.ensure(() => {
+			/**
+			 * @param {CanvasRenderingContext2D} context 
+			 * @param {Map<string, Set<Point2D>>} blueprints 
+			 */
+			function fill(context, blueprints) {
 				const canvas = context.canvas;
-				if (isRender) {
+				const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
+				for (const [bluing, area] of blueprints) {
+					context.fillStyle = bluing;
+					context.beginPath();
+					for (const position of area) {
+						context.rect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
+					}
+					context.fill();
+				}
+			}
+
+			this.addEventListener(`repaint`, ({ context }) => window.ensure(() => {
+				/** @type {Map<string, Set<Point2D>>} */
+				const blueprints = new Map();
+				for (let y = 0; y < size.y; y++) {
+					for (let x = 0; x < size.x; x++) {
+						const position = new Point2D(x, y);
+						const element = this.#getElementAt(position);
+						const bluing = element.color.toString(true);
+						const area = blueprints.get(bluing) ?? (() => new Set())();
+						area.add(position);
+						blueprints.set(bluing, area);
+					}
+				}
+				fill(context, blueprints);
+			}));
+
+			if (mapSearch.has(`render`)) {
+				this.addEventListener(`render`, ({ context }) => {
+					const canvas = context.canvas;
 					context.fillStyle = Color.viaRGB(0, 0, 0, 0.1).toString(true);
 					context.beginPath();
 					context.rect(0, 0, canvas.width, canvas.height);
 					context.fill();
-				}
-				const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
+				});
+			}
+
+			this.addEventListener(`render`, ({ context }) => window.ensure(() => {
 				/** @type {Map<string, Set<Point2D>>} */
-				const blueprint = new Map();
+				const blueprints = new Map();
 				for (let y = 0; y < size.y; y++) {
 					for (let x = 0; x < size.x; x++) {
 						const position = new Point2D(x, y);
 						const element = this.#getElementAt(position);
 						const bluing = element.color.toString(true);
 						if (element.#isRepainted) {
-							const area = blueprint.get(bluing) ?? (() => new Set())();
+							const area = blueprints.get(bluing) ?? (() => new Set())();
 							area.add(position);
-							blueprint.set(bluing, area);
+							blueprints.set(bluing, area);
 							element.#isRepainted = false;
 						}
 					}
 				}
-				for (const [bluing, area] of blueprint) {
-					context.fillStyle = bluing;
-					context.beginPath();
-					for (const position of area) {
-						context.rect(position.x * scale.x, position.y * scale.y, scale.x, scale.y);
-					}
-					context.fill();
-				}
+				fill(context, blueprints);
 			}));
 		}
 		/**
@@ -339,6 +373,15 @@ class Elemental extends EventTarget {
 		}
 		/** @type {Matrix<Elemental?>} */
 		#matrix;
+		/** @type {boolean} */
+		#isGenerated = false;
+		/**
+		 * @readonly
+		 * @returns {boolean}
+		 */
+		get isGenerated() {
+			return this.#isGenerated;
+		}
 		/**
 		 * @param {Point2D} position 
 		 * @returns {boolean}

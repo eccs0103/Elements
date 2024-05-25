@@ -37,21 +37,29 @@ nav {
 }
 
 main {
-	max-width: 100%;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+div.--frame {
+	position: absolute;
+	inset: 0;
+	margin: auto;
 	max-height: 100%;
-	object-fit: contain;
-	aspect-ratio: 1;
+	aspect-ratio: 1 / 1;
 }
 
 div.--player {
 	width: 100%;
 	height: 100%;
+	border-radius: calc(var(--size-gap) + var(--size-gap));
 }
 
 div.--display {
+	position: relative;
 	height: 100%;
 	width: 100%;
-	position: relative;
 	overflow: hidden;
 }
 
@@ -87,7 +95,7 @@ button#capture-canvas {
 	justify-self: end;
 }
 
-div.--side-panel {
+aside {
 	position: absolute;
 	inset: 0 0 0 auto;
 	align-items: flex-end;

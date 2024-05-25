@@ -29,48 +29,50 @@
 		<a href="../sandbox" role="combobox" aria-checked="true" title="Sandbox" class="flex rounded with-padding">
 			<img src="../resources/icons/grid.png" class="icon" alt="Sandbox">
 		</a>
-		<a href="../settings" role="combobox" title="Settings" class="flex rounded with-padding">
+		<a href="../settings" role="combobox" aria-disabled="true" title="Settings" class="flex rounded with-padding">
 			<img src="../resources/icons/settings.png" class="icon" alt="Settings">
 		</a>
 		<a href="../information" role="combobox" aria-disabled="true" title="Information" class="flex rounded with-padding">
 			<img src="../resources/icons/information.png" class="icon" alt="Information">
 		</a>
 	</nav>
-	<main class="with-padding large-padding">
-		<div class="--player layer rounded flex with-padding">
-			<div class="--display depth rounded flex">
-				<canvas id="display"></canvas>
-				<div class="--toolkit translucent with-padding">
-					<input id="toggle-play" type="checkbox" hidden>
-					<label for="toggle-play" role="checkbox" title="Launch" class="flex with-padding">
-						<img src="../resources/icons/play-arrow.png" class="icon" alt="Launch">
-					</label>
-					<button id="reload-board" title="Reload" class="flex with-padding">
-						<img src="../resources/icons/refresh.png" class="icon" alt="Reload">
-					</button>
-					<button id="capture-canvas" title="Capture canvas" class="flex with-padding">
-						<img src="../resources/icons/camera.png" class="icon" alt="Capture canvas">
-					</button>
+	<main class="flex">
+		<div class="--frame with-padding large-padding flex">
+			<div class="--player layer rounded with-padding flex">
+				<div class="--display flex">
+					<canvas id="display" class="depth rounded"></canvas>
+					<div class="--toolkit translucent rounded in-top with-padding">
+						<input id="toggle-play" type="checkbox" hidden>
+						<label for="toggle-play" role="checkbox" title="Launch" class="flex with-padding">
+							<img src="../resources/icons/play-arrow.png" class="icon" alt="Launch">
+						</label>
+						<button id="reload-board" title="Reload" class="flex with-padding">
+							<img src="../resources/icons/refresh.png" class="icon" alt="Reload">
+						</button>
+						<button id="capture-canvas" title="Capture canvas" class="flex with-padding">
+							<img src="../resources/icons/camera.png" class="icon" alt="Capture canvas">
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="--side-panel flex column">
-			<div id="counter-fps" class="layer rounded in-right with-padding" hidden>0</div>
-			<table id="elements-counter" class="layer rounded in-right" hidden>
-				<thead>
-					<tr>
-						<!-- <th>Coefficent</th> -->
-						<th>View</th>
-						<th>Element</th>
-						<th>Amount</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!--  -->
-				</tbody>
-			</table>
-		</div>
 	</main>
+	<aside class="flex column">
+		<div id="counter-fps" class="layer rounded in-right with-padding" hidden>0</div>
+		<table id="elements-counter" class="layer rounded in-right" hidden>
+			<thead>
+				<tr>
+					<!-- <th>Coefficent</th> -->
+					<th>View</th>
+					<th>Element</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--  -->
+			</tbody>
+		</table>
+	</aside>
 	<script src="../scripts/templates/loader.js"></script>
 	<script src="../scripts/templates/popup.js"></script>
 </body>
