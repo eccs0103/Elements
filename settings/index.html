@@ -36,8 +36,63 @@
 			<img src="../resources/icons/information.png" class="icon" alt="Information">
 		</a>
 	</nav>
-	<main class="flex">
-
+	<main class="flex primary-centered">
+		<div class="--panel-frame flex with-padding large-padding">
+			<div class="layer rounded flex column with-padding large-padding">
+				<h3>General</h3>
+				<section class="option">
+					<p class="title">Color scheme</p>
+					<select id="color-scheme" class="value depth rounded with-padding flex" required></select>
+					<dfn class="definition">External design of the page: color scheme, background and foreground, font.</dfn>
+				</section>
+				<hr class="depth">
+				<h3>Game</h3>
+				<section class="option">
+					<p class="title">Show FPS</p>
+					<input id="toggle-fps" type="checkbox" hidden>
+					<label for="toggle-fps" role="checkbox" class="value depth toggle">
+						<span class="layer knob"></span>
+					</label>
+					<dfn class="definition">Show or hide FPS counter with load indicator.</dfn>
+				</section>
+				<section class="option">
+					<p class="title">FPS limit</p>
+					<input id="fps-limit" type="number" inputmode="numeric" min="1" max="240" placeholder="[1 - 240]" required class="value depth rounded with-padding flex">
+					<dfn class="definition"> Frames per second limit, which is calculated for the speed of interaction of elements, as well as for calculating the number of frames per second.</dfn>
+				</section>
+				<section class="option" hidden>
+					<p class="title warn">Elements counter <small class="alert">Unstable with new design.</small></p>
+					<input id="toggle-counter" type="checkbox" hidden>
+					<label for="toggle-counter" role="checkbox" class="value depth toggle">
+						<span class="layer knob"></span>
+					</label>
+					<dfn class="definition">Show or hide the elements counter, which displays the icons of the elements, their names and quantities.</dfn>
+					<section class="option">
+						<p class="title">Hide nullables</p>
+						<input id="toggle-nullables" type="checkbox" hidden>
+						<label for="toggle-nullables" role="checkbox" class="value depth toggle">
+							<span class="layer knob"></span>
+						</label>
+						<dfn class="definition">Show or hide elements with zero count.</dfn>
+					</section>
+				</section>
+				<hr class="depth">
+				<h3>Board</h3>
+				<section class="option">
+					<p class="title">Board size</p>
+					<input id="board-size" type="number" inputmode="numeric" min="10" max="200" placeholder="[20 - 200]" required class="value depth rounded with-padding flex">
+					<dfn class="definition">Board generated size. The size can be from 20 to 200 inclusive. Resizing the board will generate it anew with the given coefficients.</dfn>
+				</section>
+				<section class="option">
+					<p class="title">On cycle end</p>
+					<select id="cycle-type" class="value depth rounded with-padding flex" required></select>
+					<dfn class="definition">Actions after the end of the game cycle.</dfn>
+				</section>
+				<section class="option">
+					<button id="reset-settings" class="layer warn-background rounded with-padding grid-line in-center">Reset settings</button>
+				</section>
+			</div>
+		</div>
 	</main>
 	<script src="../scripts/templates/loader.js"></script>
 	<script src="../scripts/templates/popup.js"></script>

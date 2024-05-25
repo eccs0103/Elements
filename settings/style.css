@@ -40,5 +40,15 @@ main {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	overflow: hidden auto;
 }
 
+div.--panel-frame {
+	width: 100vmin;
+	-moz-height: fit-content;
+	height: fit-content;
+}
+
+button#reset-settings {
+	justify-self: center;
+}

@@ -83,6 +83,10 @@ div.--toolkit {
 	}
 }
 
+div.--toolkit img.icon {
+	filter: invert(1);
+}
+
 input[type="checkbox"]#toggle-play:checked + label[role="checkbox"] {
 	background-color: unset;
 

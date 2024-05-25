@@ -393,6 +393,7 @@ class Elemental extends EventTarget {
 		/** @type {boolean} */
 		#isGenerated = false;
 		/**
+		 * Indicates whether the board has been generated.
 		 * @readonly
 		 * @returns {boolean}
 		 */
@@ -695,6 +696,7 @@ class Settings {
 	/** @type {string[]} */
 	static #colorSchemes = [`system`, `light`, `dark`];
 	/**
+	 * Gets the available color schemes.
 	 * @readonly
 	 * @returns {string[]}
 	 */
@@ -704,6 +706,7 @@ class Settings {
 	/** @type {number} */
 	static #minBoardSize = 20;
 	/**
+	 * Gets the minimum board size.
 	 * @readonly
 	 * @returns {number}
 	 */
@@ -713,6 +716,7 @@ class Settings {
 	/** @type {number} */
 	static #maxBoardSize = 200;
 	/**
+	 * Gets the maximum board size.
 	 * @readonly
 	 * @returns {number}
 	 */
@@ -722,6 +726,7 @@ class Settings {
 	/** @type {number} */
 	static #minFPSLimit = 1;
 	/**
+	 * Gets the minimum FPS limit.
 	 * @readonly
 	 * @returns {number}
 	 */
@@ -731,6 +736,7 @@ class Settings {
 	/** @type {number} */
 	static #maxFPSLimit = 240;
 	/**
+	 * Gets the maximum FPS limit.
 	 * @readonly
 	 * @returns {number}
 	 */
@@ -740,14 +746,17 @@ class Settings {
 	/** @type {string} */
 	#colorScheme = Settings.#colorSchemes[0];
 	/**
+	 * Gets the current color scheme.
 	 * @returns {string}
 	 */
 	get colorScheme() {
 		return this.#colorScheme;
 	}
 	/**
+	 * Sets the color scheme.
 	 * @param {string} value 
 	 * @returns {void}
+	 * @throws {TypeError} If the color scheme is invalid.
 	 */
 	set colorScheme(value) {
 		if (!Settings.#colorSchemes.includes(value)) throw new TypeError(`Invalid '${value}' color scheme type`);
@@ -756,30 +765,38 @@ class Settings {
 	/** @type {number} */
 	#boardSize = 50;
 	/**
+	 * Gets the current board size.
 	 * @returns {number}
 	 */
 	get boardSize() {
 		return this.#boardSize;
 	}
 	/**
+	 * Sets the board size.
 	 * @param {number} value 
 	 * @returns {void}
+	 * @throws {TypeError} If the value is not a finite integer.
+	 * @throws {RangeError} If the board size is out of range.
 	 */
 	set boardSize(value) {
+		if (!Number.isInteger(value)) throw new TypeError(`The board size ${value} must be finite integer number`);
 		if (Settings.#minBoardSize > value || value > Settings.#maxBoardSize) throw new RangeError(`Board ${value} size is out of range [${Settings.#minBoardSize} - ${Settings.#maxBoardSize}]`);
 		this.#boardSize = value;
 	}
 	/** @type {CycleTypes} */
 	#cycleType = CycleTypes.ask;
 	/**
+	 * Gets the current cycle type.
 	 * @returns {CycleTypes}
 	 */
 	get cycleType() {
 		return this.#cycleType;
 	}
 	/**
+	 * Sets the cycle type.
 	 * @param {CycleTypes} value 
 	 * @returns {void}
+	 * @throws {TypeError} Iif the cycle type is invalid.
 	 */
 	set cycleType(value) {
 		if (!Object.values(CycleTypes).includes(value)) throw new TypeError(`Invalid '${value}' cycle type type`);
@@ -788,28 +805,35 @@ class Settings {
 	/** @type {number} */
 	#FPSLimit = 60;
 	/**
+	 * Gets the current FPS limit.
 	 * @returns {number}
 	 */
 	get FPSLimit() {
 		return this.#FPSLimit;
 	}
 	/**
+	 * Sets the FPS limit.
 	 * @param {number} value 
 	 * @returns {void}
+	 * @throws {TypeError} If the value is not a finite integer.
+	 * @throws {RangeError} If the FPS limit is out of range.
 	 */
 	set FPSLimit(value) {
+		if (!Number.isInteger(value)) throw new TypeError(`The FPS limit ${value} must be finite integer number`);
 		if (Settings.#minFPSLimit > value || value > Settings.#maxFPSLimit) throw new RangeError(`FPS ${value} limit is out of range [${Settings.#minFPSLimit} - ${Settings.#maxFPSLimit}]`);
 		this.#FPSLimit = value;
 	}
 	/** @type {boolean} */
 	#showFPS = false;
 	/**
+	 * Gets whether the FPS is shown.
 	 * @returns {boolean}
 	 */
 	get showFPS() {
 		return this.#showFPS;
 	}
 	/**
+	 * Sets whether to show the FPS.
 	 * @param {boolean} value 
 	 * @returns {void}
 	 */
@@ -819,12 +843,14 @@ class Settings {
 	/** @type {boolean} */
 	#showCounter = false;
 	/**
+	 * Gets whether the counter is shown.
 	 * @returns {boolean}
 	 */
 	get showCounter() {
 		return this.#showCounter;
 	}
 	/**
+	 * Sets whether to show the counter.
 	 * @param {boolean} value 
 	 * @returns {void}
 	 */
@@ -834,12 +860,14 @@ class Settings {
 	/** @type {boolean} */
 	#showNullables = true;
 	/**
+	 * Gets whether nullables are shown.
 	 * @returns {boolean}
 	 */
 	get showNullables() {
 		return this.#showNullables;
 	}
 	/**
+	 * Sets whether to show nullables.
 	 * @param {boolean} value 
 	 * @returns {void}
 	 */
