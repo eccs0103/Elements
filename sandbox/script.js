@@ -1,7 +1,9 @@
 "use strict";
 
 import { FastEngine, PreciseEngine } from "../scripts/modules/generators.js";
-import { RenderEvent, board } from "../scripts/structure.js";
+import { Color } from "../scripts/modules/palette.js";
+import { ArchiveManager } from "../scripts/modules/storage.js";
+import { CycleTypes, RenderEvent, Settings, board } from "../scripts/structure.js";
 
 //#region Initialize
 const canvas = await window.ensure(() => document.getElement(HTMLCanvasElement, `canvas#display`));
@@ -11,7 +13,12 @@ const context = await window.ensure(() => canvas.getContext(`2d`) ?? (() => {
 const inputTogglePlay = await window.ensure(() => document.getElement(HTMLInputElement, `input#toggle-play`));
 const buttonReloadBoard = await window.ensure(() => document.getElement(HTMLButtonElement, `button#reload-board`));
 const buttonCaptureCanvas = await window.ensure(() => document.getElement(HTMLButtonElement, `button#capture-canvas`));
-const engine = new FastEngine(false);
+const engine = new PreciseEngine(false);
+const engineController = new FastEngine(true);
+engineController.limit = 4;
+const divFPSCounter = await window.ensure(() => document.getElement(HTMLDivElement, `div#fps-counter`));
+const settings = (await ArchiveManager.construct(`${navigator.dataPath}.Elements`, Settings)).data;
+navigator.colorScheme = settings.colorScheme;
 //#endregion
 //#region Player
 window.addEventListener(`resize`, (event) => {
@@ -30,7 +37,7 @@ await window.ensure(() => Promise.withSignal((signal, resolve, reject) => {
 	document.head.appendChild(scriptElements);
 }));
 
-engine.limit = 60;
+engine.limit = settings.FPSLimit;
 board.addEventListener(`generate`, (event) => {
 	board.dispatchEvent(new RenderEvent(`repaint`, { context }));
 });
@@ -45,7 +52,15 @@ engine.addEventListener(`update`, (event) => {
 engine.addEventListener(`update`, async (event) => {
 	if (!board.dispatchEvent(new Event(`execute`, { cancelable: true }))) {
 		engine.launched = false;
-		if (await window.confirmAsync(`Elements have no more moves. Do you want to reload the board?`)) {
+		const repeat = await (async () => {
+			switch (settings.cycleType) {
+				case CycleTypes.break: return false;
+				case CycleTypes.ask: return await window.confirmAsync(`Elements have no more moves. Do you want to reload the board?`);
+				case CycleTypes.loop: return true;
+				default: throw new EvalError(`Invalid '${settings.cycleType}' cycle type`);
+			}
+		})();
+		if (repeat) {
 			board.dispatchEvent(new Event(`generate`));
 			engine.launched = true;
 		}
@@ -65,5 +80,13 @@ buttonCaptureCanvas.addEventListener(`click`, (event) => {
 		if (blob === null) throw new EvalError(`Unable to convert canvas for capture`);
 		navigator.download(new File([blob], `${Date.now()}.png`, { type: `png` }));
 	});
+});
+//#endregion
+//#region Aside
+divFPSCounter.hidden = !settings.showFPS;
+engineController.addEventListener(`update`, (event) => {
+	const factor = engine.FPS / engine.limit;
+	divFPSCounter.style.setProperty(`--color-fps-indicator`, Color.viaHSL(factor * 120, 100, 50).toString());
+	divFPSCounter.textContent = `${engine.FPS.toFixed()}`;
 });
 //#endregion

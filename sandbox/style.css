@@ -101,8 +101,10 @@ aside {
 	align-items: flex-end;
 }
 
-div#counter-fps {
+div#fps-counter {
+	--color-fps-indicator: var(--color-foreground);
 	border-style: solid;
+	border-color: var(--color-fps-indicator);
 }
 
 /* table#elements-counter div.--view {

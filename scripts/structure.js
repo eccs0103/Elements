@@ -4,7 +4,7 @@ import { } from "./modules/extensions.js";
 import { Random } from "./modules/generators.js";
 import { Matrix, Point2D } from "./modules/measures.js";
 import { Color } from "./modules/palette.js";
-import { } from "./modules/storage.js";
+import { ArchiveManager } from "./modules/storage.js";
 import { } from "./modules/time.js";
 
 const { ceil } = Math;
@@ -287,38 +287,42 @@ class Elemental extends EventTarget {
 				if (!moves) event.preventDefault();
 			}));
 
-			/**
-			 * @param {CanvasRenderingContext2D} context 
-			 * @param {Map<string, Set<Point2D>>} blueprints 
-			 */
-			function fill(context, blueprints) {
-				const canvas = context.canvas;
-				const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
-				for (const [bluing, area] of blueprints) {
-					context.fillStyle = bluing;
-					context.beginPath();
-					for (const position of area) {
-						context.rect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
-					}
-					context.fill();
-				}
-			}
+			// /**
+			//  * @param {CanvasRenderingContext2D} context 
+			//  * @param {Map<string, Set<Point2D>>} blueprints 
+			//  */
+			// function fill(context, blueprints) {
+			// 	const canvas = context.canvas;
+			// 	const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
+			// 	for (const [bluing, area] of blueprints) {
+			// 		context.fillStyle = bluing;
+			// 		context.beginPath();
+			// 		for (const position of area) {
+			// 			context.rect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
+			// 		}
+			// 		context.fill();
+			// 	}
+			// }
 
-			this.addEventListener(`repaint`, ({ context }) => window.ensure(() => {
-				/** @type {Map<string, Set<Point2D>>} */
-				const blueprints = new Map();
-				for (let y = 0; y < size.y; y++) {
-					for (let x = 0; x < size.x; x++) {
-						const position = new Point2D(x, y);
-						const element = this.#getElementAt(position);
-						const bluing = element.color.toString(true);
-						const area = blueprints.get(bluing) ?? (() => new Set())();
-						area.add(position);
-						blueprints.set(bluing, area);
-					}
-				}
-				fill(context, blueprints);
-			}));
+			this.addEventListener(`repaint`, ({ context }) => {
+				this.dispatchEvent(new RenderEvent(`render`, { context }));
+			});
+
+			// this.addEventListener(`repaint`, ({ context }) => window.ensure(() => {
+			// 	/** @type {Map<string, Set<Point2D>>} */
+			// 	const blueprints = new Map();
+			// 	for (let y = 0; y < size.y; y++) {
+			// 		for (let x = 0; x < size.x; x++) {
+			// 			const position = new Point2D(x, y);
+			// 			const element = this.#getElementAt(position);
+			// 			const bluing = element.color.toString(true);
+			// 			const area = blueprints.get(bluing) ?? (() => new Set())();
+			// 			area.add(position);
+			// 			blueprints.set(bluing, area);
+			// 		}
+			// 	}
+			// 	fill(context, blueprints);
+			// }));
 
 			if (mapSearch.has(`render`)) {
 				this.addEventListener(`render`, ({ context }) => {
@@ -331,23 +335,36 @@ class Elemental extends EventTarget {
 			}
 
 			this.addEventListener(`render`, ({ context }) => window.ensure(() => {
-				/** @type {Map<string, Set<Point2D>>} */
-				const blueprints = new Map();
+				const canvas = context.canvas;
+				const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
 				for (let y = 0; y < size.y; y++) {
 					for (let x = 0; x < size.x; x++) {
 						const position = new Point2D(x, y);
 						const element = this.#getElementAt(position);
-						const bluing = element.color.toString(true);
-						if (element.#isRepainted) {
-							const area = blueprints.get(bluing) ?? (() => new Set())();
-							area.add(position);
-							blueprints.set(bluing, area);
-							element.#isRepainted = false;
-						}
+						context.fillStyle = element.color.toString(true);
+						context.fillRect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
 					}
 				}
-				fill(context, blueprints);
 			}));
+
+			// this.addEventListener(`render`, ({ context }) => window.ensure(() => {
+			// 	/** @type {Map<string, Set<Point2D>>} */
+			// 	const blueprints = new Map();
+			// 	for (let y = 0; y < size.y; y++) {
+			// 		for (let x = 0; x < size.x; x++) {
+			// 			const position = new Point2D(x, y);
+			// 			const element = this.#getElementAt(position);
+			// 			const bluing = element.color.toString(true);
+			// 			if (element.#isRepainted) {
+			// 				const area = blueprints.get(bluing) ?? (() => new Set())();
+			// 				area.add(position);
+			// 				blueprints.set(bluing, area);
+			// 				element.#isRepainted = false;
+			// 			}
+			// 		}
+			// 	}
+			// 	fill(context, blueprints);
+			// }));
 		}
 		/**
 		 * @template {keyof ElementalBoardEventMap} K
@@ -618,10 +635,224 @@ class Elemental extends EventTarget {
 	}
 }
 //#endregion
+//#region Settings
+/**
+ * @enum {string}
+ */
+const CycleTypes = {
+	/** @readonly */ break: `break`,
+	/** @readonly */ ask: `ask`,
+	/** @readonly */ loop: `loop`,
+};
+Object.freeze(CycleTypes);
 
+/** 
+ * @typedef SettingsNotation
+ * @property {string} [colorScheme]
+ * @property {number} [boardSize]
+ * @property {CycleTypes} [cycleType]
+ * @property {number} [FPSLimit]
+ * @property {boolean} [showFPS]
+ * @property {boolean} [showCounter]
+ * @property {boolean} [showNullables]
+ */
+
+class Settings {
+	/**
+	 * @param {unknown} source 
+	 * @returns {Settings}
+	 */
+	static import(source, name = `source`) {
+		try {
+			const shell = Object.import(source);
+			const destination = new Settings();
+			destination.colorScheme = String.import(shell[`colorScheme`], `property colorScheme`);
+			destination.boardSize = Number.import(shell[`boardSize`], `property boardSize`);
+			destination.cycleType = String.import(shell[`cycleType`], `property cycleType`);
+			destination.FPSLimit = Number.import(shell[`FPSLimit`], `property FPSLimit`);
+			destination.showFPS = Boolean.import(shell[`showFPS`], `property showFPS`);
+			destination.showCounter = Boolean.import(shell[`showCounter`], `property showCounter`);
+			destination.showNullables = Boolean.import(shell[`showNullables`], `property showNullables`);
+			return destination;
+		} catch (error) {
+			throw new TypeError(`Unable to import ${(name)} due its ${typename(source)} type`, { cause: error });
+		}
+	}
+	/**
+	 * @returns {SettingsNotation}
+	 */
+	export() {
+		return {
+			colorScheme: this.#colorScheme,
+			boardSize: this.#boardSize,
+			cycleType: this.#cycleType,
+			FPSLimit: this.#FPSLimit,
+			showFPS: this.#showFPS,
+			showCounter: this.#showCounter,
+			showNullables: this.#showNullables,
+		};
+	}
+	/** @type {string[]} */
+	static #colorSchemes = [`system`, `light`, `dark`];
+	/**
+	 * @readonly
+	 * @returns {string[]}
+	 */
+	static get colorSchemes() {
+		return Settings.#colorSchemes;
+	}
+	/** @type {number} */
+	static #minBoardSize = 20;
+	/**
+	 * @readonly
+	 * @returns {number}
+	 */
+	static get minBoardSize() {
+		return Settings.#minBoardSize;
+	}
+	/** @type {number} */
+	static #maxBoardSize = 200;
+	/**
+	 * @readonly
+	 * @returns {number}
+	 */
+	static get maxBoardSize() {
+		return Settings.#maxBoardSize;
+	}
+	/** @type {number} */
+	static #minFPSLimit = 1;
+	/**
+	 * @readonly
+	 * @returns {number}
+	 */
+	static get minFPSLimit() {
+		return Settings.#minFPSLimit;
+	}
+	/** @type {number} */
+	static #maxFPSLimit = 240;
+	/**
+	 * @readonly
+	 * @returns {number}
+	 */
+	static get maxFPSLimit() {
+		return Settings.#maxFPSLimit;
+	}
+	/** @type {string} */
+	#colorScheme = Settings.#colorSchemes[0];
+	/**
+	 * @returns {string}
+	 */
+	get colorScheme() {
+		return this.#colorScheme;
+	}
+	/**
+	 * @param {string} value 
+	 * @returns {void}
+	 */
+	set colorScheme(value) {
+		if (!Settings.#colorSchemes.includes(value)) throw new TypeError(`Invalid '${value}' color scheme type`);
+		this.#colorScheme = value;
+	}
+	/** @type {number} */
+	#boardSize = 50;
+	/**
+	 * @returns {number}
+	 */
+	get boardSize() {
+		return this.#boardSize;
+	}
+	/**
+	 * @param {number} value 
+	 * @returns {void}
+	 */
+	set boardSize(value) {
+		if (Settings.#minBoardSize > value || value > Settings.#maxBoardSize) throw new RangeError(`Board ${value} size is out of range [${Settings.#minBoardSize} - ${Settings.#maxBoardSize}]`);
+		this.#boardSize = value;
+	}
+	/** @type {CycleTypes} */
+	#cycleType = CycleTypes.ask;
+	/**
+	 * @returns {CycleTypes}
+	 */
+	get cycleType() {
+		return this.#cycleType;
+	}
+	/**
+	 * @param {CycleTypes} value 
+	 * @returns {void}
+	 */
+	set cycleType(value) {
+		if (!Object.values(CycleTypes).includes(value)) throw new TypeError(`Invalid '${value}' cycle type type`);
+		this.#cycleType = value;
+	}
+	/** @type {number} */
+	#FPSLimit = 60;
+	/**
+	 * @returns {number}
+	 */
+	get FPSLimit() {
+		return this.#FPSLimit;
+	}
+	/**
+	 * @param {number} value 
+	 * @returns {void}
+	 */
+	set FPSLimit(value) {
+		if (Settings.#minFPSLimit > value || value > Settings.#maxFPSLimit) throw new RangeError(`FPS ${value} limit is out of range [${Settings.#minFPSLimit} - ${Settings.#maxFPSLimit}]`);
+		this.#FPSLimit = value;
+	}
+	/** @type {boolean} */
+	#showFPS = false;
+	/**
+	 * @returns {boolean}
+	 */
+	get showFPS() {
+		return this.#showFPS;
+	}
+	/**
+	 * @param {boolean} value 
+	 * @returns {void}
+	 */
+	set showFPS(value) {
+		this.#showFPS = value;
+	}
+	/** @type {boolean} */
+	#showCounter = false;
+	/**
+	 * @returns {boolean}
+	 */
+	get showCounter() {
+		return this.#showCounter;
+	}
+	/**
+	 * @param {boolean} value 
+	 * @returns {void}
+	 */
+	set showCounter(value) {
+		this.#showCounter = value;
+	}
+	/** @type {boolean} */
+	#showNullables = true;
+	/**
+	 * @returns {boolean}
+	 */
+	get showNullables() {
+		return this.#showNullables;
+	}
+	/**
+	 * @param {boolean} value 
+	 * @returns {void}
+	 */
+	set showNullables(value) {
+		this.#showNullables = value;
+	}
+}
+//#endregion
+
+const settings = (await ArchiveManager.construct(`${navigator.dataPath}.Elements`, Settings)).data;
 /**
  * Current board object.
  */
-const board = new Elemental.Board(Point2D.repeat(25));
+const board = new Elemental.Board(Point2D.repeat(settings.boardSize));
 
-export { RenderEvent, Ability, Elemental, board };
+export { RenderEvent, Ability, Elemental, CycleTypes, Settings, board };

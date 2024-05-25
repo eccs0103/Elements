@@ -1,0 +1,44 @@
+body {
+	position: fixed;
+	inset: 0;
+	display: grid;
+}
+
+@media screen and (orientation: portrait) {
+	body {
+		grid-template-rows: max-content 1fr;
+		align-items: center;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	body {
+		grid-template-columns: max-content 1fr;
+		justify-items: center;
+	}
+}
+
+nav {
+	border-top-left-radius: 0 !important;
+}
+
+@media screen and (orientation: portrait) {
+	nav {
+		flex-direction: row;
+		border-top-right-radius: 0 !important;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	nav {
+		flex-direction: column;
+		border-bottom-left-radius: 0 !important;
+	}
+}
+
+main {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+

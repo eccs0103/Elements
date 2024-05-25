@@ -14,9 +14,9 @@
 	<meta name="robots" content="index, follow">
 	<meta name="language" content="English">
 	<meta name="revisit-after" content="0 days">
-	<title>Sandbox - Elements</title>
-	<link rel="shortcut icon" href="../resources/icons/grid.png" media="(prefers-color-scheme: light)">
-	<link rel="shortcut icon" href="../resources/icons/grid-inverted.png" media="(prefers-color-scheme: dark)">
+	<title>Settings - Elements</title>
+	<link rel="shortcut icon" href="../resources/icons/settings.png" media="(prefers-color-scheme: light)">
+	<link rel="shortcut icon" href="../resources/icons/settings-inverted.png" media="(prefers-color-scheme: dark)">
 	<link rel="preload" as="image" href="../resources/loading.gif">
 	<link rel="stylesheet" href="../styles/global.css">
 	<link rel="stylesheet" href="../styles/themes/material.css">
@@ -26,10 +26,10 @@
 
 <body>
 	<nav class="layer rounded with-gap with-padding flex centered">
-		<a href="../sandbox" role="combobox" aria-checked="true" title="Sandbox" class="flex rounded with-padding">
+		<a href="../sandbox" role="combobox" title="Sandbox" class="flex rounded with-padding">
 			<img src="../resources/icons/grid.png" class="icon" alt="Sandbox">
 		</a>
-		<a href="../settings" role="combobox" title="Settings" class="flex rounded with-padding">
+		<a href="../settings" role="combobox" aria-checked="true" title="Settings" class="flex rounded with-padding">
 			<img src="../resources/icons/settings.png" class="icon" alt="Settings">
 		</a>
 		<a href="../information" role="combobox" aria-disabled="true" title="Information" class="flex rounded with-padding">
@@ -37,28 +37,7 @@
 		</a>
 	</nav>
 	<main class="flex">
-		<div class="--frame with-padding large-padding flex">
-			<div class="--player layer rounded with-padding flex">
-				<div class="--display flex">
-					<canvas id="display" class="depth rounded"></canvas>
-					<div class="--toolkit translucent rounded in-top with-padding">
-						<input id="toggle-play" type="checkbox" hidden>
-						<label for="toggle-play" role="checkbox" title="Launch" class="flex with-padding">
-							<img src="../resources/icons/play-arrow.png" class="icon" alt="Launch">
-						</label>
-						<button id="reload-board" title="Reload" class="flex with-padding">
-							<img src="../resources/icons/refresh.png" class="icon" alt="Reload">
-						</button>
-						<button id="capture-canvas" title="Capture canvas" class="flex with-padding">
-							<img src="../resources/icons/camera.png" class="icon" alt="Capture canvas">
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<aside class="flex column">
-			<div id="fps-counter" class="layer rounded in-right with-padding flex centered" hidden>-</div>
-		</aside>
+
 	</main>
 	<script src="../scripts/templates/loader.js"></script>
 	<script src="../scripts/templates/popup.js"></script>
