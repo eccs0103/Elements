@@ -47,16 +47,19 @@ class RenderEvent extends Event {
  */
 
 /**
- * @typedef {Object} UncomposedAbilityEventMap
- * @property {Event} execute
- * 
- * @typedef {EventListener & UncomposedAbilityEventMap} AbilityEventMap
+ * @typedef {InstanceType<Ability.Invoker>} AbilityInvoker
+ */
+
+/**
+ * @callback AbilityAction
+ * @param {AbilityInvoker} invoker
+ * @returns {void} 
  */
 
 /**
  * Represents an element ability.
  */
-class Ability extends EventTarget {
+class Ability {
 	//#region Metadata
 	/**
 	 * Contains metadata about an ability.
@@ -108,54 +111,69 @@ class Ability extends EventTarget {
 		}
 	};
 	//#endregion
+	//#region Invoker
+	/**
+	 * Representing an ability invoker.
+	 */
+	static Invoker = class AbilityInvoker {
+		/** @type {boolean[]} */
+		#stack = [];
+		/**
+		 * Creates a new observation.
+		 * @returns {void}
+		 */
+		observe() {
+			this.#stack.push(false);
+		}
+		/**
+		 * Marks that changes have occurred to the last observation.
+		 * @returns {void}
+		 */
+		change() {
+			for (let index = this.#stack.length - 1; index >= 0; index--) {
+				this.#stack[index] = true;
+			}
+		}
+		/**
+		 * Summarizes changes of the last observation and removes it.
+		 * @returns {boolean} Indicates whether any changes have occurred.
+		 * @throws {EvalError} If there are no observable items.
+		 */
+		summarize() {
+			const observation = this.#stack.pop();
+			if (observation === undefined) throw new EvalError(`There are no observable items`);
+			return observation;
+		}
+	};
+	//#endregion
 
 	/**
 	 * @param {AbilityMetadata} metadata Metadata for the ability.
+	 * @param {AbilityAction} action Action of the ability.
 	 * @param {number} progress The initial progress of the ability.
 	 */
-	constructor(metadata, progress = 0) {
-		super();
+	constructor(metadata, action, progress = 0) {
 		this.#preparation = metadata.preparation;
+		this.#action = action;
 		this.#progress = progress;
 	}
+	/** @type {AbilityAction} */
+	#action;
 	/**
-	 * @template {keyof AbilityEventMap} K
-	 * @param {K} type
-	 * @param {(this: Ability, ev: AbilityEventMap[K]) => any} listener
-	 * @param {boolean | AddEventListenerOptions} options
+	 * Executes one frame for the ability.
+	 * @param {AbilityInvoker} invoker The invoker that executes the ability.
 	 * @returns {void}
 	 */
-	addEventListener(type, listener, options = false) {
-		// @ts-ignore
-		return super.addEventListener(type, listener, options);
-	}
-	/**
-	 * @template {keyof AbilityEventMap} K
-	 * @param {K} type
-	 * @param {(this: Ability, ev: AbilityEventMap[K]) => any} listener
-	 * @param {boolean | EventListenerOptions} options
-	 * @returns {void}
-	 */
-	removeEventListener(type, listener, options = false) {
-		// @ts-ignore
-		return super.addEventListener(type, listener, options);
-	}
-	/**
-	 * @param {Event} event 
-	 * @returns {boolean}
-	 */
-	dispatchEvent(event) {
-		if (event.type === `execute`) {
-			let moves = true;
-			if (this.#progress < this.#preparation) {
-				this.#progress++;
-			} else if (super.dispatchEvent(event)) {
-				this.#progress = 0;
-			} else {
-				moves = false;
-			}
-			return moves;
-		} else return super.dispatchEvent(event);
+	execute(invoker) {
+		if (this.#progress < this.#preparation) {
+			this.#progress++;
+			invoker.change();
+		} else {
+			invoker.observe();
+			this.#action(invoker);
+			if (!invoker.summarize()) return;
+			this.#progress = 0;
+		}
 	}
 	/** @type {number} */
 	#progress;
@@ -196,7 +214,6 @@ class Ability extends EventTarget {
 /**
  * @typedef {Object} UncomposedElementalBoardEventMap
  * @property {Event} generate
- * @property {Event} execute
  * @property {RenderEvent} render
  * @property {RenderEvent} repaint
  * 
@@ -204,18 +221,10 @@ class Ability extends EventTarget {
  */
 
 /**
- * @typedef {Object} UncomposedElementalEventMap
- * @property {Event} spawn
- * @property {Event} execute
- * 
- * @typedef {EventListener & UncomposedElementalEventMap} ElementalEventMap
- */
-
-/**
  * Base class for all elements in board.
  * @abstract
  */
-class Elemental extends EventTarget {
+class Elemental {
 	/**
 	 * Gets the name of the element.
 	 * @abstract
@@ -229,7 +238,7 @@ class Elemental extends EventTarget {
 	 * Gets the color of the element.
 	 * @abstract
 	 * @readonly
-	 * @returns {Color}
+	 * @returns {Readonly<Color>}
 	 */
 	static get color() {
 		throw new ReferenceError(`Not implemented function`);
@@ -240,7 +249,7 @@ class Elemental extends EventTarget {
 	 * @readonly
 	 * @returns {Readonly<AbilityMetadata[]>}
 	 */
-	static get abilities() {
+	static get metadata() {
 		throw new ReferenceError(`Not implemented function`);
 	}
 
@@ -249,80 +258,63 @@ class Elemental extends EventTarget {
 	 * Represents board for the elements.
 	 */
 	static Board = class ElementalBoard extends EventTarget {
-
+		/** @type {ElementalBoard?} */
+		static #self = null;
+		/**
+		 * Gets the singleton instance of board.
+		 * @readonly
+		 * @returns {ElementalBoard}
+		 * @throws {EvalError} If board isn't constructed yet.
+		 */
+		static get self() {
+			if (ElementalBoard.#self === null) throw new EvalError(`Board isn't constructed yet`);
+			return ElementalBoard.#self;
+		}
 		/**
 		 * @param {Readonly<Point2D>} size The size of the board.
+		 * @returns {void}
+		 * @throws {EvalError} If board is already constructed.
+		 */
+		static construct(size) {
+			if (this.#self !== null) throw new EvalError(`Board is already constructed`);
+			ElementalBoard.#locked = false;
+			ElementalBoard.#self = new ElementalBoard(size);
+			ElementalBoard.#locked = true;
+		}
+		/** @type {boolean} */
+		static #locked = true;
+		/**
+		 * @param {Readonly<Point2D>} size The size of the board.
+		 * @throws {TypeError} If the constructor is called directly.
 		 */
 		constructor(size) {
 			super();
+			if (ElementalBoard.#locked) throw new TypeError(`Illegal constructor`);
 			this.#matrix = new Matrix(size, null);
-			const matrix = this.#matrix;
 			const mapSearch = location.mapSearch;
 
 			this.addEventListener(`generate`, (event) => window.ensure(() => {
 				if (this.#cases.size === 0) throw new EvalError(`Unable to generate board. Cases map is empty`);
+				const random = Random.global;
 				for (let y = 0; y < size.y; y++) {
 					for (let x = 0; x < size.x; x++) {
-						const position = new Point2D(x, y);
-						const type = Random.global.case(this.#cases);
-						this.spawnElementOfType(position, type);
+						this.spawnElementOfType(new Point2D(x, y), random.case(this.#cases));
 					}
-				}
-				if (!this.#isGenerated) {
-					this.#isGenerated = true;
 				}
 			}));
 
-			this.addEventListener(`execute`, (event) => window.ensure(() => {
-				let moves = false;
+			this.addEventListener(`repaint`, ({ context }) => window.ensure(() => {
+				const canvas = context.canvas;
+				const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
 				for (let y = 0; y < size.y; y++) {
 					for (let x = 0; x < size.x; x++) {
 						const position = new Point2D(x, y);
-						const element = matrix.get(position);
-						if (element !== null && element.dispatchEvent(new Event(`execute`, { cancelable: true }))) {
-							moves = true;
-						}
+						const element = this.#getElementAt(position);
+						context.fillStyle = element.color.toString(true);
+						context.fillRect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
 					}
 				}
-				if (!moves) event.preventDefault();
 			}));
-
-			// /**
-			//  * @param {CanvasRenderingContext2D} context 
-			//  * @param {Map<string, Set<Point2D>>} blueprints 
-			//  */
-			// function fill(context, blueprints) {
-			// 	const canvas = context.canvas;
-			// 	const scale = new Point2D(canvas.width / size.x, canvas.height / size.y);
-			// 	for (const [bluing, area] of blueprints) {
-			// 		context.fillStyle = bluing;
-			// 		context.beginPath();
-			// 		for (const position of area) {
-			// 			context.rect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
-			// 		}
-			// 		context.fill();
-			// 	}
-			// }
-
-			this.addEventListener(`repaint`, ({ context }) => {
-				this.dispatchEvent(new RenderEvent(`render`, { context }));
-			});
-
-			// this.addEventListener(`repaint`, ({ context }) => window.ensure(() => {
-			// 	/** @type {Map<string, Set<Point2D>>} */
-			// 	const blueprints = new Map();
-			// 	for (let y = 0; y < size.y; y++) {
-			// 		for (let x = 0; x < size.x; x++) {
-			// 			const position = new Point2D(x, y);
-			// 			const element = this.#getElementAt(position);
-			// 			const bluing = element.color.toString(true);
-			// 			const area = blueprints.get(bluing) ?? (() => new Set())();
-			// 			area.add(position);
-			// 			blueprints.set(bluing, area);
-			// 		}
-			// 	}
-			// 	fill(context, blueprints);
-			// }));
 
 			if (mapSearch.has(`render`)) {
 				this.addEventListener(`render`, ({ context }) => {
@@ -341,30 +333,14 @@ class Elemental extends EventTarget {
 					for (let x = 0; x < size.x; x++) {
 						const position = new Point2D(x, y);
 						const element = this.#getElementAt(position);
-						context.fillStyle = element.color.toString(true);
-						context.fillRect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
+						if (element.#isRepainted) {
+							context.fillStyle = element.color.toString(true);
+							context.fillRect(ceil(position.x * scale.x), ceil(position.y * scale.y), ceil(scale.x), ceil(scale.y));
+							element.#isRepainted = false;
+						}
 					}
 				}
 			}));
-
-			// this.addEventListener(`render`, ({ context }) => window.ensure(() => {
-			// 	/** @type {Map<string, Set<Point2D>>} */
-			// 	const blueprints = new Map();
-			// 	for (let y = 0; y < size.y; y++) {
-			// 		for (let x = 0; x < size.x; x++) {
-			// 			const position = new Point2D(x, y);
-			// 			const element = this.#getElementAt(position);
-			// 			const bluing = element.color.toString(true);
-			// 			if (element.#isRepainted) {
-			// 				const area = blueprints.get(bluing) ?? (() => new Set())();
-			// 				area.add(position);
-			// 				blueprints.set(bluing, area);
-			// 				element.#isRepainted = false;
-			// 			}
-			// 		}
-			// 	}
-			// 	fill(context, blueprints);
-			// }));
 		}
 		/**
 		 * @template {keyof ElementalBoardEventMap} K
@@ -390,30 +366,20 @@ class Elemental extends EventTarget {
 		}
 		/** @type {Matrix<Elemental?>} */
 		#matrix;
-		/** @type {boolean} */
-		#isGenerated = false;
 		/**
-		 * Indicates whether the board has been generated.
-		 * @readonly
-		 * @returns {boolean}
-		 */
-		get isGenerated() {
-			return this.#isGenerated;
-		}
-		/**
-		 * @param {Point2D} position 
+		 * @param {Readonly<Point2D>} position 
 		 * @returns {boolean}
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
 		 */
 		#outOfBounds(position) {
 			const { x, y } = position;
-			const { x: xSize, y: ySize } = this.#matrix.size;
 			if (!Number.isInteger(x)) throw new TypeError(`The x-coordinate of position ${position} must be finite integer number`);
 			if (!Number.isInteger(y)) throw new TypeError(`The y-coordinate of position ${position} must be finite integer number`);
+			const { x: xSize, y: ySize } = this.#matrix.size;
 			return (0 > x || x >= xSize || 0 > y || y >= ySize);
 		}
 		/**
-		 * @param {Point2D} position 
+		 * @param {Readonly<Point2D>} position 
 		 * @returns {Elemental}
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
 		 * @throws {RangeError} If the coordinates of the position is out of bounds.
@@ -425,7 +391,7 @@ class Elemental extends EventTarget {
 			return element;
 		}
 		/**
-		 * @param {Point2D} position 
+		 * @param {Readonly<Point2D>} position 
 		 * @param {Elemental} element
 		 * @returns {void}
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
@@ -436,7 +402,7 @@ class Elemental extends EventTarget {
 		}
 		/**
 		 * Method to get the element at the specified position.
-		 * @param {Point2D} position The position to get the element from.
+		 * @param {Readonly<Point2D>} position The position to get the element from.
 		 * @returns {Elemental} The element at the specified position.
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
 		 * @throws {RangeError} If the coordinates of the position is out of bounds.
@@ -447,7 +413,7 @@ class Elemental extends EventTarget {
 		}
 		/**
 		 * Gets the elements at the specified positions.
-		 * @param {Readonly<Point2D[]>} positions The positions to get the elements from.
+		 * @param {Readonly<Point2D>[]} positions The positions to get the elements from.
 		 * @returns {Elemental[]} The elements at the specified positions.
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
 		 * @throws {EvalError} If there is no element at the specified position.
@@ -463,7 +429,7 @@ class Elemental extends EventTarget {
 		/**
 		 * Gets the elements of the specified type at the specified positions.
 		 * @template {typeof Elemental} T
-		 * @param {Readonly<Point2D[]>} positions The positions to get the elements from.
+		 * @param {Readonly<Point2D>[]} positions The positions to get the elements from.
 		 * @param {T} type The type of elements to get.
 		 * @returns {InstanceType<T>[]} The elements of the specified type at the specified positions.
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
@@ -483,7 +449,7 @@ class Elemental extends EventTarget {
 		/**
 		 * Spawns an element of the specified type at the specified position.
 		 * @template {typeof Elemental} T
-		 * @param {Point2D} position The position to spawn the element at.
+		 * @param {Readonly<Point2D>} position The position to spawn the element at.
 		 * @param {T} type The type of element to spawn.
 		 * @returns {InstanceType<T>} The spawned element.
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
@@ -493,15 +459,13 @@ class Elemental extends EventTarget {
 			const element = Reflect.construct(type, []);
 			this.#setElementAt(position, element);
 			element.#position = position;
-			element.#board = this;
 			element.#color = type.color;
-			element.dispatchEvent(new Event(`spawn`));
 			return (/** @type {InstanceType<T>} */ (element));
 		}
 		/**
 		 * Sets the element at the specified position.
 		 * @template {Elemental} T
-		 * @param {Point2D} position The position to set the element at.
+		 * @param {Readonly<Point2D>} position The position to set the element at.
 		 * @param {T} element The element to set.
 		 * @returns {T} The set element.
 		 * @throws {TypeError} If the coordinates of the position are not finite integer numbers.
@@ -514,8 +478,8 @@ class Elemental extends EventTarget {
 		}
 		/**
 		 * Swaps the elements at the specified positions.
-		 * @param {Point2D} position1 The first position.
-		 * @param {Point2D} position2 The second position.
+		 * @param {Readonly<Point2D>} position1 The first position.
+		 * @param {Readonly<Point2D>} position2 The second position.
 		 * @returns {void}
 		 * @throws {TypeError} If the coordinates of the positions are not finite integer numbers.
 		 * @throws {RangeError} If the coordinates of the positions is out of bounds.
@@ -537,75 +501,42 @@ class Elemental extends EventTarget {
 		get cases() {
 			return this.#cases;
 		}
-	};
-	//#endregion
-
-	/**
-	 * @template {keyof ElementalEventMap} K
-	 * @param {K} type
-	 * @param {(this: Elemental, ev: ElementalEventMap[K]) => any} listener
-	 * @param {boolean | AddEventListenerOptions} options
-	 * @returns {void}
-	 */
-	addEventListener(type, listener, options = false) {
-		// @ts-ignore
-		return super.addEventListener(type, listener, options);
-	}
-	/**
-	 * @template {keyof ElementalEventMap} K
-	 * @param {K} type
-	 * @param {(this: Elemental, ev: ElementalEventMap[K]) => any} listener
-	 * @param {boolean | EventListenerOptions} options
-	 * @returns {void}
-	 */
-	removeEventListener(type, listener, options = false) {
-		// @ts-ignore
-		return super.addEventListener(type, listener, options);
-	}
-	/**
-	 * @param {Event} event 
-	 * @returns {boolean}
-	 */
-	dispatchEvent(event) {
-		let result = false;
-		if (event.type === `execute`) {
-			for (const ability of this.abilities) {
-				if (ability.dispatchEvent(new Event(`execute`, { cancelable: true }))) {
-					result = true;
+		/**
+		 * Executes one frame for the board.
+		 * @param {AbilityInvoker} invoker The invoker that executes the board.
+		 * @returns {void}
+		 */
+		execute(invoker) {
+			const size = this.#matrix.size;
+			for (let y = 0; y < size.y; y++) {
+				for (let x = 0; x < size.x; x++) {
+					const position = new Point2D(x, y);
+					const element = this.#matrix.get(position);
+					if (element === null) continue;
+					element.execute(invoker);
 				}
 			}
 		}
-		return (super.dispatchEvent(event) && result);
-	}
-	/** @type {Point2D?} */
+	};
+	//#endregion
+
+	/** @type {Readonly<Point2D>?} */
 	#position = null;
 	/**
 	 * Gets the position of the element.
 	 * @readonly
-	 * @returns {Point2D}
+	 * @returns {Readonly<Point2D>}
 	 * @throws {EvalError} If the element has not been spawned yet.
 	 */
 	get position() {
 		if (this.#position === null) throw new EvalError(`Element not spawned yet. Use it after 'spawn' event dispatched`);
 		return this.#position;
 	}
-	/** @type {ElementalBoard?} */
-	#board = null;
-	/**
-	 * Gets the board the element is on.
-	 * @readonly
-	 * @returns {ElementalBoard}
-	 * @throws {EvalError} If the element has not been spawned yet.
-	 */
-	get board() {
-		if (this.#board === null) throw new EvalError(`Element not spawned yet. Use it after 'spawn' event dispatched`);
-		return this.#board;
-	}
-	/** @type {Color?} */
+	/** @type {Readonly<Color>?} */
 	#color = null;
 	/**
 	 * Gets the color of the element.
-	 * @returns {Color}
+	 * @returns {Readonly<Color>}
 	 * @throws {EvalError} If the element has not been spawned yet.
 	 */
 	get color() {
@@ -616,7 +547,7 @@ class Elemental extends EventTarget {
 	#isRepainted = true;
 	/**
 	 * Sets the color of the element.
-	 * @param {Color} value
+	 * @param {Readonly<Color>} value
 	 * @returns {void}
 	 */
 	set color(value) {
@@ -633,6 +564,16 @@ class Elemental extends EventTarget {
 	 */
 	get abilities() {
 		throw new ReferenceError(`Not implemented function`);
+	}
+	/**
+	 * Executes one frame for the element.
+	 * @param {AbilityInvoker} invoker The invoker that executes the element.
+	 * @returns {void}
+	 */
+	execute(invoker) {
+		for (const ability of this.abilities) {
+			ability.execute(invoker);
+		}
 	}
 }
 //#endregion
@@ -878,9 +819,6 @@ class Settings {
 //#endregion
 
 const settings = (await ArchiveManager.construct(`${navigator.dataPath}.Elements`, Settings)).data;
-/**
- * Current board object.
- */
-const board = new Elemental.Board(Point2D.repeat(settings.boardSize));
+Elemental.Board.construct(Point2D.repeat(settings.boardSize));
 
-export { RenderEvent, Ability, Elemental, CycleTypes, Settings, board };
+export { RenderEvent, Ability, Elemental, CycleTypes, Settings };
