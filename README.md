@@ -5,33 +5,25 @@ A sandbox-style game.
 
 - - -
 ## Guide
-A sandbox with an automatically generated board that can be launched to observe the interactions between elements. But the main focus of the game is not the random generation of the board, but the support for user code. After all, you can edit or remove built-in elements, create your own elements, add interaction principles with other elements, and connect them to the board. User-created elements will also be generated on the board with a specified percentage and fully supported by the game. The structure of the elements and their interactions is contained in the `elements.js` file, which can be edited as desired. To create custom elements, it is recommended to look at the code of the built-in elements or the example of a user element below.
-```js
-//#region Sample Element // It is recommended to encapsulate each element in a separate region.
-class SampleElement extends Elemental { // All elements should extend the Elemental class.
-	static title = `Sample Element`; // A static field named "title" is created to store the name of this type of element.
-	static color = new Color(0, 0, 0); // Similarly, a "color" field is created to store the color.
-	static durationSampleAbility = 1; // It is recommended to create a separate variable for each ability indicating its preparation duration.
-	constructor() {
-		super(); // The parent constructor is called at the beginning without arguments.
-		this._title = SampleElement.title; // The type name is passed to individual instances.
-		this._color = SampleElement.color; // Similarly, the color is passed.
-		this.abilities.push(this.#sampleAbility); // Abilities are attached. More about them below.
-	}
-	#sampleAbility = new Ability(`Sample Ability`, () => { // Each ability is stored in a private field. The Ability class is used to create abilities.
-		// Actions performed when the ability is used.
-		return true; // Reset the progress of the ability after it is used? A value of true corresponds to resetting.
-	}, SampleElement.durationSampleAbility); // Passing the duration.
-}
-board.cases.set(SampleElement, 50); // After creating the element, it is connected in the following way, where the second parameter indicates the percentage of appearance of this element. Note that the appearance percentages of other elements also affect the result.
-//#endregion
-```
+*Temporarily removed*
 - - -
 
 ## News
-### 2.8.0 : Adaptive Core 2.8.3 (21.05.2024)
-- Обновлено ядро.
-- Проект пересобран с использованием новейших структур ООП.
+### 2.9.0 : Adaptive Core 2.8.3 (21.05.2024)
+- Core updated.
+- Project rebuilt using the latest OOP structures.
+- Rendering optimized by approximately 30%.
+- Documentation for internal structures added.
+- Fixed radius of the player corners.
+- Fixed bug with player resizing.
+- Fixed bug with page structure distortion.
+- Smooth rendering of elements fixed.
+- Page metadata improved.
+- Design fixed for mobile devices.
+- FPS counter color fixed.
+- Player icon color fixed for light theme.
+- Settings validation improved.
+- Loading added.
 
 ### Update 2.6.4 (21.06.2023)
 - Updated internal engine.  
