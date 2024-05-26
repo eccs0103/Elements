@@ -582,9 +582,9 @@ class Elemental {
  * @enum {string}
  */
 const CycleTypes = {
-	/** @readonly */ break: `break`,
+	/** @readonly */ terminate: `terminate`,
 	/** @readonly */ ask: `ask`,
-	/** @readonly */ loop: `loop`,
+	/** @readonly */ repeat: `repeat`,
 };
 Object.freeze(CycleTypes);
 

@@ -1,15 +1,108 @@
 # Elements
 A sandbox-style game.
 
-![Screenshot](https://imgur.com/hN4VArk.png)
+![Gameplay](./resources/gameplay.png)
 
 - - -
 ## Guide
-*Temporarily removed*
+A sandbox game with an automatically generated board that you can run to observe the interactions between elements.
+
+However, the main focus of the game is not on random board generation but on supporting custom code. You can edit or remove built-in elements, create your own, add interaction principles with other elements, and connect them to the board. User-created elements will also be generated on the board with a specified probability and fully supported by the game. The structure of elements and their interactions are contained in the file [`/scripts/elements.js`](./scripts/elements.js), which can be edited as desired.
+
+To create custom elements, it is recommended to look at the code of the built-in elements or the example of a custom element below.
+```js
+//#region Custom element
+/**
+ * It is recommended to place each element in a separate region.
+ * The element should inherit from the Elemental class.
+ */
+class CustomElement extends Elemental {
+	/**
+	 * Static private field for the element's name.
+	 * @type {string}
+	 */
+	static #name = `Custom element`;
+	/**
+	 * Getter for the element's name.
+	 * @readonly
+	 * @returns {string}
+	 */
+	static get name() { return CustomElement.#name; }
+
+	/**
+	 * Static private field for the element's primary color.
+	 * The primary color is shown in the element's avatar and may differ from the current color.
+	 * @type {Readonly<Color>}
+	 */
+	static #color = Object.freeze(Color.viaRGB(0, 0, 0));
+	/**
+	 * Getter for the element's primary color.
+	 * @readonly
+	 * @returns {Readonly<Color>}
+	 */
+	static get color() { return CustomElement.#color; }
+
+	/**
+	 * Metadata for one of the element's abilities.
+	 * Metadata should include a name, description, and preparation time.
+	 * @type {AbilityMetadata}
+	 */
+	static #metaAbility = new Ability.Metadata(`Ability`, `Description`, 1);
+	/**
+	 * Static private field for the list of metadata for all abilities.
+	 * @type {Readonly<AbilityMetadata[]>}
+	 */
+	static #metadata = Object.freeze([CustomElement.#metaAbility]);
+	/**
+	 * Getter for the metadata list.
+	 * @readonly
+	 * @returns {Readonly<AbilityMetadata[]>}
+	 */
+	static get metadata() { return CustomElement.#metadata; }
+
+	/**
+	 * One of the element's abilities.
+	 * The ability should use metadata for initialization.
+	 * It also includes an action to be performed when the ability is used.
+	 * @type {Ability}
+	 */
+	#ability = new Ability(CustomElement.#metaAbility, (invoker) => {
+		// Actions are described here
+		/**
+		 * This function should be called to mark that a change has occurred,
+		 * indicating that the ability usage has affected something.
+		 */
+		invoker.change();
+	});
+	/**
+	 * Private field for the list of all abilities.
+	 * @type {Readonly<Ability[]>}
+	 */
+	#abilities = Object.freeze([this.#ability]);
+	/**
+	 * Getter for the abilities list.
+	 * @readonly
+	 * @returns {Readonly<Ability[]>}
+	 */
+	get abilities() { return this.#abilities; }
+
+	// Additionally, other properties of the class such as color, position can be overloaded...
+}
+/**
+ * After creating the element, it should be added to the board with a specified probability of its appearance.
+ */
+board.cases.set(CustomElement, 50);
+//#endregion
+```
 - - -
 
 ## News
-### 2.9.0 : Adaptive Core 2.8.3 (21.05.2024)
+### 2.9.1 : Adaptive Core 2.8.3 (26.05.2024)
+- Gameplay screenshot updated.
+- FPS counter appearance improved.
+- Guide added to [`README.md`](./README.md)
+
+### 2.9.0 : Adaptive Core 2.8.3 (25.05.2024)
 - Core updated.
 - Project rebuilt using the latest OOP structures.
 - Rendering optimized by approximately 30%.

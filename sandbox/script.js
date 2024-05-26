@@ -58,9 +58,9 @@ engine.addEventListener(`update`, (event) => window.ensure(async () => {
 	engine.launched = false;
 	const repeat = await (async () => {
 		switch (settings.cycleType) {
-			case CycleTypes.break: return false;
+			case CycleTypes.terminate: return false;
 			case CycleTypes.ask: return await window.confirmAsync(`Elements have no more moves. Do you want to reload the board?`);
-			case CycleTypes.loop: return true;
+			case CycleTypes.repeat: return true;
 			default: throw new EvalError(`Invalid '${settings.cycleType}' cycle type`);
 		}
 	})();
@@ -89,7 +89,10 @@ buttonCaptureCanvas.addEventListener(`click`, (event) => window.insure(() => {
 divFPSCounter.hidden = !settings.showFPS;
 engineController.addEventListener(`update`, (event) => {
 	const factor = engine.FPS / engine.limit;
-	divFPSCounter.style.setProperty(`--color-fps-indicator`, Color.viaHSL(factor * 120, 100, 50).toString());
+	divFPSCounter.style.setProperty(`--color-fps-indicator`, (factor > 0
+		? Color.viaHSL(factor * 120, 100, 50).toString()
+		: null
+	));
 	divFPSCounter.textContent = `${engine.FPS.toFixed()}`;
 });
 //#endregion
