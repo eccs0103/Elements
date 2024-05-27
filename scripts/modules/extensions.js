@@ -28,6 +28,21 @@ Number.import = function (source, name = `source`) {
 Number.prototype.export = function () {
 	return this.valueOf();
 };
+
+/**
+ * Interpolates the number from one range to another.
+ * @param {number} min1 The minimum value of the original range.
+ * @param {number} max1 The maximum value of the original range.
+ * @param {number} min2 The minimum value of the target range.
+ * @param {number} max2 The maximum value of the target range.
+ * @returns {number} The interpolated value within the target range.
+ * @throws {EvalError} If the minimum and maximum values of either range are equal.
+ */
+Number.prototype.interpolate = function (min1, max1, min2 = 0, max2 = 1) {
+	if (min1 === max1) throw new EvalError(`Minimum and maximum of the original range cant be equal`);
+	if (min2 === max2) throw new EvalError(`Minimum and maximum of the target range cant be equal`);
+	return min2 + (max2 - min2) * ((this.valueOf() - min1) / (max1 - min1));
+};
 //#endregion
 //#region Boolean
 /**
@@ -595,26 +610,6 @@ const toRadianFactor = Math.PI / 180;
 Math.toRadians = function (degrees) {
 	return degrees * toRadianFactor;
 };
-
-/**
- * Maps a value to the range [0, 1).
- * @param {number} value The value to map.
- * @param {number} period The period of the mapping.
- * @returns {number} The mapped value.
- */
-Math.toFactor = function (value, period) {
-	return value % period / period;
-};
-
-/**
- * Maps a value to the range [-1, 1).
- * @param {number} value The value to map.
- * @param {number} period The period of the mapping.
- * @returns {number} The mapped value.
- */
-Math.toSignedFactor = function (value, period) {
-	return Math.toFactor(value, period) * 2 - 1;
-};
 //#endregion
 //#region Promise
 /**
@@ -673,7 +668,7 @@ Error.prototype.toString = function () {
 };
 //#endregion
 
-//#region Element
+//#region Parent node
 /**
  * Retrieves an element of the specified type and selectors.
  * @template {typeof Element} T
@@ -701,41 +696,6 @@ Element.prototype.getElement = function (type, selectors) {
 Element.prototype.tryGetElement = function (type, selectors, strict = false) {
 	return new Promise((resolve, reject) => {
 		const element = this.querySelector(selectors);
-		if (element instanceof type) {
-			resolve(/** @type {InstanceType<T>} */(element));
-		} else if (strict) {
-			reject(new TypeError(`Element ${selectors} is missing or has invalid type`));
-		}
-	});
-};
-
-/**
- * Retrieves the closest ancestor element of the specified type and selectors.
- * @template {typeof Element} T
- * @param {T} type The type of element to retrieve.
- * @param {string} selectors The selectors to search for the element.
- * @returns {InstanceType<T>} The element instance.
- * @throws {TypeError} If the element is missing or has an invalid type.
- */
-Element.prototype.getClosest = function (type, selectors) {
-	const element = this.closest(selectors);
-	if (element instanceof type) {
-		return (/** @type {InstanceType<T>} */ (element));
-	} else throw new TypeError(`Element ${selectors} is missing or has invalid type`);
-};
-
-/**
- * Tries to retrieve the closest ancestor element of the specified type and selectors.
- * @template {typeof Element} T
- * @param {T} type The type of element to retrieve.
- * @param {string} selectors The selectors to search for the element.
- * @param {boolean} strict Whether to reject if the element is missing or has an invalid type.
- * @returns {Promise<InstanceType<T>>} A promise that resolves to the element instance.
- * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
- */
-Element.prototype.tryGetClosest = function (type, selectors, strict = false) {
-	return new Promise((resolve, reject) => {
-		const element = this.closest(selectors);
 		if (element instanceof type) {
 			resolve(/** @type {InstanceType<T>} */(element));
 		} else if (strict) {
@@ -778,8 +738,7 @@ Element.prototype.tryGetElements = function (type, selectors, strict = false) {
 		}
 	});
 };
-//#endregion
-//#region Document
+
 /**
  * Retrieves an element of the specified type and selectors.
  * @template {typeof Element} T
@@ -828,6 +787,112 @@ Document.prototype.getElements = function (type, selectors) {
  */
 Document.prototype.tryGetElements = function (type, selectors, strict = false) {
 	return this.documentElement.tryGetElements(type, selectors, strict);
+};
+
+/**
+ * Retrieves an element of the specified type and selectors.
+ * @template {typeof Element} T
+ * @param {T} type The type of element to retrieve.
+ * @param {string} selectors The selectors to search for the element.
+ * @returns {InstanceType<T>} The element instance.
+ * @throws {TypeError} If the element is missing or has an invalid type.
+ */
+DocumentFragment.prototype.getElement = function (type, selectors) {
+	const element = this.querySelector(selectors);
+	if (element instanceof type) {
+		return (/** @type {InstanceType<T>} */ (element));
+	} else throw new TypeError(`Element ${selectors} is missing or has invalid type`);
+};
+
+/**
+ * Tries to retrieve an element of the specified type and selectors.
+ * @template {typeof Element} T
+ * @param {T} type The type of element to retrieve.
+ * @param {string} selectors The selectors to search for the element.
+ * @param {boolean} strict Whether to reject if the element is missing or has an invalid type.
+ * @returns {Promise<InstanceType<T>>} A promise that resolves to the element instance.
+ * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
+ */
+DocumentFragment.prototype.tryGetElement = function (type, selectors, strict = false) {
+	return new Promise((resolve, reject) => {
+		const element = this.querySelector(selectors);
+		if (element instanceof type) {
+			resolve(/** @type {InstanceType<T>} */(element));
+		} else if (strict) {
+			reject(new TypeError(`Element ${selectors} is missing or has invalid type`));
+		}
+	});
+};
+
+/**
+ * Retrieves elements of the specified type and selectors.
+ * @template {typeof Element} T
+ * @param {T} type The type of elements to retrieve.
+ * @param {string} selectors The selectors to search for the elements.
+ * @returns {NodeListOf<InstanceType<T>>} The NodeList of element instances.
+ * @throws {TypeError} If any element is missing or has an invalid type.
+ */
+DocumentFragment.prototype.getElements = function (type, selectors) {
+	const elements = this.querySelectorAll(selectors);
+	if (Array.from(elements).every(element => element instanceof type)) {
+		return (/** @type {NodeListOf<InstanceType<T>>} */ (elements));
+	} else throw new TypeError(`Element ${selectors} is missing or has invalid type`);
+};
+
+/**
+ * Tries to retrieve elements of the specified type and selectors.
+ * @template {typeof Element} T
+ * @param {T} type The type of elements to retrieve.
+ * @param {string} selectors The selectors to search for the elements.
+ * @param {boolean} strict Whether to reject if any element is missing or has an invalid type.
+ * @returns {Promise<NodeListOf<InstanceType<T>>>} A promise that resolves to the NodeList of element instances.
+ * @throws {TypeError} If any element is missing or has an invalid type and strict mode is enabled.
+ */
+DocumentFragment.prototype.tryGetElements = function (type, selectors, strict = false) {
+	return new Promise((resolve, reject) => {
+		const elements = this.querySelectorAll(selectors);
+		if (Array.from(elements).every(element => element instanceof type)) {
+			resolve(/** @type {NodeListOf<InstanceType<T>>} */(elements));
+		} else if (strict) {
+			reject(new TypeError(`Element ${selectors} is missing or has invalid type`));
+		}
+	});
+};
+//#endregion
+//#region Element
+/**
+ * Retrieves the closest ancestor element of the specified type and selectors.
+ * @template {typeof Element} T
+ * @param {T} type The type of element to retrieve.
+ * @param {string} selectors The selectors to search for the element.
+ * @returns {InstanceType<T>} The element instance.
+ * @throws {TypeError} If the element is missing or has an invalid type.
+ */
+Element.prototype.getClosest = function (type, selectors) {
+	const element = this.closest(selectors);
+	if (element instanceof type) {
+		return (/** @type {InstanceType<T>} */ (element));
+	} else throw new TypeError(`Element ${selectors} is missing or has invalid type`);
+};
+
+/**
+ * Tries to retrieve the closest ancestor element of the specified type and selectors.
+ * @template {typeof Element} T
+ * @param {T} type The type of element to retrieve.
+ * @param {string} selectors The selectors to search for the element.
+ * @param {boolean} strict Whether to reject if the element is missing or has an invalid type.
+ * @returns {Promise<InstanceType<T>>} A promise that resolves to the element instance.
+ * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
+ */
+Element.prototype.tryGetClosest = function (type, selectors, strict = false) {
+	return new Promise((resolve, reject) => {
+		const element = this.closest(selectors);
+		if (element instanceof type) {
+			resolve(/** @type {InstanceType<T>} */(element));
+		} else if (strict) {
+			reject(new TypeError(`Element ${selectors} is missing or has invalid type`));
+		}
+	});
 };
 //#endregion
 //#region Window

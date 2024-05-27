@@ -18,6 +18,16 @@ interface Number {
 	 * @returns The exported number value.
 	 */
 	export(): number;
+	/**
+	 * Interpolates the number from one range to another.
+	 * @param min1 The minimum value of the original range.
+	 * @param max1 The maximum value of the original range.
+	 * @param min2 The minimum value of the target range.
+	 * @param max2 The maximum value of the target range.
+	 * @returns The interpolated value within the target range.
+	 * @throws {EvalError} If the minimum and maximum values of either range are equal.
+	 */
+	interpolate(min1: number, max1: number, min2?: number, max2?: number): number;
 }
 
 interface BooleanConstructor {
@@ -165,20 +175,6 @@ interface Math {
 	 * @returns The angle in radians.
 	 */
 	toRadians(degrees: number): number;
-	/**
-	 * Maps a value to the range [0, 1).
-	 * @param value The value to map.
-	 * @param period The period of the mapping.
-	 * @returns The mapped value.
-	 */
-	toFactor(value: number, period: number): number;
-	/**
-	 * Maps a value to the range [-1, 1).
-	 * @param value The value to map.
-	 * @param period The period of the mapping.
-	 * @returns The mapped value.
-	 */
-	toSignedFactor(value: number, period: number): number;
 }
 
 interface PromiseConstructor {
@@ -215,7 +211,7 @@ interface Error {
 	toString(): string;
 }
 
-interface Element {
+interface ParentNode {
 	/**
 	 * Retrieves an element of the specified type and selectors.
 	 * @template T
@@ -235,25 +231,6 @@ interface Element {
 	 * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
 	 */
 	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
-	/**
-	 * Retrieves the closest ancestor element of the specified type and selectors.
-	 * @template T
-	 * @param type The type of element to retrieve.
-	 * @param selectors The selectors to search for the element.
-	 * @returns The element instance.
-	 * @throws {TypeError} If the element is missing or has an invalid type.
-	 */
-	getClosest<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
-	/**
-	 * Tries to retrieve the closest ancestor element of the specified type and selectors.
-	 * @template T
-	 * @param type The type of element to retrieve.
-	 * @param selectors The selectors to search for the element.
-	 * @param strict Whether to reject if the element is missing or has an invalid type.
-	 * @returns A promise that resolves to the element instance.
-	 * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
-	 */
-	tryGetClosest<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 	/**
 	 * Retrieves elements of the specified type and selectors.
 	 * @template T
@@ -275,18 +252,18 @@ interface Element {
 	tryGetElements<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
 }
 
-interface Document {
+interface Element {
 	/**
-	 * Retrieves an element of the specified type and selectors.
+	 * Retrieves the closest ancestor element of the specified type and selectors.
 	 * @template T
 	 * @param type The type of element to retrieve.
 	 * @param selectors The selectors to search for the element.
 	 * @returns The element instance.
 	 * @throws {TypeError} If the element is missing or has an invalid type.
 	 */
-	getElement<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
+	getClosest<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
 	/**
-	 * Tries to retrieve an element of the specified type and selectors.
+	 * Tries to retrieve the closest ancestor element of the specified type and selectors.
 	 * @template T
 	 * @param type The type of element to retrieve.
 	 * @param selectors The selectors to search for the element.
@@ -294,26 +271,7 @@ interface Document {
 	 * @returns A promise that resolves to the element instance.
 	 * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
 	 */
-	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
-	/**
-	 * Retrieves elements of the specified type and selectors.
-	 * @template T
-	 * @param type The type of elements to retrieve.
-	 * @param selectors The selectors to search for the elements.
-	 * @returns The NodeList of element instances.
-	 * @throws {TypeError} If any element is missing or has an invalid type.
-	 */
-	getElements<T extends typeof Element>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
-	/**
-	 * Tries to retrieve elements of the specified type and selectors.
-	 * @template T
-	 * @param type The type of elements to retrieve.
-	 * @param selectors The selectors to search for the elements.
-	 * @param strict Whether to reject if any element is missing or has an invalid type.
-	 * @returns A promise that resolves to the NodeList of element instances.
-	 * @throws {TypeError} If any element is missing or has an invalid type and strict mode is enabled.
-	 */
-	tryGetElements<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
+	tryGetClosest<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 }
 
 interface Window {

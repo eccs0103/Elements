@@ -9,13 +9,6 @@
 	}
 }
 
-:root:has(meta[name="color-scheme"][content="light"]) {
-	--color-foreground: rgb(255, 255, 255);
-	--color-background: rgb(225, 225, 225);
-	--color-text: rgb(50, 50, 50);
-	--color-text-description: rgb(150, 150, 150);
-}
-
 @media (prefers-color-scheme: dark) {
 	:root:has(meta[name="color-scheme"][content="system"]) {
 		--color-foreground: rgb(50, 50, 50);
@@ -25,14 +18,21 @@
 	}
 }
 
-:root:has(meta[name="color-scheme"][content="dark"]) {
-	--color-foreground: rgb(50, 50, 50);
-	--color-background: rgb(25, 25, 25);
-	--color-text: rgb(255, 255, 255);
-	--color-text-description: rgb(150, 150, 150);
-}
-
 :root {
+	&:has(meta[name="color-scheme"][content="light"]) {
+		--color-foreground: rgb(255, 255, 255);
+		--color-background: rgb(225, 225, 225);
+		--color-text: rgb(50, 50, 50);
+		--color-text-description: rgb(150, 150, 150);
+	}
+
+	&:has(meta[name="color-scheme"][content="dark"]) {
+		--color-foreground: rgb(50, 50, 50);
+		--color-background: rgb(25, 25, 25);
+		--color-text: rgb(255, 255, 255);
+		--color-text-description: rgb(150, 150, 150);
+	}
+
 	--time-duration: 100ms;
 	--color-highlight: hsl(200deg, 100%, 50%);
 	--color-warn: hsl(60deg 100% 40%);
@@ -49,11 +49,6 @@ body {
 	& * {
 		background-color: initial;
 		color: inherit;
-
-		&::placeholder {
-			color: var(--color-text-description);
-			filter: brightness(0.75);
-		}
 	}
 }
 
@@ -178,28 +173,38 @@ input[type="radio"]:checked + label,
 }
 
 @media (prefers-color-scheme: dark) {
+	:root:has(meta[name="color-scheme"][content="system"]) {
 
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="date"]::-webkit-calendar-picker-indicator,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="datetime"]::-webkit-calendar-picker-indicator,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="datetime-local"]::-webkit-calendar-picker-indicator,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="month"]::-webkit-calendar-picker-indicator,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="password"]::-ms-reveal,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="search"]::-webkit-search-cancel-button,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="time"]::-webkit-calendar-picker-indicator,
-	:root:has(meta[name="color-scheme"][content="system"]) input[type="week"]::-webkit-calendar-picker-indicator {
+		&input[type="date"]::-webkit-calendar-picker-indicator,
+		&input[type="datetime"]::-webkit-calendar-picker-indicator,
+		&input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+		&input[type="month"]::-webkit-calendar-picker-indicator,
+		&input[type="password"]::-ms-reveal,
+		&input[type="search"]::-webkit-search-cancel-button,
+		&input[type="time"]::-webkit-calendar-picker-indicator,
+		&input[type="week"]::-webkit-calendar-picker-indicator {
+			filter: invert(1);
+		}
+	}
+}
+
+:root:has(meta[name="color-scheme"][content="dark"]) {
+
+	&input[type="date"]::-webkit-calendar-picker-indicator,
+	&input[type="datetime"]::-webkit-calendar-picker-indicator,
+	&input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+	&input[type="month"]::-webkit-calendar-picker-indicator,
+	&input[type="password"]::-ms-reveal,
+	&input[type="search"]::-webkit-search-cancel-button,
+	&input[type="time"]::-webkit-calendar-picker-indicator,
+	&input[type="week"]::-webkit-calendar-picker-indicator {
 		filter: invert(1);
 	}
 }
 
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="date"]::-webkit-calendar-picker-indicator,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="datetime"]::-webkit-calendar-picker-indicator,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="datetime-local"]::-webkit-calendar-picker-indicator,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="month"]::-webkit-calendar-picker-indicator,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="password"]::-ms-reveal,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="search"]::-webkit-search-cancel-button,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="time"]::-webkit-calendar-picker-indicator,
-:root:has(meta[name="color-scheme"][content="dark"]) input[type="week"]::-webkit-calendar-picker-indicator {
-	filter: invert(1);
+*::placeholder {
+	color: var(--color-text-description);
+	filter: brightness(0.75);
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -209,6 +214,16 @@ input[type="range"]::-webkit-slider-thumb {
 
 dialog::backdrop {
 	background-color: rgba(0, 0, 0, 75%);
+}
+
+dl.inline {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	column-gap: var(--size-gap);
+}
+
+dt {
+	font-weight: bold;
 }
 
 code,

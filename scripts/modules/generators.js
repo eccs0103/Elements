@@ -397,7 +397,7 @@ class Random {
 	 */
 	case(cases) {
 		if (1 > cases.size) throw new EvalError(`Map must have at least 1 item`);
-		const summary = [...cases].reduce((previous, [, percentage]) => previous + percentage, 0);
+		const summary = Array.from(cases).reduce((previous, [, percentage]) => previous + percentage, 0);
 		const random = this.number(0, summary);
 		let begin = 0;
 		for (const [item, percentage] of cases) {
