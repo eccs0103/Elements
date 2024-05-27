@@ -1,14 +1,18 @@
 "use strict";
 
-import { Elemental } from "../scripts/structure.js";
+import { ArchiveManager } from "../scripts/modules/storage.js";
+import { Elemental, Settings } from "../scripts/structure.js";
 
 //#region Initialize
+const managerSettings = await ArchiveManager.construct(`${navigator.dataPath}.Elements`, Settings);
 const board = Elemental.Board.self;
 const divElementsContainer = await window.ensure(() => document.getElement(HTMLDivElement, `div#elements-container`));
 const templateElementFragment = await window.ensure(() => document.getElement(HTMLTemplateElement, `template#element-fragment`));
 const templateAbilityFragment = await window.ensure(() => document.getElement(HTMLTemplateElement, `template#ability-fragment`));
 //#endregion
 //#region Main
+navigator.colorScheme = managerSettings.data.colorScheme;
+
 await window.load(Promise.withSignal((signal, resolve, reject) => window.ensure(() => {
 	const scriptElements = document.createElement(`script`);
 	scriptElements.type = `module`;
