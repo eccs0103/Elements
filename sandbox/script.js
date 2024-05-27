@@ -88,7 +88,7 @@ buttonCaptureCanvas.addEventListener(`click`, (event) => window.insure(() => {
 //#region Aside
 divFPSCounter.hidden = !settings.showFPS;
 engineController.addEventListener(`update`, (event) => {
-	const factor = engine.FPS / engine.limit;
+	const factor = engine.FPS.interpolate(0, engine.limit);
 	divFPSCounter.style.setProperty(`--color-fps-indicator`, (factor > 0
 		? Color.viaHSL(factor * 120, 100, 50).toString()
 		: null

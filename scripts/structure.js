@@ -244,12 +244,12 @@ class Elemental {
 		throw new ReferenceError(`Not implemented function`);
 	}
 	/**
-	 * Gets the abilities metadata of the element.
+	 * Gets the abilities metaset of the element.
 	 * @abstract
 	 * @readonly
 	 * @returns {Readonly<AbilityMetadata[]>}
 	 */
-	static get metadata() {
+	static get metaset() {
 		throw new ReferenceError(`Not implemented function`);
 	}
 

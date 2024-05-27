@@ -1,0 +1,91 @@
+body {
+	position: fixed;
+	inset: 0;
+	display: grid;
+}
+
+@media screen and (orientation: portrait) {
+	body {
+		grid-template-rows: max-content 1fr;
+		align-items: center;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	body {
+		grid-template-columns: max-content 1fr;
+		justify-items: center;
+	}
+}
+
+nav {
+	border-top-left-radius: 0 !important;
+}
+
+@media screen and (orientation: portrait) {
+	nav {
+		flex-direction: row;
+		border-top-right-radius: 0 !important;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	nav {
+		flex-direction: column;
+		border-bottom-left-radius: 0 !important;
+	}
+}
+
+main {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden auto;
+}
+
+div.--panel-frame {
+	width: 100vmin;
+	-moz-height: fit-content;
+	height: fit-content;
+}
+
+div#elements-container:not(:has(*.--element-container))::before {
+	color: var(--color-text-description);
+	text-align: center;
+	content: "There are no elements in board";
+}
+
+*.--element-container {
+	display: grid;
+	grid-template:
+		'element-avatar-area	element-name-area		' auto
+		'element-avatar-area	element-probability-area' auto
+		'element-ability-area	element-ability-area	' auto
+		/ minmax(var(--size-large-standart), auto) 1fr
+	;
+	column-gap: var(--size-large-gap);
+
+	& > *.--element-avatar {
+		grid-area: element-avatar-area;
+	}
+
+	& > *.--element-name {
+		grid-area: element-name-area;
+	}
+
+	& > *.--element-probability {
+		grid-area: element-probability-area;
+	}
+
+	& > *.--element-ability {
+		grid-area: element-ability-area;
+
+		& > dt {
+			margin-top: 1em;
+		}
+
+		& > dd {
+			margin-left: 1em;
+		}
+	}
+}

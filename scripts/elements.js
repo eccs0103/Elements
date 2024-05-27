@@ -24,9 +24,9 @@ class Dirt extends Elemental {
 	static get color() { return Dirt.#color; }
 
 	/** @type {Readonly<AbilityMetadata[]>} */
-	static #metadata = Object.freeze([]);
+	static #metaset = Object.freeze([]);
 	/** @readonly @returns {Readonly<AbilityMetadata[]>} */
-	static get metadata() { return Dirt.#metadata; }
+	static get metaset() { return Dirt.#metaset; }
 
 	/** @type {Readonly<Ability[]>} */
 	#abilities = Object.freeze([]);
@@ -48,11 +48,11 @@ class Grass extends Elemental {
 	static get color() { return Grass.#color; }
 
 	/** @type {AbilityMetadata} */
-	static #metaGrow = new Ability.Metadata(`Grow`, `Description`, 10);
+	static #metaGrow = new Ability.Metadata(`Grow`, `Grass can expand by converting a random adjacent Dirt element into a Grass element. The ability targets the eight neighboring cells (up, down, left, right, and diagonals) to find a Dirt element and transform it.`, 10);
 	/** @type {Readonly<AbilityMetadata[]>} */
-	static #metadata = Object.freeze([Grass.#metaGrow]);
+	static #metaset = Object.freeze([Grass.#metaGrow]);
 	/** @readonly @returns {Readonly<AbilityMetadata[]>} */
-	static get metadata() { return Grass.#metadata; }
+	static get metaset() { return Grass.#metaset; }
 
 	/** @type {Ability} */
 	#grow = new Ability(Grass.#metaGrow, (invoker) => {
@@ -93,13 +93,13 @@ class Fire extends Elemental {
 	static get color() { return Fire.#color; }
 
 	/** @type {AbilityMetadata} */
-	static #metaBurn = new Ability.Metadata(`Burn`, `Description`, 4);
+	static #metaBurn = new Ability.Metadata(`Burn`, `Fire spreads by converting a random adjacent Grass element into a Fire element. It targets the four neighboring cells (up, down, left, right) to find a Grass element and ignite it. When Fire successfully spreads, it resets the progress of the Fade ability.`, 4);
 	/** @type {AbilityMetadata} */
-	static #metaFade = new Ability.Metadata(`Fade`, `Description`, 16);
+	static #metaFade = new Ability.Metadata(`Fade`, `When Fire burns out, it converts itself into a Dirt element. This ability is triggered when Fire has not spread to a new Grass element after a certain period, indicating the fire has exhausted its fuel and extinguishes itself.`, 16);
 	/** @type {Readonly<AbilityMetadata[]>} */
-	static #metadata = Object.freeze([Fire.#metaBurn, Fire.#metaFade]);
+	static #metaset = Object.freeze([Fire.#metaBurn, Fire.#metaFade]);
 	/** @readonly @returns {Readonly<AbilityMetadata[]>} */
-	static get metadata() { return Fire.#metadata; }
+	static get metaset() { return Fire.#metaset; }
 
 	/** @type {Ability} */
 	#burn = new Ability(Fire.#metaBurn, (invoker) => {
@@ -141,13 +141,13 @@ class Water extends Elemental {
 	static get color() { return Water.#color; }
 
 	/** @type {AbilityMetadata} */
-	static #metaFlow = new Ability.Metadata(`Flow`, `Description`, 8);
+	static #metaFlow = new Ability.Metadata(`Flow`, `Water can spread by converting a random adjacent Dirt element into a Water element. This ability targets the eight neighboring cells to find a Dirt element and transform it into Water.`, 8);
 	/** @type {AbilityMetadata} */
-	static #metaEvaporate = new Ability.Metadata(`Evaporate`, `Description`, 8);
+	static #metaEvaporate = new Ability.Metadata(`Evaporate`, ` Water evaporates when it encounters Fire. This ability converts a random adjacent Fire element and itself into Dirt elements. It targets the four neighboring cells to find a Fire element and then transforms both the Fire and Water into Dirt, simulating the evaporation process.`, 8);
 	/** @type {Readonly<AbilityMetadata[]>} */
-	static #metadata = Object.freeze([Water.#metaFlow, Water.#metaEvaporate]);
+	static #metaset = Object.freeze([Water.#metaFlow, Water.#metaEvaporate]);
 	/** @readonly @returns {Readonly<AbilityMetadata[]>} */
-	static get metadata() { return Water.#metadata; }
+	static get metaset() { return Water.#metaset; }
 
 	/** @type {Ability} */
 	#flow = new Ability(Water.#metaFlow, (invoker) => {
@@ -204,15 +204,15 @@ class Lava extends Elemental {
 	static get color() { return Lava.#color; }
 
 	/** @type {AbilityMetadata} */
-	static #metaFlow = new Ability.Metadata(`Flow`, `Description`, 15);
+	static #metaFlow = new Ability.Metadata(`Flow`, `Lava can spread by converting a random adjacent Dirt element into a Lava element with lower density. This ability targets the four neighboring cells to find a Dirt element and transform it into Lava. The new Lava element will have a reduced density compared to the original.`, 15);
 	/** @type {AbilityMetadata} */
-	static #metaBurn = new Ability.Metadata(`Burn`, `Description`, 8);
+	static #metaBurn = new Ability.Metadata(`Burn`, `Lava can ignite Grass by converting a random adjacent Grass element into a Fire element. It targets the four neighboring cells to find a Grass element and set it on fire.`, 8);
 	/** @type {AbilityMetadata} */
-	static #metaFade = new Ability.Metadata(`Fade`, `Description`, 4);
+	static #metaFade = new Ability.Metadata(`Fade`, `Lava cools down when it encounters Water. This ability converts a random adjacent Water element into a Dirt element and decreases the Lava's density. It targets the four neighboring cells to find a Water element. If the Lava's density reaches zero, it transforms itself into a Fire element, simulating the cooling process.`, 4);
 	/** @type {Readonly<AbilityMetadata[]>} */
-	static #metadata = Object.freeze([Lava.#metaFlow, Lava.#metaBurn, Lava.#metaFade]);
+	static #metaset = Object.freeze([Lava.#metaFlow, Lava.#metaBurn, Lava.#metaFade]);
 	/** @readonly @returns {Readonly<AbilityMetadata[]>} */
-	static get metadata() { return Lava.#metadata; }
+	static get metaset() { return Lava.#metaset; }
 	/** @type {number} */
 	static #maxDensity = 3;
 
@@ -293,15 +293,15 @@ class Ice extends Elemental {
 	static get color() { return Ice.#color; }
 
 	/** @type {AbilityMetadata} */
-	static #metaFlow = new Ability.Metadata(`Flow`, `Description`, 12);
+	static #metaFlow = new Ability.Metadata(`Flow`, `Ice can spread by converting a random adjacent Dirt element into an Ice element with lower density. This ability targets the four neighboring cells to find a Dirt element and transform it into Ice. The new Ice element will have a reduced density compared to the original.`, 12);
 	/** @type {AbilityMetadata} */
-	static #metaMelt = new Ability.Metadata(`Melt`, `Description`, 4);
+	static #metaMelt = new Ability.Metadata(`Melt`, `Ice melts when it encounters Fire. This ability converts a random adjacent Fire element into a Dirt element and decreases the Ice's density. It targets the four neighboring cells to find a Fire element. If the Ice's density reaches zero, it transforms itself into a Water element, simulating the melting process.`, 4);
 	/** @type {AbilityMetadata} */
-	static #metaEvaporate = new Ability.Metadata(`Evaporate`, `Description`, 4);
+	static #metaEvaporate = new Ability.Metadata(`Evaporate`, `Ice evaporates when it encounters Lava. This ability converts a random adjacent Lava element and itself into Dirt elements. It targets the four neighboring cells to find a Lava element and then transforms both the Lava and Ice into Dirt, simulating the evaporation process.`, 4);
 	/** @type {Readonly<AbilityMetadata[]>} */
-	static #metadata = Object.freeze([Ice.#metaFlow, Ice.#metaMelt, Ice.#metaEvaporate]);
+	static #metaset = Object.freeze([Ice.#metaFlow, Ice.#metaMelt, Ice.#metaEvaporate]);
 	/** @readonly @returns {Readonly<AbilityMetadata[]>} */
-	static get metadata() { return Ice.#metadata; }
+	static get metaset() { return Ice.#metaset; }
 	/** @type {number} */
 	static #maxDensity = 3;
 

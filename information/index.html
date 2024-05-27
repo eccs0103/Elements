@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="generator" content="2.8.0">
+	<meta name="title" content="Elements">
+	<meta name="author" content="eccs0103">
+	<meta name="color-scheme" content="system">
+	<meta name="description" content="A sandbox-style game">
+	<meta name="keywords" content="html,css,javascript,jsdoc,typescript,web,generation,sandbox,custom-script,user-script,game">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="English">
+	<meta name="revisit-after" content="0 days">
+	<title>Information - Elements</title>
+	<link rel="shortcut icon" href="../resources/icons/information.png" media="(prefers-color-scheme: light)">
+	<link rel="shortcut icon" href="../resources/icons/information-inverted.png" media="(prefers-color-scheme: dark)">
+	<link rel="preload" as="image" href="../resources/loading.gif">
+	<link rel="stylesheet" href="../styles/global.css">
+	<link rel="stylesheet" href="../styles/themes/material.css">
+	<link rel="stylesheet" href="./style.css">
+	<script type="module" src="./script.js"></script>
+</head>
+
+<body>
+	<nav class="layer rounded with-gap with-padding flex centered">
+		<a href="../sandbox" role="combobox" title="Sandbox" class="flex rounded with-padding">
+			<img src="../resources/icons/grid.png" class="icon" alt="Sandbox">
+		</a>
+		<a href="../settings" role="combobox" title="Settings" class="flex rounded with-padding">
+			<img src="../resources/icons/settings.png" class="icon" alt="Settings">
+		</a>
+		<a href="../information" role="combobox" aria-checked="true" title="Information" class="flex rounded with-padding">
+			<img src="../resources/icons/information.png" class="icon" alt="Information">
+		</a>
+	</nav>
+	<main class="flex primary-centered">
+		<div class="--panel-frame flex column with-padding large-padding">
+			<div id="elements-container" class="layer rounded flex with-gap large-gap column with-padding large-padding">
+				<!-- template#element-fragment -->
+			</div>
+		</div>
+		<template id="element-fragment">
+			<article class="--element-container">
+				<svg viewbox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" class="--element-avatar depth rounded">
+					<rect id="element-0-avatar-icon" x="50" y="50" width="50" height="50"></rect>
+				</svg>
+				<h2 id="element-0-name" class="--element-name">Element</h2>
+				<dl class="--element-probability inline">
+					<dt>Probability: </dt>
+					<dd id="element-0-probability">--․--%</dd>
+				</dl>
+				<dl id="element-0-abilities-container" class="--element-ability">
+					<!-- template#element-fragment -->
+				</dl>
+			</article>
+		</template>
+		<template id="ability-fragment">
+			<dt id="element-0-ability-0-name">Ability</dt>
+			<dd id="element-0-ability-0-preparation">Preparation: -- frame(s)</dd>
+			<dd id="element-0-ability-0-description">Description</dd>
+		</template>
+	</main>
+	<script src="../scripts/templates/loader.js"></script>
+	<script src="../scripts/templates/popup.js"></script>
+</body>
+
+</html>
